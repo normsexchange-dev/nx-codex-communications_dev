@@ -14,9 +14,17 @@ No environment writes acknowledgments, branches, files, commits, or corrections 
 
 ## Message envelope
 
-Every message conforms to the immutable message-envelope schema for its declared communications version. Payloads are public and sanitized. References and SHA-256 hashes may identify public-safe artifacts but must not expose private repositories or data.
+Every message is stored at exactly `outbox/messages/<message-id>.json`; the filename stem equals the envelope's `message_id`. Every message conforms to the immutable message-envelope schema for its declared communications version and has `payload_classification` equal to `public_sanitized`. References and SHA-256 hashes may identify public-safe artifacts but must not expose private repositories or data. `payload_reference` and `payload_sha256` are either both present or both null. Replies and supersessions cannot reference their own message ID.
 
-Messages are append-only. Existing messages are never edited or deleted. A correction creates a new message whose `supersedes_message_id` references the earlier message. Replies use `in_reply_to`. Normal pushes preserve history; force pushes are prohibited.
+`outbox/index.json` has a `messages` array sorted by `message_id`. Each entry has exactly:
+
+```json
+{"message_id":"<message-id>","path":"outbox/messages/<message-id>.json","created_at":"<envelope-created-at>","status":"<envelope-status>"}
+```
+
+Every message file appears exactly once in the index, every index entry resolves to an existing message file, and duplicate or dangling entries are invalid. The index may remain empty when no messages exist. No real message is included in the protocol release.
+
+Messages are append-only. Existing messages are never edited or deleted. A correction creates a new message whose `supersedes_message_id` references the earlier message. Replies use `in_reply_to`. Normal pushes preserve history; force pushes are prohibited. A role branch may publish only messages consistent with its own role identity and branch.
 
 ## No authority transfer
 

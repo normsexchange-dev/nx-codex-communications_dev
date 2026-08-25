@@ -1,12 +1,26 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.1.0/schemas/message-envelope.schema.json",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.1.1/schemas/message-envelope.schema.json",
   "title": "NX sanitized public message envelope",
   "type": "object",
   "additionalProperties": false,
   "required": ["protocol_version", "message_id", "sender_environment", "recipient_environment", "message_type", "role_id", "role_branch", "created_at", "in_reply_to", "supported_contract_version", "public_summary", "payload_classification", "payload_reference", "payload_sha256", "supersedes_message_id", "status"],
+  "allOf": [
+    {
+      "oneOf": [
+        {"properties": {"role_id": {"type": "null"}, "role_branch": {"type": "null"}}},
+        {"properties": {"role_id": {"type": "string"}, "role_branch": {"type": "string"}}}
+      ]
+    },
+    {
+      "oneOf": [
+        {"properties": {"payload_reference": {"type": "null"}, "payload_sha256": {"type": "null"}}},
+        {"properties": {"payload_reference": {"type": "string"}, "payload_sha256": {"type": "string"}}}
+      ]
+    }
+  ],
   "properties": {
-    "protocol_version": {"const": "0.1.0"},
+    "protocol_version": {"const": "0.1.1"},
     "message_id": {"type": "string", "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"},
     "sender_environment": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
     "recipient_environment": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
@@ -18,7 +32,7 @@
     "supported_contract_version": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9-]*-v[0-9]+\\.[0-9]+\\.[0-9]+$"},
     "public_summary": {"type": "string", "minLength": 1, "maxLength": 1000},
     "payload_classification": {"const": "public_sanitized"},
-    "payload_reference": {"type": ["string", "null"], "format": "uri"},
+    "payload_reference": {"type": ["string", "null"], "format": "uri", "pattern": "^https://"},
     "payload_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
     "supersedes_message_id": {"type": ["string", "null"], "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"},
     "status": {"enum": ["published", "acknowledged", "superseded"]}
