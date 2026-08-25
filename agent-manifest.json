@@ -1,0 +1,44 @@
+{
+  "$schema": "./schemas/agent-manifest.schema.json",
+  "communications_version": "0.1.0",
+  "environment_id": "normsexchange-codex",
+  "github_owner": "normsexchange-dev",
+  "communications_repository": "normsexchange-dev/nx-codex-communications_dev",
+  "environment_type": "Codex",
+  "access_model": {
+    "public_read": true,
+    "owner_write_only": true,
+    "external_write": false
+  },
+  "role_branch_grammar": "^role/[a-z0-9]+(?:-[a-z0-9]+)*/[a-z0-9]+(?:-[a-z0-9]+)*$",
+  "supported_protocols": [
+    {
+      "protocol_id": "nx-communications",
+      "version": "0.1.0",
+      "tag": "communications-v0.1.0",
+      "repository_url": "https://github.com/normsexchange-dev/nx-codex-communications_dev"
+    },
+    {
+      "protocol_id": "nx-sourcing-contract",
+      "version": "0.1.0",
+      "tag": "contract-v0.1.0",
+      "repository_url": "https://github.com/normsexchange-dev/nx-sourcing-contracts_dev"
+    }
+  ],
+  "public_capabilities": [
+    "public_protocol_publication",
+    "sanitized_message_publication",
+    "bounded_role_declaration",
+    "public_information_research_coordination"
+  ],
+  "public_safety_boundaries": [
+    "public_information_only",
+    "no_cross_account_writes",
+    "no_self_authority_expansion",
+    "no_private_data_publication",
+    "no_credentials_or_private_paths"
+  ],
+  "bootstrap_document": "bootstrap/AGENT_BOOTSTRAP_dev.md",
+  "status": "ready",
+  "updated_at": "2026-08-25T20:16:42Z"
+}

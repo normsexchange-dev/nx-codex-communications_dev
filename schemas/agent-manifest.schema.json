@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.1.0/schemas/agent-manifest.schema.json",
+  "title": "NX public environment manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "communications_version", "environment_id", "github_owner", "communications_repository", "environment_type", "access_model", "role_branch_grammar", "supported_protocols", "public_capabilities", "public_safety_boundaries", "bootstrap_document", "status", "updated_at"],
+  "properties": {
+    "$schema": {"const": "./schemas/agent-manifest.schema.json"},
+    "communications_version": {"const": "0.1.0"},
+    "environment_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "github_owner": {"type": "string", "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$"},
+    "communications_repository": {"type": "string", "pattern": "^[A-Za-z0-9-]+/nx-[a-z0-9-]+-communications_dev$"},
+    "environment_type": {"const": "Codex"},
+    "access_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["public_read", "owner_write_only", "external_write"],
+      "properties": {
+        "public_read": {"const": true},
+        "owner_write_only": {"const": true},
+        "external_write": {"const": false}
+      }
+    },
+    "role_branch_grammar": {"const": "^role/[a-z0-9]+(?:-[a-z0-9]+)*/[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "supported_protocols": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["protocol_id", "version", "tag", "repository_url"],
+        "properties": {
+          "protocol_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+          "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+          "tag": {"type": "string", "pattern": "^[a-z][a-z0-9-]*-v[0-9]+\\.[0-9]+\\.[0-9]+$"},
+          "repository_url": {"type": "string", "format": "uri"}
+        }
+      }
+    },
+    "public_capabilities": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"}},
+    "public_safety_boundaries": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"}},
+    "bootstrap_document": {"const": "bootstrap/AGENT_BOOTSTRAP_dev.md"},
+    "status": {"enum": ["ready", "maintenance", "retired"]},
+    "updated_at": {"type": "string", "format": "date-time"}
+  }
+}

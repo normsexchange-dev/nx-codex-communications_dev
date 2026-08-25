@@ -1,0 +1,19 @@
+# Local tooling and operating-system artifacts
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+
+# Credentials and local configuration are prohibited
+.env
+.env.*
+*.pem
+*.key
+credentials*
+secrets*
+
+# Private data and executable payloads never belong here
+/private/
+/data/
+/payloads/
+/transcripts/

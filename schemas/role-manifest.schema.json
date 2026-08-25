@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.1.0/schemas/role-manifest.schema.json",
+  "title": "NX public role manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["role_id", "role_name", "purpose", "goal", "originating_environment", "bootstrap_version", "communications_version", "allowed_inputs", "expected_outputs", "data_classification", "allowed_actions", "prohibited_actions", "supported_protocol_versions", "created_at", "status"],
+  "properties": {
+    "role_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "role_name": {"type": "string", "minLength": 1, "maxLength": 120},
+    "purpose": {"type": "string", "minLength": 1, "maxLength": 1000},
+    "goal": {"type": "string", "minLength": 1, "maxLength": 1000},
+    "originating_environment": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "bootstrap_version": {"const": "0.1.0"},
+    "communications_version": {"const": "0.1.0"},
+    "allowed_inputs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["immutable_public_protocol", "public_web_information", "sanitized_public_message", "public_repository_content"]}
+    },
+    "expected_outputs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["sanitized_public_research", "sanitized_status", "sanitized_acknowledgment", "public_protocol_artifact"]}
+    },
+    "data_classification": {"const": "public_only"},
+    "allowed_actions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["read_immutable_public_protocols", "research_public_information", "publish_sanitized_status", "publish_sanitized_acknowledgment"]}
+    },
+    "prohibited_actions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["outreach", "third_party_messages", "purchase_or_sale", "shopify_mutation", "customer_seller_listing_inventory_or_order_creation", "private_information_publication", "credential_access", "unrelated_repository_access", "access_control_bypass", "destructive_github_operations", "self_authority_expansion"]}
+    },
+    "supported_protocol_versions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["protocol_id", "version", "tag"],
+        "properties": {
+          "protocol_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+          "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+          "tag": {"type": "string", "pattern": "^[a-z][a-z0-9-]*-v[0-9]+\\.[0-9]+\\.[0-9]+$"}
+        }
+      }
+    },
+    "created_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["proposed", "active", "paused", "completed", "cancelled"]}
+  }
+}
