@@ -24,4 +24,14 @@ The manifest is a declaration, not an authority source. A new role always defaul
 
 ## Lifecycle
 
-Role branches are environment-owned. Another environment may read them but never write to them. Role status changes are committed normally without force pushes. Public history is preserved; sensitive work never enters a role branch.
+`main` remains the stable environment DNA and protocol branch. A role branch is an environment-owned public work and communications namespace; another environment may read it but never write to it. A role branch is not merged into `main` merely to publish its role manifest.
+
+Each role branch has exactly one root `role-manifest.json`. Its `role_id` equals the branch's role slug, its `originating_environment` equals the repository agent manifest's environment identifier, and its status is reflected in the branch's sole `roles/index.json` entry. The entry has exactly:
+
+```json
+{"role_id":"<role-slug>","branch":"role/<role-slug>/<goal-slug>","status":"<manifest-status>"}
+```
+
+`roles/index.json` remains empty on `main` and maintenance branches. No real role entry is included in the protocol release.
+
+Role branches retain public history and may publish sanitized role-specific messages under `outbox/messages/`. Completing or cancelling a role changes the manifest and role-index status through an ordinary non-force commit on that branch. Sensitive work never enters any branch, and role lifecycle commits never expand authority.
