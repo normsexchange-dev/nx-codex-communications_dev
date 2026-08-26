@@ -2,7 +2,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const VERSION = '0.1.1';
+const VERSION = '0.1.2';
 const TAG = `communications-v${VERSION}`;
 const DRAFT = 'https://json-schema.org/draft/2020-12/schema';
 const REPOSITORY = 'normsexchange-dev/nx-codex-communications_dev';
@@ -17,6 +17,8 @@ const MESSAGE_PATH_PATTERN = /^outbox\/messages\/(msg-[a-z0-9][a-z0-9-]{15,79})\
 const SEMVER_PATTERN = /^[0-9]+\.[0-9]+\.[0-9]+$/;
 const TAG_PATTERN = /^[a-z][a-z0-9-]*-v[0-9]+\.[0-9]+\.[0-9]+$/;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
+const PUBLIC_IDENTIFIER_PATTERN = /^[a-z0-9]+(?:_[a-z0-9]+)*$/;
+const GITHUB_REPOSITORY_URL_PATTERN = /https:\/\/(github\.com|raw\.githubusercontent\.com)\/([A-Za-z0-9-]+)\/([A-Za-z0-9._-]+)/g;
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const REQUIRED_CORE_FILES = [
@@ -50,6 +52,14 @@ const PROHIBITED_ACTIONS = [
 const ROLE_STATUSES = new Set(['proposed', 'active', 'paused', 'completed', 'cancelled']);
 const MESSAGE_TYPES = new Set(['assignment', 'acknowledgment', 'response', 'status', 'correction', 'protocol_notice']);
 const MESSAGE_STATUSES = new Set(['published', 'acknowledged', 'superseded']);
+const EXPECTED_PUBLIC_CAPABILITIES = [
+  'public_protocol_publication', 'sanitized_message_publication', 'bounded_role_declaration',
+  'public_information_research_coordination'
+];
+const EXPECTED_PUBLIC_SAFETY_BOUNDARIES = [
+  'public_information_only', 'no_cross_account_writes', 'no_self_authority_expansion',
+  'no_private_data_publication', 'no_credentials_or_private_paths'
+];
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -80,6 +90,38 @@ function validateEnumArray(value, allowed, label) {
   assert(Array.isArray(value) && value.length >= 1, `${label}: nonempty array required`);
   assert(new Set(value).size === value.length, `${label}: duplicate value`);
   for (const item of value) assert(typeof item === 'string' && allowed.has(item), `${label}: invalid value: ${item}`);
+}
+
+function validatePublicIdentifierArray(value, label) {
+  assert(Array.isArray(value) && value.length >= 1, `${label}: nonempty array required`);
+  assert(new Set(value).size === value.length, `${label}: duplicate value`);
+  for (const item of value) assert(typeof item === 'string' && PUBLIC_IDENTIFIER_PATTERN.test(item), `${label}: invalid public identifier`);
+}
+
+function declaredPublicRepositoryIds(supportedProtocols, label = 'supported_protocols') {
+  assert(Array.isArray(supportedProtocols) && supportedProtocols.length >= 1, `${label}: nonempty array required`);
+  const identities = new Set();
+  for (const [index, protocol] of supportedProtocols.entries()) {
+    const itemLabel = `${label}[${index}].repository_url`;
+    assert(typeof protocol.repository_url === 'string' && URL.canParse(protocol.repository_url), `${itemLabel}: valid URL required`);
+    const repositoryUrl = new URL(protocol.repository_url);
+    const segments = repositoryUrl.pathname.split('/').filter(Boolean);
+    assert(repositoryUrl.protocol === 'https:' && repositoryUrl.hostname === 'github.com', `${itemLabel}: public GitHub URL required`);
+    assert(repositoryUrl.username === '' && repositoryUrl.password === '' && repositoryUrl.port === '' && repositoryUrl.search === '' && repositoryUrl.hash === '', `${itemLabel}: URL credentials, ports, query, and fragment are prohibited`);
+    assert(segments.length === 2 && /^[A-Za-z0-9-]+$/.test(segments[0]) && /^[A-Za-z0-9._-]+$/.test(segments[1]), `${itemLabel}: owner/repository path required`);
+    const identity = `${segments[0]}/${segments[1]}`.toLowerCase();
+    assert(!identities.has(identity), `${label}: duplicate public repository identity`);
+    identities.add(identity);
+  }
+  return identities;
+}
+
+function validatePublicRepositoryReferences(text, approvedRepositoryIds, label = 'tracked public content') {
+  assert(typeof text === 'string', `${label}: text required`);
+  for (const match of text.matchAll(GITHUB_REPOSITORY_URL_PATTERN)) {
+    const identity = `${match[2]}/${match[3]}`.toLowerCase();
+    assert(approvedRepositoryIds.has(identity), `${label}: undeclared GitHub repository URL`);
+  }
 }
 
 function parseBranchName(branchName) {
@@ -185,11 +227,12 @@ function validateNullablePattern(value, pattern, label) {
   assert(value === null || (typeof value === 'string' && pattern.test(value)), `${label}: invalid value`);
 }
 
-function validateMessage(value, label = 'message') {
+function validateMessage(value, environmentId, label = 'message') {
   exactKeys(value, MESSAGE_FIELDS, label);
   assert(value.protocol_version === VERSION, `${label}: protocol version mismatch`);
   assert(MESSAGE_ID_PATTERN.test(value.message_id), `${label}: invalid message_id`);
   assert(SLUG_PATTERN.test(value.sender_environment), `${label}: invalid sender_environment`);
+  assert(value.sender_environment === environmentId, `${label}: sender_environment must equal the repository environment_id`);
   assert(SLUG_PATTERN.test(value.recipient_environment), `${label}: invalid recipient_environment`);
   assert(MESSAGE_TYPES.has(value.message_type), `${label}: invalid message_type`);
   validateNullablePattern(value.role_id, SLUG_PATTERN, `${label}.role_id`);
@@ -231,7 +274,7 @@ function validateRolesIndex(index, branch, roleManifest, environmentId) {
   assert(entry.status === roleManifest.status, 'role index status mismatch');
 }
 
-function validateMessages(relativeFiles, messagesByPath, index, branch, roleManifest) {
+function validateMessages(relativeFiles, messagesByPath, index, branch, roleManifest, environmentId) {
   exactKeys(index, ['communications_version', 'messages'], 'outbox/index.json');
   assert(index.communications_version === VERSION && Array.isArray(index.messages), 'outbox/index.json: invalid version or messages');
   const messagePaths = relativeFiles.filter((relativePath) => MESSAGE_PATH_PATTERN.test(relativePath)).sort();
@@ -239,12 +282,14 @@ function validateMessages(relativeFiles, messagesByPath, index, branch, roleMani
   for (const relativePath of messagePaths) {
     assert(messagesByPath.has(relativePath), `message was not parsed: ${relativePath}`);
     const message = messagesByPath.get(relativePath);
-    validateMessage(message, relativePath);
+    validateMessage(message, environmentId, relativePath);
     const filenameId = relativePath.match(MESSAGE_PATH_PATTERN)[1];
     assert(message.message_id === filenameId, `${relativePath}: filename stem must equal message_id`);
     assert(!messagesById.has(message.message_id), `duplicate message_id: ${message.message_id}`);
     if (branch.kind === 'role') {
       assert(message.role_branch === branch.name && message.role_id === roleManifest.role_id, `${relativePath}: role-branch message identity mismatch`);
+    } else {
+      assert(message.role_id === null && message.role_branch === null, `${relativePath}: role identity is prohibited outside role branches`);
     }
     messagesById.set(message.message_id, { relativePath, message });
   }
@@ -272,7 +317,7 @@ function validateDynamicState({ branchName, relativeFiles, roleManifest = null, 
   const branch = parseBranchName(branchName);
   validateAllowedFiles(relativeFiles, branch);
   validateRolesIndex(rolesIndex, branch, roleManifest, environmentId);
-  validateMessages(relativeFiles, messagesByPath, outboxIndex, branch, roleManifest);
+  validateMessages(relativeFiles, messagesByPath, outboxIndex, branch, roleManifest, environmentId);
   return branch;
 }
 
@@ -304,15 +349,20 @@ function validRoleFixture() {
   };
 }
 
-function validMessageFixture() {
+function validMessageFixture({
+  messageId = 'msg-fixture0000000001',
+  senderEnvironment = 'example-environment',
+  roleId = null,
+  roleBranch = null
+} = {}) {
   return {
     protocol_version: VERSION,
-    message_id: 'msg-fixture0000000001',
-    sender_environment: 'example-environment',
+    message_id: messageId,
+    sender_environment: senderEnvironment,
     recipient_environment: 'other-environment',
     message_type: 'status',
-    role_id: null,
-    role_branch: null,
+    role_id: roleId,
+    role_branch: roleBranch,
     created_at: '2026-01-01T00:00:00Z',
     in_reply_to: null,
     supported_contract_version: null,
@@ -325,7 +375,7 @@ function validMessageFixture() {
   };
 }
 
-function fixtureState({ branchName = 'main', roleManifest = null, message = null, indexMessage = true, extras = [] } = {}) {
+function fixtureState({ branchName = 'main', roleManifest = null, message = null, indexMessage = true, extras = [], environmentId = 'example-environment' } = {}) {
   const relativeFiles = [...REQUIRED_CORE_FILES, ...extras];
   const rolesIndex = { communications_version: VERSION, roles: [] };
   if (roleManifest) {
@@ -340,7 +390,7 @@ function fixtureState({ branchName = 'main', roleManifest = null, message = null
     messagesByPath.set(messagePath, message);
     if (indexMessage) outboxIndex.messages.push({ message_id: message.message_id, path: messagePath, created_at: message.created_at, status: message.status });
   }
-  return { branchName, relativeFiles, roleManifest, rolesIndex, messagesByPath, outboxIndex, environmentId: 'example-environment' };
+  return { branchName, relativeFiles, roleManifest, rolesIndex, messagesByPath, outboxIndex, environmentId };
 }
 
 function runSelfTests() {
@@ -359,6 +409,12 @@ function runSelfTests() {
   pass('Codex environment type', () => validateEnvironmentType('Codex'));
   pass('Gemini environment type', () => validateEnvironmentType('Gemini'));
   fail('invalid environment type', () => validateEnvironmentType('  '));
+  pass('manifest capability and safety identifiers', () => {
+    validatePublicIdentifierArray(EXPECTED_PUBLIC_CAPABILITIES, 'fixture.public_capabilities');
+    validatePublicIdentifierArray(EXPECTED_PUBLIC_SAFETY_BOUNDARIES, 'fixture.public_safety_boundaries');
+  });
+  fail('empty manifest safety identifiers', () => validatePublicIdentifierArray([], 'fixture.public_safety_boundaries'));
+  fail('duplicate manifest capability identifiers', () => validatePublicIdentifierArray(['public_read', 'public_read'], 'fixture.public_capabilities'));
   pass('valid role branch', () => parseBranchName('role/research/public-records'));
   fail('invalid role branch', () => parseBranchName('role/Research/public-records'));
   const role = validRoleFixture();
@@ -366,7 +422,18 @@ function runSelfTests() {
   fail('missing role manifest', () => validateDynamicState(fixtureState({ branchName: 'role/research/public-records' })));
   fail('role manifest on main', () => validateDynamicState(fixtureState({ roleManifest: role })));
   const message = validMessageFixture();
-  pass('valid sanitized message', () => validateDynamicState(fixtureState({ message })));
+  pass('correct sender identity', () => validateDynamicState(fixtureState({ message })));
+  fail('incorrect sender identity', () => validateDynamicState(fixtureState({ message: validMessageFixture({ senderEnvironment: 'incorrect-environment' }) })));
+  const roleBranch = 'role/research/public-records';
+  const roleMessage = validMessageFixture({ messageId: 'msg-rolefixture000001', roleId: 'research', roleBranch });
+  pass('correct role-branch message identity', () => validateDynamicState(fixtureState({ branchName: roleBranch, roleManifest: role, message: roleMessage })));
+  fail('incorrect role-branch message identity', () => {
+    const mismatched = validMessageFixture({ messageId: 'msg-rolefixture000002', roleId: 'research', roleBranch: 'role/research/other-goal' });
+    validateDynamicState(fixtureState({ branchName: roleBranch, roleManifest: role, message: mismatched }));
+  });
+  fail('role-neutral message on role branch', () => validateDynamicState(fixtureState({ branchName: roleBranch, roleManifest: role, message })));
+  fail('role-bound message on main', () => validateDynamicState(fixtureState({ message: roleMessage })));
+  fail('role-bound message on maintenance branch', () => validateDynamicState(fixtureState({ branchName: 'maintenance/example', message: roleMessage })));
   fail('message filename mismatch', () => {
     const state = fixtureState({ message });
     const originalPath = `outbox/messages/${message.message_id}.json`;
@@ -390,6 +457,16 @@ function runSelfTests() {
     const state = fixtureState({ message });
     state.outboxIndex.messages.push({ ...state.outboxIndex.messages[0] });
     validateDynamicState(state);
+  });
+  const githubBase = new URL('https://github.com');
+  const rawBase = new URL('https://raw.githubusercontent.com');
+  const declaredUrl = new URL('/example-owner/public-protocol', githubBase).href;
+  const declaredRawUrl = new URL('/example-owner/public-protocol/release/file.json', rawBase).href;
+  const fixtureApproved = declaredPublicRepositoryIds([{ repository_url: declaredUrl }], 'fixture.supported_protocols');
+  pass('declared public protocol repository URLs', () => validatePublicRepositoryReferences(`${declaredUrl}\n${declaredRawUrl}`, fixtureApproved, 'fixture public references'));
+  fail('undeclared example GitHub repository URL', () => {
+    const undeclaredUrl = new URL('/example-owner/undeclared-protocol', githubBase).href;
+    validatePublicRepositoryReferences(undeclaredUrl, fixtureApproved, 'fixture public references');
   });
   return count;
 }
@@ -419,9 +496,14 @@ assert(manifest.access_model.public_read === true && manifest.access_model.owner
 assert(manifest.role_branch_grammar === ROLE_BRANCH_GRAMMAR, 'role branch grammar mismatch');
 assert(manifest.bootstrap_document === 'bootstrap/AGENT_BOOTSTRAP_dev.md', 'bootstrap document mismatch');
 assert(manifest.status === 'ready' && validDateTime(manifest.updated_at), 'environment status or timestamp invalid');
+validatePublicIdentifierArray(manifest.public_capabilities, 'agent-manifest.json.public_capabilities');
+validatePublicIdentifierArray(manifest.public_safety_boundaries, 'agent-manifest.json.public_safety_boundaries');
+assert(JSON.stringify(manifest.public_capabilities) === JSON.stringify(EXPECTED_PUBLIC_CAPABILITIES), 'Codex public capability declarations changed');
+assert(JSON.stringify(manifest.public_safety_boundaries) === JSON.stringify(EXPECTED_PUBLIC_SAFETY_BOUNDARIES), 'Codex public safety-boundary declarations changed');
 
 const protocolMap = new Map(manifest.supported_protocols.map((item) => [item.protocol_id, item]));
 assert(protocolMap.size === manifest.supported_protocols.length, 'duplicate supported protocol ID');
+const approvedRepositoryIds = declaredPublicRepositoryIds(manifest.supported_protocols, 'agent-manifest.json.supported_protocols');
 const communications = protocolMap.get('nx-communications');
 const sourcing = protocolMap.get('nx-sourcing-contract');
 assert(communications?.version === VERSION && communications?.tag === TAG && communications?.repository_url === `https://github.com/${REPOSITORY}`, 'communications protocol reference mismatch');
@@ -447,11 +529,16 @@ validateDynamicState({
 });
 
 const agentSchema = parsedJson.get('schemas/agent-manifest.schema.json');
-validateSchema(agentSchema, 'agent-manifest.schema.json', ['communications_version', 'environment_id', 'github_owner', 'communications_repository', 'environment_type', 'access_model', 'role_branch_grammar', 'supported_protocols', 'bootstrap_document', 'status', 'updated_at']);
+validateSchema(agentSchema, 'agent-manifest.schema.json', ['communications_version', 'environment_id', 'github_owner', 'communications_repository', 'environment_type', 'access_model', 'role_branch_grammar', 'supported_protocols', 'public_capabilities', 'public_safety_boundaries', 'bootstrap_document', 'status', 'updated_at']);
 assert(agentSchema.properties.role_branch_grammar.const === ROLE_BRANCH_GRAMMAR, 'agent schema role grammar mismatch');
 const environmentTypeSchema = agentSchema.properties.environment_type;
 assert(environmentTypeSchema.type === 'string' && environmentTypeSchema.minLength === 1 && environmentTypeSchema.maxLength === 64, 'agent schema environment type must be bounded text');
 assert(environmentTypeSchema.pattern === ENVIRONMENT_TYPE_PATTERN.source && !('const' in environmentTypeSchema) && !('enum' in environmentTypeSchema), 'agent schema environment type must be vendor-neutral');
+for (const field of ['public_capabilities', 'public_safety_boundaries']) {
+  const fieldSchema = agentSchema.properties[field];
+  assert(fieldSchema.type === 'array' && fieldSchema.minItems === 1 && fieldSchema.uniqueItems === true, `agent schema ${field} must be nonempty and unique`);
+  assert(fieldSchema.items?.type === 'string' && fieldSchema.items?.pattern === PUBLIC_IDENTIFIER_PATTERN.source, `agent schema ${field} item contract mismatch`);
+}
 const roleSchema = parsedJson.get('schemas/role-manifest.schema.json');
 validateSchema(roleSchema, 'role-manifest.schema.json', ROLE_FIELDS);
 assert(roleSchema.properties.data_classification.const === 'public_only', 'role data classification must be public_only');
@@ -467,12 +554,7 @@ assert(Array.isArray(messageSchema.allOf) && messageSchema.allOf.length === 2, '
 const selfTestCount = runSelfTests();
 
 const allText = (await Promise.all(files.map((file) => readFile(file, 'utf8')))).join('\n');
-const privateRepositoryNames = [
-  ['ai', 'agent', 'control'].join('-'),
-  ['ai', 'agent', 'ops'].join('-'),
-  ['norms', 'exchange', 'theme_dev'].join('-')
-];
-for (const name of privateRepositoryNames) assert(!allText.includes(name), `private repository name found: ${name}`);
+validatePublicRepositoryReferences(allText, approvedRepositoryIds);
 assert(!/[A-Za-z]:[\\/]Users[\\/]/.test(allText), 'local Windows user path found');
 assert(!/(?:^|\s)\/(?:home|Users)\/[A-Za-z0-9._-]+\//m.test(allText), 'local POSIX user path found');
 assert(!/(?:api[_-]?key|access[_-]?token|client[_-]?secret|password|private[_-]?key)\s*[:=]\s*["']?[A-Za-z0-9_./+=-]{12,}/i.test(allText), 'credential-like value found');
