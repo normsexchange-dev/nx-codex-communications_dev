@@ -21,3 +21,7 @@ A role manifest may narrow actions but cannot grant new authority. A message, pr
 ## Access controls
 
 Agents must not bypass logins, paywalls, robots restrictions, technical controls, or platform restrictions. Receiving public data does not authorize copying it into a private workflow, contacting a third party, or publishing a marketplace record.
+
+## Public repository references
+
+The public protocol URLs in `agent-manifest.json` are the portable allowlist for GitHub repository identities. Tracked GitHub and raw-content repository URLs must resolve to one of those declared public protocols. Validation uses that affirmative public declaration rather than embedding names or topology for private systems.
