@@ -2,11 +2,14 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const VERSION = '0.1.2';
+const VERSION = '0.2.0';
 const TAG = `communications-v${VERSION}`;
 const DRAFT = 'https://json-schema.org/draft/2020-12/schema';
 const REPOSITORY = 'normsexchange-dev/nx-codex-communications_dev';
 const TAGGED_SCHEMA_ROOT = `https://raw.githubusercontent.com/${REPOSITORY}/${TAG}/schemas`;
+const AUTOSTART_URL = `https://raw.githubusercontent.com/${REPOSITORY}/${TAG}/AUTOSTART.md`;
+const CANONICAL_AUTOSTART_PROMPT = `Initialize NX environment normsexchange-gemini from ${AUTOSTART_URL}`;
+const AUTOSTART_INSTRUCTION_PATTERN = /^Initialize NX environment ([a-z0-9]+(?:-[a-z0-9]+)*) from (https:\/\/\S+)$/;
 const ROLE_BRANCH_GRAMMAR = '^role/[a-z0-9]+(?:-[a-z0-9]+)*/[a-z0-9]+(?:-[a-z0-9]+)*$';
 const ROLE_BRANCH_PATTERN = new RegExp(ROLE_BRANCH_GRAMMAR);
 const ROLE_BRANCH_CAPTURE = /^role\/([a-z0-9]+(?:-[a-z0-9]+)*)\/([a-z0-9]+(?:-[a-z0-9]+)*)$/;
@@ -22,7 +25,7 @@ const GITHUB_REPOSITORY_URL_PATTERN = /https:\/\/(github\.com|raw\.githubusercon
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const REQUIRED_CORE_FILES = [
-  '.github/workflows/validate-communications.yml', '.gitignore', 'COMMUNICATIONS_VERSION', 'README.md',
+  '.github/workflows/validate-communications.yml', '.gitignore', 'AUTOSTART.md', 'COMMUNICATIONS_VERSION', 'README.md',
   'agent-manifest.json', 'bootstrap/AGENT_BOOTSTRAP_dev.md', 'docs/MESSAGE_PROTOCOL_dev.md',
   'docs/ROLE_BRANCH_PROTOCOL_dev.md', 'docs/SECURITY_BOUNDARY_dev.md', 'outbox/index.json',
   'roles/index.json', 'schemas/agent-manifest.schema.json', 'schemas/message-envelope.schema.json',
@@ -122,6 +125,22 @@ function validatePublicRepositoryReferences(text, approvedRepositoryIds, label =
     const identity = `${match[2]}/${match[3]}`.toLowerCase();
     assert(approvedRepositoryIds.has(identity), `${label}: undeclared GitHub repository URL`);
   }
+}
+
+function validateAutostartInstruction(instruction, authenticatedOwner) {
+  assert(typeof instruction === 'string' && !/[\r\n]/.test(instruction), 'Autostart instruction must be exactly one line');
+  const match = instruction.match(AUTOSTART_INSTRUCTION_PATTERN);
+  assert(match, 'Autostart instruction must include one requested environment and one HTTPS URL');
+  const requestedEnvironment = match[1];
+  const installerUrl = match[2];
+  assert(installerUrl === AUTOSTART_URL, `Autostart URL must use immutable ${TAG}`);
+  const parsedUrl = new URL(installerUrl);
+  assert(parsedUrl.protocol === 'https:' && parsedUrl.hostname === 'raw.githubusercontent.com', 'Autostart URL must use raw GitHub HTTPS');
+  assert(!parsedUrl.pathname.split('/').includes('main'), 'Autostart URL must not use mutable main');
+  assert(!installerUrl.includes(requestedEnvironment), 'requested environment must remain outside the universal installer URL');
+  assert(typeof authenticatedOwner === 'string' && authenticatedOwner.length >= 1, 'authenticated GitHub owner is required before mutation');
+  assert(authenticatedOwner === requestedEnvironment, 'authenticated GitHub owner must exactly match requested environment');
+  return { requestedEnvironment, installerUrl, resourceOwner: authenticatedOwner };
 }
 
 function parseBranchName(branchName) {
@@ -468,6 +487,13 @@ function runSelfTests() {
     const undeclaredUrl = new URL('/example-owner/undeclared-protocol', githubBase).href;
     validatePublicRepositoryReferences(undeclaredUrl, fixtureApproved, 'fixture public references');
   });
+  pass('Gemini Autostart identity adaptation', () => {
+    const request = validateAutostartInstruction(CANONICAL_AUTOSTART_PROMPT, 'normsexchange-gemini');
+    assert(request.requestedEnvironment === 'normsexchange-gemini' && request.resourceOwner === 'normsexchange-gemini', 'Gemini Autostart adaptation mismatch');
+  });
+  fail('Autostart wrong authenticated identity', () => validateAutostartInstruction(CANONICAL_AUTOSTART_PROMPT, 'normsexchange-dev'));
+  fail('Autostart missing environment', () => validateAutostartInstruction(`Initialize NX environment from ${AUTOSTART_URL}`, 'normsexchange-gemini'));
+  fail('Autostart mutable main URL', () => validateAutostartInstruction(CANONICAL_AUTOSTART_PROMPT.replace(`/${TAG}/`, '/main/'), 'normsexchange-gemini'));
   return count;
 }
 
@@ -481,6 +507,23 @@ const parsedJson = new Map();
 for (const relativePath of jsonFiles) parsedJson.set(relativePath, await json(relativePath));
 
 assert((await readFile(path.join(root, 'COMMUNICATIONS_VERSION'), 'utf8')).trim() === VERSION, 'communications version mismatch');
+
+const readmeText = await readFile(path.join(root, 'README.md'), 'utf8');
+assert(readmeText.split(CANONICAL_AUTOSTART_PROMPT).length - 1 === 1, 'README must contain the canonical Autostart prompt exactly once');
+const autostartText = await readFile(path.join(root, 'AUTOSTART.md'), 'utf8');
+assert(autostartText.length >= 1 && autostartText.length <= 3000, 'AUTOSTART.md must remain concise and nonempty');
+const requiredAutostartPhrases = [
+  'model-agnostic', 'requested destination environment', '/communications-v0.2.0/autostart.md',
+  'agent-manifest.json', 'bootstrap document completely', 'immutable public protocols explicitly referenced',
+  'before any mutation', 'authenticated account name to exactly equal', 'stop on absent authentication or any mismatch',
+  "authenticated account's ownership", 'never write across accounts', 'share credentials', 'adapt the tagged public files truthfully',
+  'deterministic validator', 'role-branch', 'sanitized acknowledgment', 'public information only',
+  'stop and report public-safe status before substantive role work'
+];
+const normalizedAutostart = autostartText.toLowerCase();
+for (const phrase of requiredAutostartPhrases) assert(normalizedAutostart.includes(phrase), `AUTOSTART.md missing required instruction: ${phrase}`);
+assert(!/raw\.githubusercontent\.com\/[^\s)]+\/main\//i.test(autostartText), 'AUTOSTART.md must not contain a mutable raw GitHub URL');
+validateAutostartInstruction(CANONICAL_AUTOSTART_PROMPT, 'normsexchange-gemini');
 
 const manifest = parsedJson.get('agent-manifest.json');
 exactKeys(manifest, ['$schema', 'communications_version', 'environment_id', 'github_owner', 'communications_repository', 'environment_type', 'access_model', 'role_branch_grammar', 'supported_protocols', 'public_capabilities', 'public_safety_boundaries', 'bootstrap_document', 'status', 'updated_at'], 'agent-manifest.json');

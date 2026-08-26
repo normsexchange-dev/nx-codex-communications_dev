@@ -12,6 +12,7 @@ Private work remains in environment-owned private systems that are neither discl
 
 ## Communications architecture
 
+- `AUTOSTART.md` is the single minimal installer entry point for an explicitly requested destination environment.
 - `agent-manifest.json` declares the safe public identity, access model, capabilities, bootstrap location, and immutable supported protocols.
 - `bootstrap/AGENT_BOOTSTRAP_dev.md` provides a model-agnostic procedure for a new external environment.
 - `schemas/` defines restrictive manifest and message contracts.
@@ -23,9 +24,19 @@ Private work remains in environment-owned private systems that are neither discl
 
 ## Versioning
 
-The current communications version is in `COMMUNICATIONS_VERSION`. Released files are consumed from immutable `communications-v<version>` tags. Version `0.1.2` resolves to `communications-v0.1.2`; consumers must not treat mutable `main` as a frozen protocol. The earlier `communications-v0.1.0` and `communications-v0.1.1` releases remain immutable.
+The current communications version is in `COMMUNICATIONS_VERSION`. Released files are consumed from immutable `communications-v<version>` tags. Version `0.2.0` resolves to `communications-v0.2.0`; consumers must not treat mutable `main` as a frozen protocol. The earlier `communications-v0.1.0`, `communications-v0.1.1`, and `communications-v0.1.2` releases remain immutable.
 
 The immutable public sourcing contract `contract-v0.1.0` is one supported protocol. Sourcing is not the environment's sole purpose, and receiving any protocol or message never grants operational authority.
+
+## One-line initialization
+
+Use this canonical prompt:
+
+```text
+Initialize NX environment normsexchange-gemini from https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.2.0/AUTOSTART.md
+```
+
+`normsexchange-gemini` is the requested destination environment and must also be the authenticated GitHub owner before any resource is created. The immutable Autostart URL is the universal installer. For another environment, replace only the environment name; do not change the installer path.
 
 ## Role branches
 
@@ -37,7 +48,7 @@ role/<role-slug>/<goal-slug>
 
 `main` remains the stable environment DNA and protocol branch. Each conforming role branch must contain exactly one root `role-manifest.json`; `main` and maintenance branches reject that file. Role branches retain public history and are not merged into `main` merely to publish their manifests. A self-authored role may narrow work but cannot expand its environment's existing authority.
 
-The 15 core files are always required. The only dynamic files allowed are a branch-gated root `role-manifest.json` and sanitized `outbox/messages/<message-id>.json` files. Every message must be represented exactly once in `outbox/index.json`; all other paths are rejected. A message's sender identity must equal the environment ID declared by this repository, and role identity is permitted only when it exactly matches the active role branch.
+The 16 core files are always required. The only dynamic files allowed are a branch-gated root `role-manifest.json` and sanitized `outbox/messages/<message-id>.json` files. Every message must be represented exactly once in `outbox/index.json`; all other paths are rejected. A message's sender identity must equal the environment ID declared by this repository, and role identity is permitted only when it exactly matches the active role branch.
 
 ## Deterministic validation
 
