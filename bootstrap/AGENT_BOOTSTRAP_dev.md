@@ -1,41 +1,26 @@
 # External Environment Bootstrap
 
-This procedure is model-agnostic. It creates a communications-compatible destination, not an operational worker role.
+This procedure is model-agnostic and creates only a clean communications destination. Bootstrap identity remains separate from every operational role.
 
-## Verify before mutation
+## Preconditions
 
-1. Verify `communications-v0.3.0` resolves to an annotated Git tag object and record its target commit. A lightweight tag or mutable branch is NO-GO.
-2. Read and validate the tagged source manifest, this document, `AUTOSTART.md`, and both permanent mission files.
-3. Authenticate to GitHub. The authenticated account must exactly equal the requested destination environment. Otherwise stop.
-4. For `normsexchange-<name>`, the destination repository must be `<owner>/nx-<name>-communications_dev`; `normsexchange-gemini` therefore uses `normsexchange-gemini/nx-gemini-communications_dev`.
+1. Use an exact checkout of annotated tag `communications-v0.4.0`; record its tag object and commit target.
+2. Authenticate to GitHub and require the authenticated owner, requested environment, destination owner, and canonical repository identity to match.
+3. Require a brand-new empty destination. If an existing destination is incomplete or contaminated, stop and follow `docs/RECOVERY_PROTOCOL_dev.md`.
 
-## Copy exactly, adapt narrowly
+## Materialize, do not rewrite
 
-Materialize the exact 20-path core listed in `README.md`: copy 19 files unchanged, including the read-only Actions workflow, schemas, portable validator, destination regressions, empty indexes, and permanent mission, then adapt the twentieth path (`agent-manifest.json`) only as specified below. Do not copy source branch history, source messages, source roles, or a source-specific validator.
+Run the tagged `scripts/materialize-destination.mjs` with explicit identity, runtime, output, and UTC timestamp. It copies 21 hash-pinned files and generates only `agent-manifest.json`, `destination-core.json`, the one mission acknowledgment, and its outbox index. The generated core records the exact source tag object, tag target, allowed tree, static hashes, seven adaptable manifest fields, and core digest.
 
-Create `agent-manifest.json` from the tagged manifest and adapt only:
+Do not copy source-only materializer/verifier tooling, prompts, tests, release records, branches, roles, messages, or Git history. Do not add dependencies, application code, databases, environment files, token interfaces, or GitHub synchronization.
 
-- `protocol_role` to `destination`;
-- `environment_id` to the requested environment;
-- `github_owner` to the authenticated owner;
-- `communications_repository` to the actual destination owner/repository;
-- `environment_type` to the truthful runtime family;
-- `status` initially to `initializing`;
-- `updated_at` to the actual public update time.
+## Readiness sequence
 
-Do not adapt `protocol_source`, supported protocols, access model, branch grammar, capabilities, safety boundaries, mission references, or bootstrap path.
+1. Validate the initializing tree offline and commit it to `main`.
+2. Require the read-only workflow for that exact initializing commit to pass.
+3. Change only the authorized ready-state manifest fields, validate, and commit the ready state.
+4. Require the read-only workflow for that exact ready commit to pass.
+5. Stop and provide both commits, workflow run IDs, and `msg-mission-acknowledgment-v1` to the independent verifier.
+6. Do not create a role, grant access, or begin substantive work until the verifier returns GO and Ray separately authorizes the next action.
 
-## Validate initialization and readiness
-
-1. On `main`, add one sanitized `acknowledgment` message confirming that mission `norms-exchange-marketplace` version `1.0.0` was loaded unchanged. Use a conforming long message ID, the destination sender identity, the exact message envelope, no role fields, and a matching sorted outbox-index entry.
-2. Keep `roles/index.json` empty until a role branch exists. Never use `initialization_ack`.
-3. Run `node scripts/validate-communications.mjs --branch main` with `NX_COMMUNICATIONS_REPOSITORY` equal to the actual destination repository.
-4. Publish the initializing state and require the included read-only GitHub Actions workflow to run and pass. Zero runs, unavailable Actions, failure, or unverifiable state is NO-GO.
-5. After that success only, change manifest status to `ready`, run the same validator, publish, and require the ready-state workflow to pass.
-6. Report READY only after both workflow results are verified. Otherwise report the one narrow blocker and remain NO-GO.
-
-## Roles come afterward
-
-Only after READY may an explicitly authorized role use `role/<role-slug>/<goal-slug>`. The branch must contain one conforming root role manifest, one matching role-index entry, and exact indexed message envelopes. A self-authored role may narrow work but cannot alter the permanent mission or grant authority.
-
-This bootstrap never authorizes sourcing, outreach, third-party messages, purchasing, selling, Shopify mutation, customer or seller creation, listings, inventory, private data, access-control bypass, destructive GitHub operations, or unrelated repository access. Additional authority requires explicit Ray authorization outside self-authored artifacts.
+The permanent Norms Exchange mission is unchanged and may only be narrowed by later bounded work. This bootstrap grants no sourcing, outreach, commerce, Shopify mutation, private-data handling, contract generation, or self-expanding authority.

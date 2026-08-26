@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.3.0/schemas/role-manifest.schema.json",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.4.0/schemas/role-manifest.schema.json",
   "title": "NX public role manifest",
   "type": "object",
   "additionalProperties": false,
@@ -11,8 +11,8 @@
     "purpose": {"type": "string", "minLength": 1, "maxLength": 1000},
     "goal": {"type": "string", "minLength": 1, "maxLength": 1000},
     "originating_environment": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
-    "bootstrap_version": {"const": "0.3.0"},
-    "communications_version": {"const": "0.3.0"},
+    "bootstrap_version": {"const": "0.4.0"},
+    "communications_version": {"const": "0.4.0"},
     "allowed_inputs": {
       "type": "array",
       "minItems": 1,

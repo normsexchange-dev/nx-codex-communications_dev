@@ -1,0 +1,3 @@
+EMERGENCY STOP / REVOKE ACCESS 0.4.0
+
+Stop the external agent and all synchronization or deployment processes. Revoke repository invitations and access, revoke any PAT or token used by the environment, remove applicable deployment secrets, clear token-bearing browser storage, disable unnecessary Actions/Pages/deployments, preserve evidence without publishing values, and classify every affected destination and role NO-GO. Do not delete or rewrite history, reissue access, resume work, or create records beyond a sanitized private incident. Return the exact access revoked, surfaces disabled, remaining Ray-side revocations, and one next safe action.

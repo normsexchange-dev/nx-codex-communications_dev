@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.4.0/schemas/attestation.schema.json",
+  "title": "NX public destination attestation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source_release", "source_tag_object", "source_tag_target", "destination_repository", "destination_commit", "core_digest", "initializing_commit", "ready_commit", "workflow_runs", "mission_acknowledgment_id", "validator_version", "result"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "source_release": {"const": "communications-v0.4.0"},
+    "source_tag_object": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "source_tag_target": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "destination_repository": {"type": "string", "pattern": "^[A-Za-z0-9-]+/[A-Za-z0-9._-]+$"},
+    "destination_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "core_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "initializing_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "ready_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "workflow_runs": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "object", "additionalProperties": false, "required": ["commit", "run_id", "conclusion"], "properties": {"commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"}, "run_id": {"type": "integer", "minimum": 1}, "conclusion": {"const": "success"}}}},
+    "mission_acknowledgment_id": {"const": "msg-mission-acknowledgment-v1"},
+    "validator_version": {"const": "0.4.0"},
+    "result": {"const": "GO"}
+  }
+}

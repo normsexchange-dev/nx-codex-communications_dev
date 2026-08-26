@@ -1,0 +1,196 @@
+{
+  "schema_version": "1.0.0",
+  "validator_version": "0.4.0",
+  "source": {
+    "repository": "normsexchange-dev/nx-codex-communications_dev",
+    "release": "communications-v0.4.0",
+    "tag_ref": "refs/tags/communications-v0.4.0",
+    "tag_object_type": "tag",
+    "tag_target_type": "commit"
+  },
+  "destination": {
+    "allowed_paths": [
+      ".gitattributes",
+      ".github/workflows/validate-communications.yml",
+      ".gitignore",
+      "AUTOSTART.md",
+      "COMMUNICATIONS_VERSION",
+      "README.md",
+      "agent-manifest.json",
+      "bootstrap/AGENT_BOOTSTRAP_dev.md",
+      "destination-core.json",
+      "docs/MESSAGE_PROTOCOL_dev.md",
+      "docs/RECOVERY_PROTOCOL_dev.md",
+      "docs/ROLE_BRANCH_PROTOCOL_dev.md",
+      "docs/SECURITY_BOUNDARY_dev.md",
+      "mission/NORMS_EXCHANGE_MISSION.md",
+      "mission/norms-exchange-mission.json",
+      "outbox/index.json",
+      "outbox/messages/msg-mission-acknowledgment-v1.json",
+      "roles/index.json",
+      "schemas/agent-manifest.schema.json",
+      "schemas/attestation.schema.json",
+      "schemas/destination-core.schema.json",
+      "schemas/message-envelope.schema.json",
+      "schemas/mission.schema.json",
+      "schemas/role-manifest.schema.json",
+      "scripts/lib/destination-core.mjs",
+      "scripts/validate-destination.mjs"
+    ],
+    "static_files": [
+      {
+        "path": ".gitattributes",
+        "sha256": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9"
+      },
+      {
+        "path": ".github/workflows/validate-communications.yml",
+        "sha256": "1ab60fe7fb95dfa0ca4b02b1b0d30933dde1b4c6dd92ed24f46570eff06bd488"
+      },
+      {
+        "path": ".gitignore",
+        "sha256": "bd82521ab88342d1e5dbedbfa56686e7097a859b1f1a5662ef824f01c632ab2e"
+      },
+      {
+        "path": "AUTOSTART.md",
+        "sha256": "666ea7541b1adea0190245183948020281f99b7c61204c3394c6b166b5301e18"
+      },
+      {
+        "path": "COMMUNICATIONS_VERSION",
+        "sha256": "40b8eb4000a913a7791090535f291d3d369874162a89ef3c9e3d4e887a1b9e79"
+      },
+      {
+        "path": "README.md",
+        "sha256": "c0d8d3863bc964bbb2890bb06f432279415414a31ee24b61d57833f35051f204"
+      },
+      {
+        "path": "bootstrap/AGENT_BOOTSTRAP_dev.md",
+        "sha256": "23a1b3c65f7250f909ead2439be37bfc272f1223ce674549ca48fd9e337fbe5e"
+      },
+      {
+        "path": "docs/MESSAGE_PROTOCOL_dev.md",
+        "sha256": "f2abf1c367f09ef8ad64aa22b0b8e83f09f7e2611e80a43e5a9647d9b94425cf"
+      },
+      {
+        "path": "docs/RECOVERY_PROTOCOL_dev.md",
+        "sha256": "0126343d397a1b9545632b7d88381fef7c1da39adc71a05d76e748f5bc26c4ef"
+      },
+      {
+        "path": "docs/ROLE_BRANCH_PROTOCOL_dev.md",
+        "sha256": "2040823bad77bd74bbdf7a96c64269eb8677118dec4f36eb6e5eee3bf232313e"
+      },
+      {
+        "path": "docs/SECURITY_BOUNDARY_dev.md",
+        "sha256": "a8c0e147a025b1a68d84a3a1bb38e42dd06ce4e70438c0ba143d86e0aa09057f"
+      },
+      {
+        "path": "mission/NORMS_EXCHANGE_MISSION.md",
+        "sha256": "c2bc6cb9732154e11be8dabf74cfb48c26f9f222764ec8276e191f5d638872a4"
+      },
+      {
+        "path": "mission/norms-exchange-mission.json",
+        "sha256": "832c9e9865786ee2188ae2a22e31895e4974a7620fb371294e327a8a366f90af"
+      },
+      {
+        "path": "roles/index.json",
+        "sha256": "4de147083c80ca32527f966f754fa49b801acea336a4d657060f753710a209f0"
+      },
+      {
+        "path": "schemas/agent-manifest.schema.json",
+        "sha256": "2f6924405197446b292522c8070a0a34df4196d8c0b042ee9bcf8c28d7fd25e8"
+      },
+      {
+        "path": "schemas/attestation.schema.json",
+        "sha256": "12a700f0d24c7ec575fff901632faed2e4a0d49414ba512b2c2edcb5da446ff4"
+      },
+      {
+        "path": "schemas/destination-core.schema.json",
+        "sha256": "be7fe828eb6fec7a37997781385ced4b5102d51469f9c8524fe557fa32510902"
+      },
+      {
+        "path": "schemas/message-envelope.schema.json",
+        "sha256": "9062fbb08939113020607b8cd0dc82d4efac497232ed6b591e4ebab12532d0a9"
+      },
+      {
+        "path": "schemas/mission.schema.json",
+        "sha256": "1775b28d17ee36ace86c713444fa2b94d5b4a6c6bf3e9615d83ba90e9717555e"
+      },
+      {
+        "path": "schemas/role-manifest.schema.json",
+        "sha256": "c88af75ea4587a9d2c12cc65e24d5ccd5165823a630d95f6a2b9a3af7ece24e4"
+      },
+      {
+        "path": "scripts/lib/destination-core.mjs",
+        "sha256": "d9437ed26627959009b1d9661a3c8ae71ade9ceceab67ebdfb676b8bd4327762"
+      },
+      {
+        "path": "scripts/validate-destination.mjs",
+        "sha256": "f2bdb9878f2c156d74989da94465bd037c5ef558745c4180c2f5f18e7d56d927"
+      }
+    ],
+    "generated_paths": [
+      "agent-manifest.json",
+      "destination-core.json",
+      "outbox/index.json",
+      "outbox/messages/msg-mission-acknowledgment-v1.json"
+    ],
+    "adaptable_manifest_fields": [
+      "protocol_role",
+      "environment_id",
+      "github_owner",
+      "communications_repository",
+      "environment_type",
+      "status",
+      "updated_at"
+    ],
+    "immutable_manifest": {
+      "$schema": "./schemas/agent-manifest.schema.json",
+      "communications_version": "0.4.0",
+      "protocol_source": {
+        "repository": "normsexchange-dev/nx-codex-communications_dev",
+        "version": "0.4.0",
+        "tag": "communications-v0.4.0"
+      },
+      "access_model": {
+        "public_read": true,
+        "owner_write_only": true,
+        "external_write": false
+      },
+      "role_branch_grammar": "^role/[a-z0-9]+(?:-[a-z0-9]+)*/[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "supported_protocols": [
+        {
+          "protocol_id": "nx-communications",
+          "version": "0.4.0",
+          "tag": "communications-v0.4.0",
+          "repository_url": "https://github.com/normsexchange-dev/nx-codex-communications_dev"
+        },
+        {
+          "protocol_id": "nx-sourcing-contract",
+          "version": "0.2.0",
+          "tag": "contract-v0.2.0",
+          "repository_url": "https://github.com/normsexchange-dev/nx-sourcing-contracts_dev"
+        }
+      ],
+      "public_capabilities": [
+        "public_protocol_publication",
+        "sanitized_message_publication",
+        "bounded_role_declaration",
+        "public_information_research_coordination"
+      ],
+      "public_safety_boundaries": [
+        "public_information_only",
+        "no_cross_account_writes",
+        "no_self_authority_expansion",
+        "no_private_data_publication",
+        "no_credentials_or_private_paths"
+      ],
+      "mission": {
+        "mission_id": "norms-exchange-marketplace",
+        "mission_version": "1.0.0",
+        "document": "mission/NORMS_EXCHANGE_MISSION.md",
+        "machine_readable": "mission/norms-exchange-mission.json",
+        "immutability": "permanent"
+      },
+      "bootstrap_document": "bootstrap/AGENT_BOOTSTRAP_dev.md"
+    }
+  }
+}

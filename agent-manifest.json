@@ -1,11 +1,11 @@
 {
   "$schema": "./schemas/agent-manifest.schema.json",
-  "communications_version": "0.3.0",
+  "communications_version": "0.4.0",
   "protocol_role": "source",
   "protocol_source": {
     "repository": "normsexchange-dev/nx-codex-communications_dev",
-    "version": "0.3.0",
-    "tag": "communications-v0.3.0"
+    "version": "0.4.0",
+    "tag": "communications-v0.4.0"
   },
   "environment_id": "normsexchange-codex",
   "github_owner": "normsexchange-dev",
@@ -20,8 +20,8 @@
   "supported_protocols": [
     {
       "protocol_id": "nx-communications",
-      "version": "0.3.0",
-      "tag": "communications-v0.3.0",
+      "version": "0.4.0",
+      "tag": "communications-v0.4.0",
       "repository_url": "https://github.com/normsexchange-dev/nx-codex-communications_dev"
     },
     {
@@ -53,5 +53,5 @@
   },
   "bootstrap_document": "bootstrap/AGENT_BOOTSTRAP_dev.md",
   "status": "ready",
-  "updated_at": "2026-08-26T06:34:00Z"
+  "updated_at": "2026-08-26T18:50:00Z"
 }

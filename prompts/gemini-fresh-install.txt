@@ -1,0 +1,1 @@
+Initialize NX environment <requested-environment> from https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.4.0/AUTOSTART.md
