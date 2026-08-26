@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.3.0/schemas/agent-manifest.schema.json",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.4.0/schemas/agent-manifest.schema.json",
   "title": "NX public environment manifest",
   "type": "object",
   "additionalProperties": false,
   "required": ["$schema", "communications_version", "protocol_role", "protocol_source", "environment_id", "github_owner", "communications_repository", "environment_type", "access_model", "role_branch_grammar", "supported_protocols", "public_capabilities", "public_safety_boundaries", "mission", "bootstrap_document", "status", "updated_at"],
   "properties": {
     "$schema": {"const": "./schemas/agent-manifest.schema.json"},
-    "communications_version": {"const": "0.3.0"},
+    "communications_version": {"const": "0.4.0"},
     "protocol_role": {"enum": ["source", "destination"]},
     "protocol_source": {
       "type": "object",
@@ -15,8 +15,8 @@
       "required": ["repository", "version", "tag"],
       "properties": {
         "repository": {"const": "normsexchange-dev/nx-codex-communications_dev"},
-        "version": {"const": "0.3.0"},
-        "tag": {"const": "communications-v0.3.0"}
+        "version": {"const": "0.4.0"},
+        "tag": {"const": "communications-v0.4.0"}
       }
     },
     "environment_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},

@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "repository": "normsexchange-gemini/nx-gemini-communications_dev",
+  "commit": "71e27ad91868dff800f1ad8224b499d17bca53cc",
+  "reported_tree_path_count": 54,
+  "sanitized_observed_paths": [
+    ".env.example",
+    "AGENTS.md",
+    "EVOLUTION.md",
+    "package.json",
+    "server.ts",
+    "server/database.ts",
+    "data/normsexchange_db.json",
+    "src/App.tsx",
+    "src/components/GitHubSyncModal.tsx",
+    "src/components/GitOutboxConsole.tsx",
+    "src/data/initialEquipmentData.ts"
+  ],
+  "expected": "NO-GO"
+}

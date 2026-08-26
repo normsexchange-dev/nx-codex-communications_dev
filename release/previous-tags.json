@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0.0",
+  "tags": [
+    {"tag": "communications-v0.1.0", "object": "d9131d69fc6feacaf583766828839ddef72ef12c", "type": "tag", "target": "b2aa23fb0bfe8064dece99841bc94f9827377119"},
+    {"tag": "communications-v0.1.1", "object": "d5a54a68e925ff537a88205af77703f46eee612a", "type": "tag", "target": "dc32db8ad7195791b35336be13f69fc42f82b63d"},
+    {"tag": "communications-v0.1.2", "object": "320c4009b4b81bb9d99d9a830edde3da9d16c8b7", "type": "tag", "target": "7d676a950931fde24a42e497f7f44491eca2fd35"},
+    {"tag": "communications-v0.2.0", "object": "b7ae00805cd8bb7981980aa68c97f1e85419489e", "type": "tag", "target": "0f5c75c5d75341cb7a2ac972315ee5dc1c1b2653"},
+    {"tag": "communications-v0.3.0", "object": "7a09834c24ff02407a13ebc035632086304d99d2", "type": "tag", "target": "011fdc5794f226dd60f2df1d9cfeb981eb117c71"}
+  ]
+}
