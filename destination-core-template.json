@@ -10,6 +10,7 @@
   },
   "destination": {
     "allowed_paths": [
+      ".gitattributes",
       ".github/workflows/validate-communications.yml",
       ".gitignore",
       "AUTOSTART.md",
@@ -38,8 +39,12 @@
     ],
     "static_files": [
       {
+        "path": ".gitattributes",
+        "sha256": "a79691a93b46e49ce460c26ef22afcc03d6eca1e63bf2edbc20e96159510f6c9"
+      },
+      {
         "path": ".github/workflows/validate-communications.yml",
-        "sha256": "6919be1d86b593ef8ea49c568e1eb0071644b1ec691aab229d3fa76072d893a1"
+        "sha256": "1ab60fe7fb95dfa0ca4b02b1b0d30933dde1b4c6dd92ed24f46570eff06bd488"
       },
       {
         "path": ".gitignore",
@@ -63,7 +68,7 @@
       },
       {
         "path": "docs/MESSAGE_PROTOCOL_dev.md",
-        "sha256": "2afeedf325ce68fbb4cf3d0e7fa851e5c5b351dc4a34e3cdef96babab625a44a"
+        "sha256": "f2abf1c367f09ef8ad64aa22b0b8e83f09f7e2611e80a43e5a9647d9b94425cf"
       },
       {
         "path": "docs/RECOVERY_PROTOCOL_dev.md",
@@ -71,27 +76,27 @@
       },
       {
         "path": "docs/ROLE_BRANCH_PROTOCOL_dev.md",
-        "sha256": "4b8ac1974e011a6b1990f0f2c08fbbd6b7471354c145955a5969dc7c8269e225"
+        "sha256": "2040823bad77bd74bbdf7a96c64269eb8677118dec4f36eb6e5eee3bf232313e"
       },
       {
         "path": "docs/SECURITY_BOUNDARY_dev.md",
-        "sha256": "4c4070c4a5c205465e9adbadebe7beea70c2ff156a04ecafcdc1817b9fd5b50f"
+        "sha256": "a8c0e147a025b1a68d84a3a1bb38e42dd06ce4e70438c0ba143d86e0aa09057f"
       },
       {
         "path": "mission/NORMS_EXCHANGE_MISSION.md",
-        "sha256": "9a61610f46cacb9930f82489d4b9ff789ebc074995fa6e7ac2da89812bbeb458"
+        "sha256": "c2bc6cb9732154e11be8dabf74cfb48c26f9f222764ec8276e191f5d638872a4"
       },
       {
         "path": "mission/norms-exchange-mission.json",
-        "sha256": "0f86eac9bbdabe7d31981206125efe311d36cd4873a2ace13f531cbd8769ffbb"
+        "sha256": "832c9e9865786ee2188ae2a22e31895e4974a7620fb371294e327a8a366f90af"
       },
       {
         "path": "roles/index.json",
-        "sha256": "2098b0bc870cc0362ae6b8a488ac95039e9a07184f9863275379f834add34924"
+        "sha256": "4de147083c80ca32527f966f754fa49b801acea336a4d657060f753710a209f0"
       },
       {
         "path": "schemas/agent-manifest.schema.json",
-        "sha256": "c1e6feced7796ac2d06e6ebaee318256358254213628906258de052961c9c83e"
+        "sha256": "2f6924405197446b292522c8070a0a34df4196d8c0b042ee9bcf8c28d7fd25e8"
       },
       {
         "path": "schemas/attestation.schema.json",
@@ -103,19 +108,19 @@
       },
       {
         "path": "schemas/message-envelope.schema.json",
-        "sha256": "c70a7e18d81d46560934fe5bfea109f5ae8d75bb82d8252b8628c4c4a98a976a"
+        "sha256": "9062fbb08939113020607b8cd0dc82d4efac497232ed6b591e4ebab12532d0a9"
       },
       {
         "path": "schemas/mission.schema.json",
-        "sha256": "23bce739e56fb78ab1dd49b74682b04cb1bbe747dc033829c01a3d1b907f2f90"
+        "sha256": "1775b28d17ee36ace86c713444fa2b94d5b4a6c6bf3e9615d83ba90e9717555e"
       },
       {
         "path": "schemas/role-manifest.schema.json",
-        "sha256": "0e4901c12f5978d3af3d8c451332bec46add1fd5236368ee84d85463f27df004"
+        "sha256": "c88af75ea4587a9d2c12cc65e24d5ccd5165823a630d95f6a2b9a3af7ece24e4"
       },
       {
         "path": "scripts/lib/destination-core.mjs",
-        "sha256": "8540b405df0da5e9bee9d0c958efdd9f76a6fc740393ae1bf5e2115749ac422c"
+        "sha256": "d9437ed26627959009b1d9661a3c8ae71ade9ceceab67ebdfb676b8bd4327762"
       },
       {
         "path": "scripts/validate-destination.mjs",

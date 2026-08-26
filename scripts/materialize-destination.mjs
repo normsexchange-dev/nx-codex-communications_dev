@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { copyFile, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -18,6 +18,7 @@ import {
   computeCoreDigest,
   expectedDestinationRepository,
   immutableManifest,
+  readCanonicalStatic,
   readJson,
   sha256,
   stableStringify,
@@ -66,7 +67,7 @@ async function verifySourceTemplate(sourceRoot, template, sourceManifest) {
   assert(stableStringify(template.destination.immutable_manifest) === stableStringify(immutableManifest(sourceManifest)), 'source_template_manifest_baseline_mismatch');
   assert(stableStringify(template.destination.static_files.map((entry) => entry.path)) === stableStringify(STATIC_PATHS), 'source_template_static_paths_mismatch');
   for (const entry of template.destination.static_files) {
-    const actual = sha256(await readFile(path.join(sourceRoot, entry.path)));
+    const actual = sha256(await readCanonicalStatic(sourceRoot, entry.path));
     assert(actual === entry.sha256, `source_template_static_hash_mismatch:${entry.path}`);
   }
 }
@@ -107,7 +108,7 @@ export async function materializeDestination(options) {
   for (const relativePath of STATIC_PATHS) {
     const destination = path.join(outputRoot, relativePath);
     await mkdir(path.dirname(destination), { recursive: true });
-    await copyFile(path.join(sourceRoot, relativePath), destination);
+    await writeFile(destination, await readCanonicalStatic(sourceRoot, relativePath));
   }
 
   const destinationManifest = structuredClone(sourceManifest);

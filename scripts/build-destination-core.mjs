@@ -11,6 +11,7 @@ import {
   VALIDATOR_VERSION,
   immutableManifest,
   readJson,
+  readCanonicalStatic,
   sha256,
   stableStringify
 } from './lib/destination-core.mjs';
@@ -21,7 +22,7 @@ const target = path.join(root, 'destination-core-template.json');
 export async function buildTemplate(sourceRoot = root) {
   const manifest = await readJson(path.join(sourceRoot, 'agent-manifest.json'));
   const staticFiles = [];
-  for (const relativePath of STATIC_PATHS) staticFiles.push({ path: relativePath, sha256: sha256(await readFile(path.join(sourceRoot, relativePath))) });
+  for (const relativePath of STATIC_PATHS) staticFiles.push({ path: relativePath, sha256: sha256(await readCanonicalStatic(sourceRoot, relativePath)) });
   return {
     schema_version: '1.0.0',
     validator_version: VALIDATOR_VERSION,

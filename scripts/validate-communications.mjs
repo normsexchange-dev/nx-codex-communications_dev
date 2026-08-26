@@ -16,6 +16,7 @@ import {
   assert,
   findFiles,
   immutableManifest,
+  readCanonicalStatic,
   readJson,
   sha256,
   stableStringify
@@ -23,7 +24,7 @@ import {
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCE_FILES = [
-  '.github/workflows/validate-communications.yml', '.gitignore', 'agent-manifest.json', 'AUTOSTART.md',
+  '.gitattributes', '.github/workflows/validate-communications.yml', '.gitignore', 'agent-manifest.json', 'AUTOSTART.md',
   'BOOTSTRAP_STATUS_dev.md', 'bootstrap/AGENT_BOOTSTRAP_dev.md', 'CHANGELOG.md', 'COMMUNICATIONS_VERSION',
   'destination-core-template.json', 'docs/MESSAGE_PROTOCOL_dev.md', 'docs/RECOVERY_PROTOCOL_dev.md',
   'docs/ROLE_BRANCH_PROTOCOL_dev.md', 'docs/SECURITY_BOUNDARY_dev.md', 'mission/NORMS_EXCHANGE_MISSION.md',
@@ -104,8 +105,8 @@ const manifest = await readJson(path.join(root, 'agent-manifest.json'));
 validateSourceManifest(manifest);
 assert(stableStringify(await readJson(path.join(root, 'roles/index.json'))) === stableStringify({ communications_version: VERSION, roles: [] }), 'source_role_index_not_empty');
 assert(stableStringify(await readJson(path.join(root, 'outbox/index.json'))) === stableStringify({ communications_version: VERSION, messages: [] }), 'source_outbox_not_empty');
-assert(sha256(await readFile(path.join(root, 'mission/NORMS_EXCHANGE_MISSION.md'))) === '9a61610f46cacb9930f82489d4b9ff789ebc074995fa6e7ac2da89812bbeb458', 'human_mission_changed');
-assert(sha256(await readFile(path.join(root, 'mission/norms-exchange-mission.json'))) === '0f86eac9bbdabe7d31981206125efe311d36cd4873a2ace13f531cbd8769ffbb', 'machine_mission_changed');
+assert(sha256(await readCanonicalStatic(root, 'mission/NORMS_EXCHANGE_MISSION.md')) === 'c2bc6cb9732154e11be8dabf74cfb48c26f9f222764ec8276e191f5d638872a4', 'human_mission_changed');
+assert(sha256(await readCanonicalStatic(root, 'mission/norms-exchange-mission.json')) === '832c9e9865786ee2188ae2a22e31895e4974a7620fb371294e327a8a366f90af', 'machine_mission_changed');
 await validateSchemas();
 
 const actualTemplate = await readJson(path.join(root, 'destination-core-template.json'));

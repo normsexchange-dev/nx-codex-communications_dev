@@ -25,6 +25,7 @@ export const GENERATED_PATHS = [
   MISSION_ACKNOWLEDGMENT_PATH
 ].sort();
 export const STATIC_PATHS = [
+  '.gitattributes',
   '.github/workflows/validate-communications.yml',
   '.gitignore',
   'AUTOSTART.md',
@@ -65,6 +66,17 @@ export function assert(condition, message) {
 
 export function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
+}
+
+export function canonicalStaticBytes(value) {
+  const buffer = Buffer.isBuffer(value) ? value : Buffer.from(value);
+  const text = buffer.toString('utf8');
+  assert(Buffer.from(text, 'utf8').equals(buffer), 'source_static_file_must_be_utf8');
+  return Buffer.from(text.replace(/\r\n/g, '\n'), 'utf8');
+}
+
+export async function readCanonicalStatic(root, relativePath) {
+  return canonicalStaticBytes(await readFile(path.join(root, relativePath)));
 }
 
 export function stableStringify(value) {
