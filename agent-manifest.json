@@ -1,6 +1,12 @@
 {
   "$schema": "./schemas/agent-manifest.schema.json",
-  "communications_version": "0.2.0",
+  "communications_version": "0.3.0",
+  "protocol_role": "source",
+  "protocol_source": {
+    "repository": "normsexchange-dev/nx-codex-communications_dev",
+    "version": "0.3.0",
+    "tag": "communications-v0.3.0"
+  },
   "environment_id": "normsexchange-codex",
   "github_owner": "normsexchange-dev",
   "communications_repository": "normsexchange-dev/nx-codex-communications_dev",
@@ -14,14 +20,14 @@
   "supported_protocols": [
     {
       "protocol_id": "nx-communications",
-      "version": "0.2.0",
-      "tag": "communications-v0.2.0",
+      "version": "0.3.0",
+      "tag": "communications-v0.3.0",
       "repository_url": "https://github.com/normsexchange-dev/nx-codex-communications_dev"
     },
     {
       "protocol_id": "nx-sourcing-contract",
-      "version": "0.1.0",
-      "tag": "contract-v0.1.0",
+      "version": "0.2.0",
+      "tag": "contract-v0.2.0",
       "repository_url": "https://github.com/normsexchange-dev/nx-sourcing-contracts_dev"
     }
   ],
@@ -38,7 +44,14 @@
     "no_private_data_publication",
     "no_credentials_or_private_paths"
   ],
+  "mission": {
+    "mission_id": "norms-exchange-marketplace",
+    "mission_version": "1.0.0",
+    "document": "mission/NORMS_EXCHANGE_MISSION.md",
+    "machine_readable": "mission/norms-exchange-mission.json",
+    "immutability": "permanent"
+  },
   "bootstrap_document": "bootstrap/AGENT_BOOTSTRAP_dev.md",
   "status": "ready",
-  "updated_at": "2026-08-26T05:15:00Z"
+  "updated_at": "2026-08-26T06:34:00Z"
 }

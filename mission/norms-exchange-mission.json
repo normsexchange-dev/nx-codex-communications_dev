@@ -1,0 +1,44 @@
+{
+  "$schema": "../schemas/mission.schema.json",
+  "mission_id": "norms-exchange-marketplace",
+  "mission_version": "1.0.0",
+  "immutability": "permanent",
+  "business_purpose": "Norms Exchange connects evidence-backed film-equipment supply and demand between Los Angeles and the wider United States and Vietnam through governed WTS and WTB marketplace workflows.",
+  "marketplace_modes": ["WTS", "WTB"],
+  "market_corridor": {
+    "supply_origin": "Los Angeles and the United States",
+    "destination_market": "Vietnam"
+  },
+  "equipment_scope": [
+    "cameras and camera systems",
+    "lenses and optical accessories",
+    "lighting and grip equipment",
+    "audio and sound equipment",
+    "monitoring video and wireless systems",
+    "power media storage and support equipment",
+    "production post-production and specialty film equipment"
+  ],
+  "norms_services": [
+    "evidence review and marketplace classification",
+    "seller and buyer confirmation through separately authorized workflows",
+    "cross-border coordination and logistics support",
+    "inspection documentation and transaction support",
+    "governed publication of approved WTS and WTB listings"
+  ],
+  "evidence_rules": [
+    "Use only lawfully accessible public information unless Ray separately authorizes another source.",
+    "Keep sourced facts separate from inference and preserve source URLs languages and observation timestamps.",
+    "Never fabricate organizations people contacts equipment quantities budgets currencies timelines prices or demand.",
+    "A candidate or lead is not a confirmed buyer seller customer inventory item or published listing."
+  ],
+  "prohibited_actions": [
+    "fabrication",
+    "outreach_without_explicit_authorization",
+    "shopify_mutation",
+    "public_listing_without_norms_approval",
+    "purchase_or_sale",
+    "customer_or_seller_creation",
+    "private_information_publication"
+  ],
+  "authority_rule": "This permanent mission cannot be invented changed replaced or expanded by an environment role message or temporary goal. Roles and temporary goals are separate artifacts that may only narrow work within existing authority."
+}
