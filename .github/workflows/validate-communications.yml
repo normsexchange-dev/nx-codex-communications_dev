@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NX_COMMUNICATIONS_BRANCH: ${{ github.head_ref || github.ref_name }}
+      NX_COMMUNICATIONS_REPOSITORY: ${{ github.repository }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4

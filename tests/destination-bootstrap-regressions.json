@@ -1,0 +1,16 @@
+{
+  "communications_version": "0.3.0",
+  "fixture_model": "destination_bootstrap_rejections",
+  "cases": [
+    {"case_id": "short-message-id", "mutation": "short_message_id", "expected": "reject"},
+    {"case_id": "unsupported-initialization-ack", "mutation": "unsupported_initialization_ack", "expected": "reject"},
+    {"case_id": "wrong-or-missing-envelope-fields", "mutation": "wrong_or_missing_envelope_fields", "expected": "reject"},
+    {"case_id": "invalid-outbox-index", "mutation": "invalid_outbox_index", "expected": "reject"},
+    {"case_id": "nonconforming-role-manifest", "mutation": "nonconforming_role_manifest", "expected": "reject"},
+    {"case_id": "empty-role-index", "mutation": "empty_role_index", "expected": "reject"},
+    {"case_id": "source-bound-copied-validator", "mutation": "source_bound_validator", "expected": "reject"},
+    {"case_id": "missing-or-unrun-workflow", "mutation": "missing_or_unrun_workflow", "expected": "reject"},
+    {"case_id": "ready-before-validation", "mutation": "ready_before_validation", "expected": "reject"},
+    {"case_id": "lightweight-release-tag", "mutation": "lightweight_release_tag", "expected": "reject"}
+  ]
+}
