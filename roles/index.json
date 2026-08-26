@@ -1,4 +1,10 @@
 {
   "communications_version": "0.3.0",
-  "roles": []
+  "roles": [
+    {
+      "role_id": "wtb-sourcing",
+      "branch": "role/wtb-sourcing/await-first-goal",
+      "status": "paused"
+    }
+  ]
 }

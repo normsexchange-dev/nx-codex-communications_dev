@@ -1,4 +1,11 @@
 {
   "communications_version": "0.3.0",
-  "messages": []
+  "messages": [
+    {
+      "message_id": "msg-wtb-sourcing-assignment-20260826",
+      "path": "outbox/messages/msg-wtb-sourcing-assignment-20260826.json",
+      "created_at": "2026-08-26T07:01:00Z",
+      "status": "published"
+    }
+  ]
 }
