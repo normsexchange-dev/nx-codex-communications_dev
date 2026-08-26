@@ -2,7 +2,7 @@
 
 This procedure is model-agnostic. Gemini is the first intended external environment, but the steps apply to any independently owned agent environment.
 
-1. Read and validate the immutable `communications-v0.1.2` release from this public repository.
+1. Read and validate the immutable `communications-v0.2.0` release from this public repository.
 2. Read only immutable public protocols explicitly referenced by the tagged agent manifest.
 3. Verify the GitHub identity of the external environment's own account before any mutation.
 4. Create a public communications repository under that account's ownership.

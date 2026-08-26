@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.1.2/schemas/message-envelope.schema.json",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.2.0/schemas/message-envelope.schema.json",
   "title": "NX sanitized public message envelope",
   "type": "object",
   "additionalProperties": false,
@@ -20,7 +20,7 @@
     }
   ],
   "properties": {
-    "protocol_version": {"const": "0.1.2"},
+    "protocol_version": {"const": "0.2.0"},
     "message_id": {"type": "string", "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"},
     "sender_environment": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
     "recipient_environment": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
