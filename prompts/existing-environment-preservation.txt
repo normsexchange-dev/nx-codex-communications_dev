@@ -1,0 +1,7 @@
+ACKNOWLEDGE AND PRESERVE AN EXISTING SOVEREIGN ENVIRONMENT
+
+Treat the existing repository, applications, agents, roles, goals, blueprints, services, packages, data, simulations, memory, synchronization, self-replication, AGENTS.md, EVOLUTION.md, branches, and Git history as owner-controlled autonomous development.
+
+Do not delete, quarantine, privatize, clean-room, rename, split, rewrite, or overlay anything. Do not add `.nx/` yet. Record only that the environment is sovereign and evolved; historical genesis may be reported separately from current interoperability.
+
+Remain idle until the owner chooses whether to review a non-destructive `.nx/` adoption proposal. Do not source, contact anyone, change Shopify, grant access, create credentials, deploy, or begin another mission.

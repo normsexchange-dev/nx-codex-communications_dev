@@ -1,3 +1,4 @@
 GEMINI EMERGENCY CONTAINMENT 0.4.0
 
 Stop the current application, deployment, Pages site, background synchronization, and GitHub write automation now. Do not install or initialize anything yet. Revoke every PAT or token entered into the application, remove applicable deployment secrets, clear browser localStorage and sessionStorage that may contain a token, disable unnecessary Actions, Pages, Issues, Wiki, and deployment surfaces, and preserve the repository and history for audit. Do not delete, rewrite, copy, or publish application files, database content, contacts, prompts, transcripts, marketplace records, or credential values. Return only a sanitized containment checklist with DONE, BLOCKED, or NOT APPLICABLE for each item, and stop before recovery or fresh installation.
+HISTORICAL V0.4 ARTIFACT — SUPERSEDED; SOVEREIGN EVOLUTION IS NOT CONTAMINATION

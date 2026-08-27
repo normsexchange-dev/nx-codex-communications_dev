@@ -1,4 +1,6 @@
-# Role Branch Protocol
+# Historical v0.4 Role and Branch Protocol
+
+This file is retained for reproducibility. Communications v0.5 does not centrally assign destination roles or branches. A sovereign environment owns its internal roles, goals, agents, and repository workflow; `.nx/capabilities.json` is declarative and cannot self-grant external authority.
 
 ## Exact grammar
 

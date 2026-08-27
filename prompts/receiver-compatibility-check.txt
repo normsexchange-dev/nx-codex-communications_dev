@@ -1,0 +1,7 @@
+CHECK NX RECEIVER COMPATIBILITY — RESERVED INTERFACE ONLY
+
+Verify the exact public repository and 40-hex commit. Inspect only `.nx/environment.json`, `genesis.json`, `lineage.json`, `interoperability.json`, `capabilities.json`, and `provenance.json`.
+
+Validate identity, genesis receipt, sovereignty transfer, truthful lineage, protocol versions, receiver negotiation, declared interfaces, and hashes. Ignore every unrelated path. Make no model call and request no credential.
+
+Report genesis, interface compatibility, credential review, external access, data admission, and service health separately. Do not issue a global environment verdict, grant access, authorize a role, admit data, source, contact anyone, change Shopify, or mutate either repository.

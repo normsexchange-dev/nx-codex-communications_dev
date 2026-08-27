@@ -1,0 +1,7 @@
+EMERGENCY STOP OR REVOKE AN NX BOUNDARY
+
+Stop only the affected mission, scheduler, service, credential, repository access, data connection, or protected external action within the human principal's authority. Preserve the sovereign environment, its unrelated internal work, `.nx/` lineage, and Git history.
+
+Revoke a credential if it was entered, exposed, or cannot be distinguished from an exposed credential. Never request, reproduce, print, or commit its value. Remove applicable deployment secrets and clear browser localStorage/sessionStorage when they held a token.
+
+Do not delete, quarantine, rewrite, or claim control over an external sovereign repository merely because an interface, credential review, access state, admission state, or service is unhealthy. Report each dimension separately and await the next explicit human boundary decision.

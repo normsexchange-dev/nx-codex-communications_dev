@@ -1,66 +1,95 @@
 # NX Communications
 
-This public repository is the task-agnostic communications and bootstrap protocol for Norms Exchange external environments. It contains no private repository topology, credentials, operational records, sourcing workspace, marketplace records, or authority to contact people or mutate Shopify.
+NX Communications is a public, model-neutral genesis and interoperability contract for sovereign agent environments. It contains no credentials, private repository topology, operational records, business data, sourcing results, or authority to contact people, change Shopify, grant repository access, or admit records into Norms Exchange.
 
-The permanent mission remains unchanged: Norms Exchange is a professional movie-production equipment marketplace for governed WTS and WTB workflows, with Norms review, an initial Los Angeles/United States-to-Vietnam corridor, public evidence, and no fabricated activity or unauthorized outreach or Shopify changes.
+Release `0.5.0` is the annotated tag `communications-v0.5.0`. All earlier annotated tags, including `communications-v0.4.0`, remain immutable.
 
-## Immutable release and identity
+## Genesis and sovereignty
 
-Release `0.4.0` is `communications-v0.4.0`. A valid source checkout must be the exact target of that annotated tag object. A lightweight tag, mutable branch URL, wrong tag, or checkout not equal to the tag target is NO-GO.
+Exact materialization from the annotated release proves genesis lineage. The generated receipt records the tag object, target commit, source digest, materializer, destination identity, runtime, time, genesis anchor commit, initial core digest, common human principal, and explicit sovereignty transfer.
 
-`destination-core-template.json` declares the exact 25 destination paths, SHA-256 hashes for all 21 unchanged files, the four generated paths, and the exact seven adaptable `agent-manifest.json` fields. The tagged materializer resolves the annotated tag object and target directly from Git and writes both exact SHAs into the generated destination `destination-core.json`, avoiding self-referential release metadata.
+Genesis proves lineage; it does not impose permanent source control. Destination sovereignty begins when that receipt transfers authority. The destination may then evolve its own applications, agents, roles, goals, `AGENTS.md`, `EVOLUTION.md`, services, packages, data, simulations, memory, internal synchronization, blueprints, descendants, self-replication, and repository structure outside the reserved `.nx/` interface.
 
-The seven and only seven adaptable manifest fields are `protocol_role`, `environment_id`, `github_owner`, `communications_repository`, `environment_type`, `status`, and `updated_at`. Bootstrap identity is not an operational role.
+## Reserved interoperability surface
 
-## Deterministic materialization
+Ongoing verification reads only the reserved `.nx/` directory:
 
-Run from an immutable `communications-v0.4.0` checkout. Supply the authenticated owner explicitly; it must equal the requested environment and canonical destination owner.
+- `.nx/environment.json`
+- `.nx/genesis.json`
+- `.nx/lineage.json`
+- `.nx/interoperability.json`
+- `.nx/capabilities.json`
+- `.nx/provenance.json`
 
-```text
-node scripts/materialize-destination.mjs --environment <requested-environment> --authenticated-owner <authenticated-owner> --owner <destination-owner> --repository <owner/repository> --runtime <truthful-runtime-type> --output <empty-output-checkout> --updated-at <utc-date-time>
-```
+Files outside `.nx/` are sovereign. Their presence never causes interface failure, never implies trust, and is not classified as contamination. Absence of `.nx/` means `NOT_YET_ADOPTED` or `UNKNOWN`; malformed or unsupported `.nx/` means `INTERFACE_INCOMPATIBLE`.
 
-The Node-standard-library-only materializer performs no network request, model call, sourcing, role creation, or GitHub write. It copies only the destination core, creates the permanent mission acknowledgment, refuses any unrecognized nonempty destination, and is idempotent when the destination is already exact and valid. It never copies source prompts, tests, release history, materializer/verifier tooling, roles, messages, or Git history.
+There is no global external-environment GO/NO-GO. Genesis, sovereign evolution, interface compatibility, credential review, external access, data admission, and service health are separate states. Compatibility grants no permission, proves no service health, and admits no business data.
 
-## Strict destination validation
+## Materialization modes
 
-```text
-node scripts/validate-destination.mjs --root . --repository <owner/repository>
-```
+Run only from an exact checkout of annotated tag `communications-v0.5.0`. The CLI rejects a lightweight tag, wrong tag, mutable branch checkout, or tag-target mismatch.
 
-The offline validator requires the exact allowed tree and every static hash. It rejects unknown paths; `.env`; package or dependency files; `src/`, `server/`, `data/`, build output, databases, application code, `AGENTS.md`, `EVOLUTION.md`, token interfaces, GitHub write/synchronization logic, fabricated marketplace records, self-replication or expanded authority, mission changes, stale protocol fields, and roles created during bootstrap. It emits only sanitized finding codes and never credential values.
-
-## Initialization, readiness, and independent verification
-
-The materialized repository begins at `status: "initializing"` with no role. Commit and push it, then require the included read-only workflow to pass. Only afterward change the authorized ready-state manifest fields, validate, commit, push, and require the ready workflow to pass.
-
-A self-reported READY state is advisory. From the immutable source checkout, the independent verifier reads a named public repository and exact commit, validates its complete tree and hashes, confirms the source tag object/target, initializing and ready workflow runs, and permanent mission acknowledgment, then emits a compact schema-bound GO/NO-GO attestation. It never grants access or activates a role.
+Fresh sovereign genesis writes the six `.nx/` files into an otherwise empty destination and is idempotent when the same valid surface already exists:
 
 ```text
-node scripts/verify-public-destination.mjs --repository <owner/repository> --commit <ready-commit> --initializing-commit <initializing-commit> --ready-commit <ready-commit> --mission-acknowledgment-id msg-mission-acknowledgment-v1
+node scripts/materialize-genesis.mjs --mode fresh --owner <owner> --repository <owner/repository> --environment <environment-id> --runtime <runtime> --human-principal <human> --genesis-commit <40-hex-anchor> --materialized-at <utc-date-time> --output <empty-checkout>
 ```
 
-## Recovery and prompts
-
-Contaminated history is never repaired by overlay. Follow `docs/RECOVERY_PROTOCOL_dev.md`: stop deployments/synchronization, revoke any entered token, remove applicable secrets, clear token-bearing browser storage, quarantine and privatize the old repository, preserve it for audit, and create a brand-new clean canonical repository.
-
-Six versioned copy-ready artifacts are generated under `prompts/`: emergency containment, recovery/clean reinstall, one-line fresh install, independent verification, prepared WTB role activation, and emergency stop/revoke access. They contain no private repository identity or topology.
-
-Canonical fresh-install prompt:
+Non-destructive adoption reads an existing destination identity and writes only a proposed `.nx/` tree into a separate empty proposal directory. It does not modify the sovereign destination or its history:
 
 ```text
-Initialize NX environment <requested-environment> from https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.4.0/AUTOSTART.md
+node scripts/materialize-genesis.mjs --mode adopt --owner <owner> --repository <owner/repository> --environment <environment-id> --runtime <runtime> --human-principal <human> --genesis-commit <40-hex-historical-anchor> --materialized-at <utc-date-time> --historical-genesis <truthful-reference> --destination-root <existing-checkout> --proposal <empty-proposal-directory>
 ```
 
-## Roles and messages
+Descendant genesis requires a distinct child identity and a truthful parent reference:
 
-`main` is bootstrap DNA and contains an empty role index. Later, and only after independent GO plus separate Ray authorization, a bounded role may use `role/<role-slug>/<goal-slug>`. Public messages remain sanitized, append-only, sender-owned, schema-valid, and incapable of granting authority. No role or message is included in the release core.
+```text
+node scripts/materialize-genesis.mjs --mode descendant --owner <child-owner> --repository <child-owner/repository> --environment <child-environment> --runtime <runtime> --human-principal <human> --genesis-commit <40-hex-anchor> --materialized-at <utc-date-time> --parent-owner <parent-owner> --parent-repository <parent-owner/repository> --parent-environment <parent-environment> --parent-commit <40-hex-parent-commit> --output <empty-checkout>
+```
+
+The materializer makes no network request, model call, permission change, role grant, GitHub invitation, credential, sourcing record, or Shopify change.
+
+## Verification and negotiation
+
+Offline verification reads only `.nx/`:
+
+```text
+node scripts/verify-interface.mjs --root <checkout> --repository <owner/repository> --commit <exact-commit>
+```
+
+Public verification requires the exact public repository and 40-hex commit. It queries only the commit identity and `.nx/` contents:
+
+```text
+node scripts/verify-public-interface.mjs --repository <owner/repository> --commit <40-hex-commit>
+```
+
+Version negotiation selects a mutually supported version using the receiver's preference first, then the highest common supported version. Deprecated and unsupported sets remain explicit:
+
+```text
+node scripts/negotiate-version.mjs --sender <sender-interoperability.json> --receiver <receiver-interoperability.json>
+```
+
+## Separate credential review
+
+Interface compatibility never certifies credential handling. The separate security review detects credential signatures and browser token-storage design without printing values, and reports dependency review independently:
+
+```text
+node scripts/security-review.mjs --root <checkout>
+```
+
+Humans use normal GitHub authentication, invitations, CLI, and Git. Persistent unattended systems should prefer a narrowly installed GitHub App with selected repositories, minimum permissions, short-lived revocable tokens, and auditability. A fine-grained PAT is secondary and belongs only in an encrypted server, runner, or deployment secret store—never Git, frontend code, browser localStorage/sessionStorage, prompts, or logs. This release creates no app, token, server, deployment, or descendant.
+
+## Public artifacts and historical v0.4 material
+
+Seven current public copy-ready artifacts are under `prompts/`. The private intake-connection artifact is intentionally absent from this public repository.
+
+The v0.4 exact-tree validator, recovery prompts, captured regression fixture, and deterministic materializer remain available through immutable tag `communications-v0.4.0` and repository history. The top-level historical recovery document is retained for security and reproducibility but marked superseded: sovereign evolution is not contamination under v0.5.
 
 ## Source validation
 
 ```text
 node scripts/validate-communications.mjs --branch main
-node scripts/test-communications.mjs
+node --test tests/*.test.mjs
 ```
 
-All runtime code uses only Node.js standard-library modules. Destination validation and materialization make no network or model calls. Tests use reserved examples, sanitized captured-tree evidence, and no real or fabricated leads.
+All current runtime tooling uses only Node.js standard-library modules. Tests use temporary directories, reserved examples, and synthetic fixtures; they contain no leads, candidates, intake payloads, credentials, or real business data.
