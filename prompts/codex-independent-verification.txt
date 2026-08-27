@@ -1,3 +1,4 @@
 CODEX INDEPENDENT VERIFICATION 0.4.0
 
 From an immutable communications-v0.4.0 source checkout, run: node scripts/verify-public-destination.mjs --repository <owner/repository> --commit <ready-commit> --initializing-commit <initializing-commit> --ready-commit <ready-commit> --mission-acknowledgment-id msg-mission-acknowledgment-v1. Return only the compact structured attestation. A destination READY claim is advisory until this verifier returns GO. Do not grant access, issue invitations, activate a role, or begin substantive work.
+HISTORICAL V0.4 ARTIFACT — SUPERSEDED BY COMMUNICATIONS V0.5 RESERVED-INTERFACE VERIFICATION

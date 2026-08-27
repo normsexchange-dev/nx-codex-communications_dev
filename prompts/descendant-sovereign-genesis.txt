@@ -1,0 +1,7 @@
+CREATE A LINEAGE-PRESERVING SOVEREIGN DESCENDANT
+
+Use the exact annotated communications-v0.5.0 tag target. Create a distinct child owner/repository/environment identity. Record the exact parent repository, parent environment, parent commit, and canonical genesis release.
+
+Reject a child that impersonates or collides with its parent. Copy no credential, permission, access grant, private reasoning, transcript, internal memory, or business data. Materialize and verify only the child's six `.nx/` files, then transfer sovereignty to the child namespace.
+
+Stop after exact-commit compatibility evidence. Do not deploy, grant access, source, contact anyone, change Shopify, or begin another mission.

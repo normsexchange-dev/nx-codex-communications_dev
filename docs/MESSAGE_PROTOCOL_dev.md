@@ -1,4 +1,6 @@
-# Message Protocol
+# Historical v0.4 Message Protocol
+
+This file is retained for reproducibility. Communications v0.5 reserves `.nx/` for genesis and interoperability and does not require a centrally governed public message outbox. Any sovereign environment owns its internal or public messaging design, subject to external authority and privacy boundaries.
 
 ## Environment-owned communication
 

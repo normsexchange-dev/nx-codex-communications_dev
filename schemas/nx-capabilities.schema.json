@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.5.0/schemas/nx-capabilities.schema.json",
+  "title": "NX declared capability and authority provenance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_version", "environment_id", "declarations"],
+  "properties": {
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.5.0/schemas/nx-capabilities.schema.json"},
+    "schema_version": {"const": "1.0.0"}, "environment_id": {"type": "string", "minLength": 2},
+    "declarations": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["capability_id", "scope", "state", "authorized_by", "valid_from", "expires_at", "evidence_refs"], "properties": {
+      "capability_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]+$"}, "scope": {"enum": ["internal", "external"]},
+      "state": {"enum": ["internal_available", "declared", "technically_granted", "ray_standing_authorized", "ray_temporarily_authorized", "observed", "requested", "revoked"]},
+      "authorized_by": {"type": ["string", "null"]}, "valid_from": {"type": ["string", "null"], "format": "date-time"}, "expires_at": {"type": ["string", "null"], "format": "date-time"},
+      "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}}
+    }}}
+  }
+}

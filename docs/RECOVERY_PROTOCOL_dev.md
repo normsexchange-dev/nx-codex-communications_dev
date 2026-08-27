@@ -1,6 +1,12 @@
-# Contaminated Destination Recovery Protocol
+# Historical v0.4 recovery protocol — superseded
 
-An incomplete destination remains NO-GO. A destination containing any unknown path, application code, dependency manifest, database, environment file, token interface, GitHub write logic, fabricated marketplace record, role created during bootstrap, or self-expanding authority is contaminated. Never overlay the clean protocol onto that repository or copy its Git history.
+This document preserves the security and reproducibility guidance released at `communications-v0.4.0`. Its whole-tree contamination model is superseded by `communications-v0.5.0`: sovereign applications, agents, packages, data, services, simulations, self-replication, `AGENTS.md`, `EVOLUTION.md`, and other files outside `.nx/` are not contamination and do not fail interoperability.
+
+Use the immutable v0.4 tag when reproducing an exact historical v0.4 decision. Under v0.5, run the separate credential review, preserve the sovereign repository and history, and use non-destructive `.nx/` adoption when the owner chooses it. Do not quarantine, privatize, delete, or clean-room a repository merely because it evolved.
+
+## Archived v0.4 text
+
+Under the historical v0.4 model, an incomplete destination remained NO-GO. A destination containing an unknown path, application code, dependency manifest, database, environment file, token interface, GitHub write logic, fabricated marketplace record, role created during bootstrap, or self-expanding authority was classified as contaminated. That classification is not current v0.5 policy.
 
 ## Containment first
 

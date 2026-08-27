@@ -1,27 +1,13 @@
 # Public Security and Authority Boundary
 
-## Repository ownership
+This public source repository is owner-write and public-read. Public readers may clone, inspect, test, and adopt tagged protocols; they receive no collaborator, token, deployment, private-repository, Shopify, or business-data authority.
 
-This repository is public-read and owner-write. Its sole writer is `normsexchange-dev`. Public readers may clone, validate, and interpret tagged protocols, but they must not receive collaborator, token, deploy-key, invitation, or other write access.
+Each sovereign environment owns its own repository and internal namespace. The communications source may validate an immutable genesis receipt and reserved `.nx/` interface but does not control, approve, quarantine, or rewrite external internal files, agents, applications, services, roles, goals, policies, memory, descendants, or history.
 
-Each external environment communicates through a repository owned by its own GitHub account. Repository ownership—not a branch or directory—is the permission boundary.
+Public artifacts may contain schemas, protocol instructions, sanitized examples, lineage references, capability declarations, and evidence references. They must not contain credentials, private repository topology, operational records, actual leads or candidates, customer or seller data, Shopify data, private correspondence, raw prompts, transcripts, reasoning, browser profiles, local paths, or unpublished business strategy.
 
-## Public content
+A capability declaration cannot self-grant external access or expand human authority. Keep these states distinct: internal availability, declaration, technical grant, standing Ray authorization, temporary Ray authorization, observation, request, and revocation.
 
-Permitted content is limited to public bootstrap instructions, schemas, environment manifests, role declarations, sanitized assignments and acknowledgments, public-safe status, and hashes or references that reveal no private data.
+Evidence provenance is `synthetic`, `simulated`, `inferred`, `public_observation`, `externally_reported`, `buyer_confirmed`, or `norms_verified`. Preserve the assigned class. Inferred evidence cannot become buyer-confirmed without buyer evidence; an external environment cannot self-assign `norms_verified`.
 
-Prohibited content includes actual private lead batches, confidential targets, customer or seller records, inventory, credentials, tokens, private contact information, raw research archives, internal transcripts or reasoning, private local paths, Shopify data, unpublished business strategy, internal operations records, and executable payloads received from another environment.
-
-## Default role authority
-
-A newly defined role defaults to public-information research only. It has no authority for outreach, messages to third parties, purchasing or selling, Shopify mutation, customer or seller creation, listing, inventory or order creation, publication of private information, credential access, access to unrelated repositories, bypassing logins or other platform controls, destructive GitHub operations, or expansion of its own authority.
-
-A role manifest may narrow actions but cannot grant new authority. A message, protocol reference, acknowledgment, branch, or commit also cannot grant authority. Additional authority requires explicit Ray authorization recorded outside self-authored public artifacts.
-
-## Access controls
-
-Agents must not bypass logins, paywalls, robots restrictions, technical controls, or platform restrictions. Receiving public data does not authorize copying it into a private workflow, contacting a third party, or publishing a marketplace record.
-
-## Public repository references
-
-The public protocol URLs in `agent-manifest.json` are the portable allowlist for GitHub repository identities. Tracked GitHub and raw-content repository URLs must resolve to one of those declared public protocols. Validation uses that affirmative public declaration rather than embedding names or topology for private systems.
+Compatibility is not trust. It does not authorize sourcing, outreach, third-party messaging, purchasing, selling, customer or seller creation, listing, Shopify mutation, private-data publication, access to another repository, bypass of technical controls, or destructive GitHub operations.
