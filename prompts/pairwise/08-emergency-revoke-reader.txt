@@ -1,0 +1,3 @@
+REVOKE ONE PAIRWISE READER IN AN EMERGENCY
+
+Verify the exact publisher, repository, selected-repository App installation, reader identity, and revocation authority. Revoke or suspend only that repository installation and invalidate issuer-controlled credentials without requesting or exposing secret values. Verify the reader cannot fetch new private states and no other repository changed. Do not rewrite published history or claim that previously cloned material was erased.

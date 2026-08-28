@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.5.0/schemas/nx-interoperability.schema.json",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/nx-interoperability.schema.json",
   "title": "NX reserved-interface negotiation and hashes",
   "type": "object",
   "additionalProperties": false,
   "required": ["$schema", "schema_version", "protocol_id", "current", "supported", "preferred", "deprecated", "unsupported", "receiver_selection", "interfaces", "hashes"],
   "properties": {
-    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.5.0/schemas/nx-interoperability.schema.json"},
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/nx-interoperability.schema.json"},
     "schema_version": {"const": "1.0.0"}, "protocol_id": {"const": "nx-sovereign-interoperability"}, "current": {"const": "0.5.0"},
     "supported": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"}},
     "preferred": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$"},

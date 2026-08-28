@@ -3,9 +3,11 @@ import { execFileSync } from 'node:child_process';
 import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-export const VERSION = '0.5.0';
+export const VERSION = '0.6.0';
 export const TAG = `communications-v${VERSION}`;
 export const SOURCE_REPOSITORY = 'normsexchange-dev/nx-codex-communications_dev';
+export const SOVEREIGN_INTERFACE_VERSION = '0.5.0';
+export const SOVEREIGN_SCHEMA_TAG = 'communications-v0.5.0';
 export const NX_FILES = [
   'capabilities.json',
   'environment.json',
@@ -165,8 +167,8 @@ export function createSurface(options) {
   };
   const interoperability = {
     $schema: schemaUrl('nx-interoperability.schema.json'),
-    schema_version: '1.0.0', protocol_id: 'nx-sovereign-interoperability', current: VERSION,
-    supported: [VERSION], preferred: VERSION, deprecated: ['0.4.0'], unsupported: ['0.1.0', '0.1.1', '0.1.2', '0.2.0', '0.3.0'],
+    schema_version: '1.0.0', protocol_id: 'nx-sovereign-interoperability', current: SOVEREIGN_INTERFACE_VERSION,
+    supported: [SOVEREIGN_INTERFACE_VERSION], preferred: SOVEREIGN_INTERFACE_VERSION, deprecated: ['0.4.0'], unsupported: ['0.1.0', '0.1.1', '0.1.2', '0.2.0', '0.3.0'],
     receiver_selection: 'highest_common_preferred_then_highest_common_supported', interfaces: INTERFACES,
     hashes: {}
   };
@@ -187,8 +189,8 @@ export function createSurface(options) {
   return documents;
 }
 
-export function schemaUrl(name) {
-  return `https://raw.githubusercontent.com/${SOURCE_REPOSITORY}/${TAG}/schemas/${name}`;
+export function schemaUrl(name, tag = TAG) {
+  return `https://raw.githubusercontent.com/${SOURCE_REPOSITORY}/${tag}/schemas/${name}`;
 }
 
 export async function writeSurface(root, documents) {

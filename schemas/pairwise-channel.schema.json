@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/pairwise-channel.schema.json",
+  "title": "Publisher-owned pairwise channel manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_version", "protocol_version", "channel_version", "channel_id", "publisher", "recipient", "authority", "message_path_pattern", "index_path", "reader_state_location", "created_at"],
+  "properties": {
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/pairwise-channel.schema.json"},
+    "schema_version": {"const": "1.0.0"},
+    "protocol_version": {"const": "0.6.0"},
+    "channel_version": {"type": "string", "pattern": "^0\\.[0-9]+\\.[0-9]+$"},
+    "channel_id": {"type": "string", "pattern": "^channel-[a-z0-9][a-z0-9-]{7,79}$"},
+    "publisher": {"type": "object", "additionalProperties": false, "required": ["environment_id", "repository"], "properties": {"environment_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}, "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"}}},
+    "recipient": {"type": "object", "additionalProperties": false, "required": ["environment_id", "reciprocal_repository"], "properties": {"environment_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}, "reciprocal_repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"}}},
+    "authority": {"type": "object", "additionalProperties": false, "required": ["repository_owner", "publisher_write", "recipient_access", "recipient_mutations", "response_location"], "properties": {"repository_owner": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+$"}, "publisher_write": {"const": "exclusive"}, "recipient_access": {"const": "read_only"}, "recipient_mutations": {"type": "array", "maxItems": 0}, "response_location": {"const": "recipient_outbound_repository"}}},
+    "message_path_pattern": {"const": "messages/{sequence:6}-{message_id}.json"},
+    "index_path": {"const": "outbound/index.json"},
+    "reader_state_location": {"const": "reader_environment_only"},
+    "created_at": {"type": "string", "format": "date-time"}
+  }
+}

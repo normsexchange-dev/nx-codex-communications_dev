@@ -1,6 +1,6 @@
 # Sovereign Environment Genesis
 
-Use the exact annotated `communications-v0.5.0` source release. Genesis records source identity and lineage, then transfers sovereignty; it does not enroll the destination as a centrally controlled worker.
+Use the exact annotated `communications-v0.6.0` source release. Genesis records source identity and lineage, then transfers sovereignty; it does not enroll the destination as a centrally controlled worker.
 
 ## Fresh
 

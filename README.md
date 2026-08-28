@@ -1,8 +1,8 @@
 # NX Communications
 
-NX Communications is a public, model-neutral genesis and interoperability contract for sovereign agent environments. It contains no credentials, private repository topology, operational records, business data, sourcing results, or authority to contact people, change Shopify, grant repository access, or admit records into Norms Exchange.
+NX Communications is a public, model-neutral genesis, interoperability, and publisher-owned pairwise communications contract for sovereign agent environments. It contains no credentials, private repository topology, operational records, business data, sourcing results, or authority to contact people, change Shopify, grant repository access, or admit records into Norms Exchange.
 
-Release `0.5.0` is the annotated tag `communications-v0.5.0`. All earlier annotated tags, including `communications-v0.4.0`, remain immutable.
+Release `0.6.0` is the annotated tag `communications-v0.6.0`. All earlier annotated tags, including `communications-v0.5.0`, remain immutable.
 
 ## Genesis and sovereignty
 
@@ -25,9 +25,19 @@ Files outside `.nx/` are sovereign. Their presence never causes interface failur
 
 There is no global external-environment GO/NO-GO. Genesis, sovereign evolution, interface compatibility, credential review, external access, data admission, and service health are separate states. Compatibility grants no permission, proves no service health, and admits no business data.
 
+The v0.6 release retains the v0.5 sovereign `.nx/` field semantics and negotiation version while publishing release-bound schema identities. The v0.6 verifier also recognizes immutable v0.5 schema identities, so pairwise communications do not force an unrelated sovereign interface migration.
+
+## Publisher-owned pairwise channels
+
+A private pairwise channel has exactly one publisher-owner and one recipient. The publisher is the sole writer. The recipient reads and validates exact commits, keeps cursor/cache state in its own environment, and publishes responses only from its own reciprocal outbound repository. It never pushes, branches, amends, merges, deletes, acknowledges, or stores reader state in the publisher repository.
+
+Responses cite the source owner, repository, exact 40-hex commit, path, message ID, SHA-256 digest, channel ID, and protocol version. Corrections, supersession, withdrawal, and acknowledgements are later append-only records; they never rewrite a published message or Git history. See `docs/PAIRWISE_CHANNEL_PROTOCOL_dev.md`.
+
+Transport validation and immutable WTB contract references do not admit records into business data or grant sourcing, outreach, purchasing, listing, commerce, repository, or deployment authority.
+
 ## Materialization modes
 
-Run only from an exact checkout of annotated tag `communications-v0.5.0`. The CLI rejects a lightweight tag, wrong tag, mutable branch checkout, or tag-target mismatch.
+Run only from an exact checkout of annotated tag `communications-v0.6.0`. The CLI rejects a lightweight tag, wrong tag, mutable branch checkout, or tag-target mismatch.
 
 Fresh sovereign genesis writes the six `.nx/` files into an otherwise empty destination and is idempotent when the same valid surface already exists:
 
@@ -77,13 +87,13 @@ Interface compatibility never certifies credential handling. The separate securi
 node scripts/security-review.mjs --root <checkout>
 ```
 
-Humans use normal GitHub authentication, invitations, CLI, and Git. Persistent unattended systems should prefer a narrowly installed GitHub App with selected repositories, minimum permissions, short-lived revocable tokens, and auditability. A fine-grained PAT is secondary and belongs only in an encrypted server, runner, or deployment secret store—never Git, frontend code, browser localStorage/sessionStorage, prompts, or logs. This release creates no app, token, server, deployment, or descendant.
+Humans use normal GitHub authentication, invitations, CLI, and Git. Persistent unattended systems should prefer a narrowly installed GitHub App with selected repositories, minimum permissions, short-lived revocable tokens, and auditability. A private repository owned by a personal account cannot make a user collaborator read-only, so a write-capable collaborator must never be described as a pairwise reader. Use a selected-repository App with metadata and contents read and no write permission. A fine-grained PAT is secondary and belongs only in an encrypted server, runner, or deployment secret store—never Git, frontend code, browser localStorage/sessionStorage, prompts, or logs. This release creates no app, token, server, deployment, or descendant.
 
 ## Public artifacts and historical v0.4 material
 
-Seven current public copy-ready artifacts are under `prompts/`. The private intake-connection artifact is intentionally absent from this public repository.
+Eight generic pairwise copy-ready artifacts are under `prompts/pairwise/`; the sovereign genesis artifacts remain under `prompts/`. Private topology and pair-specific access instructions are intentionally absent from this public repository.
 
-The v0.4 exact-tree validator, recovery prompts, captured regression fixture, and deterministic materializer remain available through immutable tag `communications-v0.4.0` and repository history. The top-level historical recovery document is retained for security and reproducibility but marked superseded: sovereign evolution is not contamination under v0.5.
+The v0.4 destination-core template, agent manifest, role/outbox files, exact-tree validator, recovery prompts, captured fixture, and deterministic materializer remain available for historical reproducibility. They are not current pairwise authority. The historical recovery document is marked superseded: sovereign evolution is not contamination under v0.5 or v0.6.
 
 ## Source validation
 

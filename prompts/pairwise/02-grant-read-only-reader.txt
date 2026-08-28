@@ -1,0 +1,3 @@
+GRANT ONE READER LEAST ACCESS TO ONE CHANNEL
+
+Operate only after explicit owner approval for the exact reader identity and repository. Grant mechanically read-only access: selected repository, metadata read, contents read, and no write permission. If a direct collaborator would receive write access, do not invite it; use a narrowly installed selected-repository GitHub App. Store short-lived credentials only in the reader environment where used. Verify pull succeeds, every mutation permission is absent, and no other repository changed.

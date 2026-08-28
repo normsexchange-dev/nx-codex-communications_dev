@@ -1,0 +1,3 @@
+CREATE ONE PUBLISHER-OWNED PAIRWISE CHANNEL
+
+After explicit owner approval, create one private repository for one publisher-recipient pair. The repository owner is the sole publisher and writer. Initialize only the v0.6 channel manifest, channel version, and empty outbound index. Define the reciprocal repository as recipient-owned but do not create or mutate it. Publish no actual message or business payload. Return repository identity, initial exact commit, release tag, empty-index evidence, and permission evidence.

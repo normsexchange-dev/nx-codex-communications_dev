@@ -3,13 +3,17 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import {
-  CAPABILITY_STATES, INTERFACES, NX_FILES, PROVENANCE, SOURCE_REPOSITORY, TAG, VERSION,
+  CAPABILITY_STATES, INTERFACES, NX_FILES, PROVENANCE, SOURCE_REPOSITORY, SOVEREIGN_INTERFACE_VERSION, SOVEREIGN_SCHEMA_TAG, TAG, VERSION,
   assert, coreDigestPayload, exactKeys, hashJson, parseArgs, readJson, sanitizedError,
   schemaUrl, stableStringify, validateIdentity
 } from './lib/nx-interface.mjs';
 
 const SHA_PATTERN = /^[a-f0-9]{40}$/;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
+
+function schemaIdentity(value, name) {
+  return [schemaUrl(name), schemaUrl(name, SOVEREIGN_SCHEMA_TAG)].includes(value.$schema);
+}
 
 function baseResult(repository = null, commit = null) {
   return {
@@ -23,7 +27,7 @@ function baseResult(repository = null, commit = null) {
 
 function validateEnvironment(value, expectedRepository) {
   exactKeys(value, ['$schema', 'schema_version', 'environment_id', 'namespace_owner', 'repository', 'environment_type', 'runtime', 'human_principal', 'created_at'], 'environment');
-  assert(value.$schema === schemaUrl('nx-environment.schema.json') && value.schema_version === '1.0.0', 'environment_schema_invalid');
+  assert(schemaIdentity(value, 'nx-environment.schema.json') && value.schema_version === '1.0.0', 'environment_schema_invalid');
   validateIdentity({ owner: value.namespace_owner, repository: value.repository, environmentId: value.environment_id });
   assert(value.environment_type === 'sovereign', 'environment_type_invalid');
   assert(typeof value.runtime === 'string' && value.runtime.trim(), 'environment_runtime_invalid');
@@ -34,13 +38,14 @@ function validateEnvironment(value, expectedRepository) {
 
 function validateGenesis(value, environment) {
   exactKeys(value, ['$schema', 'schema_version', 'genesis_type', 'canonical_release', 'materializer', 'destination', 'materialized_at', 'genesis_commit', 'initial_core_digest', 'human_principal', 'sovereignty_transfer'], 'genesis');
-  assert(value.$schema === schemaUrl('nx-genesis.schema.json') && value.schema_version === '1.0.0', 'genesis_schema_invalid');
+  assert(schemaIdentity(value, 'nx-genesis.schema.json') && value.schema_version === '1.0.0', 'genesis_schema_invalid');
   assert(['fresh', 'historical_adoption', 'descendant'].includes(value.genesis_type), 'genesis_type_invalid');
   exactKeys(value.canonical_release, ['repository', 'tag', 'tag_object', 'target_commit', 'source_digest'], 'genesis_release');
-  assert(value.canonical_release.repository === SOURCE_REPOSITORY && value.canonical_release.tag === TAG, 'genesis_release_identity_invalid');
+  assert(value.canonical_release.repository === SOURCE_REPOSITORY && [TAG, 'communications-v0.5.0'].includes(value.canonical_release.tag), 'genesis_release_identity_invalid');
   assert(SHA_PATTERN.test(value.canonical_release.tag_object) && SHA_PATTERN.test(value.canonical_release.target_commit) && SHA256_PATTERN.test(value.canonical_release.source_digest), 'genesis_release_hash_invalid');
   exactKeys(value.materializer, ['name', 'version'], 'genesis_materializer');
-  assert(value.materializer.name === 'nx-sovereign-genesis' && value.materializer.version === VERSION, 'genesis_materializer_invalid');
+  const expectedMaterializer = value.canonical_release.tag === TAG ? VERSION : '0.5.0';
+  assert(value.materializer.name === 'nx-sovereign-genesis' && value.materializer.version === expectedMaterializer, 'genesis_materializer_invalid');
   exactKeys(value.destination, ['owner', 'repository', 'environment_id', 'runtime'], 'genesis_destination');
   assert(value.destination.owner === environment.namespace_owner && value.destination.repository === environment.repository && value.destination.environment_id === environment.environment_id && value.destination.runtime === environment.runtime, 'genesis_destination_mismatch');
   assert(Number.isFinite(Date.parse(value.materialized_at)) && SHA_PATTERN.test(value.genesis_commit) && SHA256_PATTERN.test(value.initial_core_digest), 'genesis_anchor_invalid');
@@ -51,7 +56,7 @@ function validateGenesis(value, environment) {
 
 function validateLineage(value, environment, genesis) {
   exactKeys(value, ['$schema', 'schema_version', 'lineage_type', 'current', 'canonical_genesis', 'parent', 'divergence', 'amendments', 'descendants'], 'lineage');
-  assert(value.$schema === schemaUrl('nx-lineage.schema.json') && value.schema_version === '1.0.0', 'lineage_schema_invalid');
+  assert(schemaIdentity(value, 'nx-lineage.schema.json') && value.schema_version === '1.0.0', 'lineage_schema_invalid');
   assert(['direct', 'descendant', 'hybrid'].includes(value.lineage_type), 'lineage_type_invalid');
   exactKeys(value.current, ['environment_id', 'repository'], 'lineage_current');
   assert(value.current.environment_id === environment.environment_id && value.current.repository === environment.repository, 'lineage_current_impersonation');
@@ -70,7 +75,7 @@ function validateLineage(value, environment, genesis) {
 
 function validateCapabilities(value, environment) {
   exactKeys(value, ['$schema', 'schema_version', 'environment_id', 'declarations'], 'capabilities');
-  assert(value.$schema === schemaUrl('nx-capabilities.schema.json') && value.schema_version === '1.0.0' && value.environment_id === environment.environment_id, 'capabilities_identity_invalid');
+  assert(schemaIdentity(value, 'nx-capabilities.schema.json') && value.schema_version === '1.0.0' && value.environment_id === environment.environment_id, 'capabilities_identity_invalid');
   assert(Array.isArray(value.declarations), 'capabilities_declarations_invalid');
   for (const entry of value.declarations) {
     exactKeys(entry, ['capability_id', 'scope', 'state', 'authorized_by', 'valid_from', 'expires_at', 'evidence_refs'], 'capability_declaration');
@@ -84,7 +89,7 @@ function validateCapabilities(value, environment) {
 
 function validateProvenance(value, environment) {
   exactKeys(value, ['$schema', 'schema_version', 'environment_id', 'records'], 'provenance');
-  assert(value.$schema === schemaUrl('nx-provenance.schema.json') && value.schema_version === '1.0.0' && value.environment_id === environment.environment_id, 'provenance_identity_invalid');
+  assert(schemaIdentity(value, 'nx-provenance.schema.json') && value.schema_version === '1.0.0' && value.environment_id === environment.environment_id, 'provenance_identity_invalid');
   assert(Array.isArray(value.records), 'provenance_records_invalid');
   for (const entry of value.records) {
     exactKeys(entry, ['record_id', 'classification', 'subject', 'evidence_refs', 'observed_at', 'assigned_by'], 'provenance_record');
@@ -99,9 +104,9 @@ function validateProvenance(value, environment) {
 
 function validateInteroperability(value) {
   exactKeys(value, ['$schema', 'schema_version', 'protocol_id', 'current', 'supported', 'preferred', 'deprecated', 'unsupported', 'receiver_selection', 'interfaces', 'hashes'], 'interoperability');
-  assert(value.$schema === schemaUrl('nx-interoperability.schema.json') && value.schema_version === '1.0.0', 'interoperability_schema_invalid');
-  assert(value.protocol_id === 'nx-sovereign-interoperability' && value.current === VERSION, 'interoperability_protocol_invalid');
-  assert(Array.isArray(value.supported) && value.supported.includes(VERSION) && value.preferred === VERSION, 'interoperability_version_invalid');
+  assert(schemaIdentity(value, 'nx-interoperability.schema.json') && value.schema_version === '1.0.0', 'interoperability_schema_invalid');
+  assert(value.protocol_id === 'nx-sovereign-interoperability' && value.current === SOVEREIGN_INTERFACE_VERSION, 'interoperability_protocol_invalid');
+  assert(Array.isArray(value.supported) && value.supported.includes(SOVEREIGN_INTERFACE_VERSION) && value.preferred === SOVEREIGN_INTERFACE_VERSION, 'interoperability_version_invalid');
   assert(Array.isArray(value.deprecated) && Array.isArray(value.unsupported), 'interoperability_version_sets_invalid');
   assert(value.receiver_selection === 'highest_common_preferred_then_highest_common_supported', 'interoperability_negotiation_invalid');
   assert(stableStringify(value.interfaces) === stableStringify(INTERFACES), 'interoperability_interfaces_invalid');
@@ -137,7 +142,7 @@ export async function verifyInterface(root, options = {}) {
     assert(hashJson(coreDigestPayload(environment, lineage, capabilities, provenance, interoperability)) === genesis.initial_core_digest, 'genesis_initial_core_digest_mismatch');
     result.genesis = 'GENESIS_VALIDATED';
     result.interface = 'INTERFACE_COMPATIBLE';
-    result.negotiated_version = VERSION;
+    result.negotiated_version = SOVEREIGN_INTERFACE_VERSION;
     result.environment_id = environment.environment_id;
     return result;
   } catch (error) {
