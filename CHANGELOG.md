@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0 — 2026-08-27
+
+- Added publisher-owned pairwise channel, message, immutable reference, outbound index, and reader-local cache schemas without changing the v0.5 sovereign `.nx/` interface.
+- Enforced one writer per outbound repository, responder-owned acknowledgements, append-only correction and withdrawal, exact commit/path/digest references, and reader state outside the publisher repository.
+- Added standard-library tools for empty-channel initialization, local proposal and validation, responder acknowledgements, exact-commit read-only consumption, permission verification, deduplication, and immutable sourcing-contract references.
+- Added eight public generic pairwise prompts and deterministic security, sequence, reference, correction, permission, WTB-reference, no-admission, and no-foreign-mutation regression coverage.
+- Preserved all prior annotated releases and retained v0.5 sovereign interface compatibility while separating transport validation from business-data admission.
+
 ## 0.5.0 — 2026-08-27
 
 - Defined immutable genesis as a one-time lineage event followed by destination sovereignty.

@@ -1,0 +1,3 @@
+PUBLISH ONE AUTHORIZED OWNER MESSAGE
+
+Verify the exact publisher repository, owner, active goal, branch, lease, sequence, recipient, and message authority. Create one new immutable envelope and append one index entry. Validate its message ID, path, SHA-256 digest, protocol version, privacy scope, lifecycle, and any immutable payload contract reference. Do not edit an earlier message, write into the recipient repository, create credentials, admit business data, or exceed the bounded authority.

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/pairwise-message.schema.json",
+  "title": "Append-only pairwise outbound message",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "protocol_version", "message_id", "sequence", "channel_id", "sender_environment", "recipient_environment", "message_type", "created_at", "content", "payloads", "references", "acknowledgement_status", "lifecycle"],
+  "properties": {
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/pairwise-message.schema.json"},
+    "protocol_version": {"const": "0.6.0"},
+    "message_id": {"type": "string", "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"},
+    "sequence": {"type": "integer", "minimum": 1},
+    "channel_id": {"type": "string", "pattern": "^channel-[a-z0-9][a-z0-9-]{7,79}$"},
+    "sender_environment": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "recipient_environment": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "message_type": {"enum": ["assignment", "notification", "response", "acknowledgement", "status", "correction", "withdrawal", "protocol_notice"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "content": {"type": "object", "additionalProperties": false, "required": ["subject", "summary", "body"], "properties": {"subject": {"type": "string", "minLength": 1, "maxLength": 240}, "summary": {"type": "string", "minLength": 1, "maxLength": 1000}, "body": {"type": "string", "maxLength": 20000}}},
+    "payloads": {"type": "array", "maxItems": 20, "items": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "media_type", "contract"], "properties": {"path": {"type": "string", "pattern": "^payloads/[A-Za-z0-9._/-]+\\.json$"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "media_type": {"enum": ["application/json", "application/vnd.nx.wtb-candidate+json", "application/vnd.nx.wtb-candidate-batch+json"]}, "contract": {"type": ["object", "null"], "additionalProperties": false, "required": ["repository", "tag", "version", "schema_path", "schema_sha256"], "properties": {"repository": {"const": "normsexchange-dev/nx-sourcing-contracts_dev"}, "tag": {"const": "contract-v0.2.0"}, "version": {"const": "0.2.0"}, "schema_path": {"enum": ["schemas/wtb-candidate.schema.json", "schemas/wtb-candidate-batch.schema.json"]}, "schema_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}}}}},
+    "references": {"type": "array", "maxItems": 20, "items": {"$ref": "cross-repository-reference.schema.json"}},
+    "acknowledgement_status": {"type": ["string", "null"], "enum": [null, "received", "validated", "accepted", "rejected", "needs_information", "superseded", "withdrawn", "incompatible", "unauthorized_boundary"]},
+    "lifecycle": {"type": "object", "additionalProperties": false, "required": ["status", "supersedes_message_id"], "properties": {"status": {"enum": ["published", "superseded", "withdrawn"]}, "supersedes_message_id": {"type": ["string", "null"], "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"}}}
+  }
+}

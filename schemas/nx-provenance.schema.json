@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.5.0/schemas/nx-provenance.schema.json",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/nx-provenance.schema.json",
   "title": "NX evidence provenance classifications",
   "type": "object",
   "additionalProperties": false,
   "required": ["$schema", "schema_version", "environment_id", "records"],
   "properties": {
-    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.5.0/schemas/nx-provenance.schema.json"},
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/nx-provenance.schema.json"},
     "schema_version": {"const": "1.0.0"}, "environment_id": {"type": "string", "minLength": 2},
     "records": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["record_id", "classification", "subject", "evidence_refs", "observed_at", "assigned_by"], "properties": {
       "record_id": {"type": "string", "minLength": 1}, "classification": {"enum": ["synthetic", "simulated", "inferred", "public_observation", "externally_reported", "buyer_confirmed", "norms_verified"]},

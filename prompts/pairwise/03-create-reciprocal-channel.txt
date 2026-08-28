@@ -1,0 +1,3 @@
+CREATE THE RECIPIENT-OWNED RECIPROCAL CHANNEL
+
+The recipient owner, not the first publisher, creates its private outbound repository and becomes its sole writer. Initialize only the v0.6 manifest and empty outbound index. Give the original publisher a mechanically read-only selected-repository connection. Do not let either party push, branch, merge, acknowledge, or store reader state in the other's repository. Return exact identity, commit, tag, empty index, and read-only permission evidence.

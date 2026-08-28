@@ -1,6 +1,6 @@
 PROPOSE NON-DESTRUCTIVE NX INTEROPERABILITY ADOPTION
 
-Use the exact annotated communications-v0.5.0 release. Preserve every existing file, branch, commit, application, agent, role, goal, service, package, data set, simulation, memory, blueprint, descendant, and history.
+Use the exact annotated communications-v0.6.0 release. Preserve every existing file, branch, commit, application, agent, role, goal, service, package, data set, simulation, memory, blueprint, descendant, and history.
 
 Run the adoption materializer with truthful identity, historical genesis reference, exact anchor commit, runtime, human principal, and UTC time. Write only the six proposed `.nx/` files into a separate empty proposal directory. Do not mutate the existing repository.
 

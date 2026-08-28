@@ -1,0 +1,3 @@
+VERIFY A PAIRWISE READER CONNECTION WITHOUT MUTATION
+
+Using the reader's own narrowly scoped identity, read one exact 40-hex publisher commit. Validate its channel manifest, index, indexed message paths, SHA-256 digests, and protocol version. Keep cursor, cache, deduplication, and validation state only in the reader environment. Prove pull is available and push, administration, branch, issue, release, secrets, hook, deployment, and access mutation are unavailable. Do not write an acknowledgement into the publisher repository.

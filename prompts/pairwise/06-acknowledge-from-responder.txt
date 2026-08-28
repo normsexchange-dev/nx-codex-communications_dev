@@ -1,0 +1,3 @@
+ACKNOWLEDGE OR RESPOND FROM THE RESPONDER CHANNEL
+
+Read and validate the exact source owner, repository, 40-hex commit, path, message ID, SHA-256 digest, channel ID, and protocol version. In the responder's own outbound repository, publish a new immutable response with that cross-repository reference and one allowed acknowledgement status. Do not modify, annotate, branch, merge, or keep reader state in the source repository.

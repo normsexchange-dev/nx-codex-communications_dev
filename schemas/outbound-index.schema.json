@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/outbound-index.schema.json",
+  "title": "Append-only outbound message index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "protocol_version", "channel_version", "channel_id", "publisher_repository", "next_sequence", "messages"],
+  "properties": {
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/outbound-index.schema.json"},
+    "protocol_version": {"const": "0.6.0"},
+    "channel_version": {"type": "string", "pattern": "^0\\.[0-9]+\\.[0-9]+$"},
+    "channel_id": {"type": "string", "pattern": "^channel-[a-z0-9][a-z0-9-]{7,79}$"},
+    "publisher_repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+    "next_sequence": {"type": "integer", "minimum": 1},
+    "messages": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["sequence", "message_id", "path", "sha256", "message_type", "created_at", "lifecycle_status", "supersedes_message_id"], "properties": {"sequence": {"type": "integer", "minimum": 1}, "message_id": {"type": "string", "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"}, "path": {"type": "string", "pattern": "^messages/[0-9]{6}-msg-[a-z0-9][a-z0-9-]{15,79}\\.json$"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "message_type": {"enum": ["assignment", "notification", "response", "acknowledgement", "status", "correction", "withdrawal", "protocol_notice"]}, "created_at": {"type": "string", "format": "date-time"}, "lifecycle_status": {"enum": ["published", "superseded", "withdrawn"]}, "supersedes_message_id": {"type": ["string", "null"], "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"}}}}
+  }
+}

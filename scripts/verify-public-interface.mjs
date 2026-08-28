@@ -10,7 +10,7 @@ const SHA_PATTERN = /^[a-f0-9]{40}$/;
 const REPOSITORY_PATTERN = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/;
 
 async function githubJson(url) {
-  const response = await fetch(url, { headers: { accept: 'application/vnd.github+json', 'user-agent': 'nx-sovereign-interface-verifier/0.5.0' } });
+  const response = await fetch(url, { headers: { accept: 'application/vnd.github+json', 'user-agent': 'nx-sovereign-interface-verifier/0.6.0' } });
   if (!response.ok) {
     const error = new Error(`github_http_${response.status}`);
     error.status = response.status;
