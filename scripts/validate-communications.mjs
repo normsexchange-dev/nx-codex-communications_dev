@@ -11,6 +11,7 @@ const REQUIRED = [
   'docs/AUTONOMOUS_RUNTIME_REFERENCE_dev.md', 'docs/CREDENTIAL_ACCESS_BOUNDARY_dev.md', 'docs/INTEROPERABILITY_PROTOCOL_dev.md',
   'docs/RECOVERY_PROTOCOL_dev.md', 'docs/SECURITY_BOUNDARY_dev.md', 'docs/SOVEREIGNTY_AND_LINEAGE_dev.md',
   'docs/PAIRWISE_CHANNEL_PROTOCOL_dev.md',
+  'release/environment-profile.json',
   'prompts/boundary-emergency-stop-revoke.txt', 'prompts/descendant-sovereign-genesis.txt', 'prompts/existing-environment-adoption.txt',
   'prompts/existing-environment-preservation.txt', 'prompts/fresh-sovereign-genesis.txt', 'prompts/receiver-compatibility-check.txt',
   'prompts/standing-autonomous-wtb-mission.txt', 'release/previous-tags.json',
@@ -29,7 +30,7 @@ const REQUIRED = [
   'scripts/security-review.mjs', 'scripts/test-communications.mjs', 'scripts/validate-communications.mjs',
   'scripts/verify-interface.mjs', 'scripts/verify-public-interface.mjs', 'tests/sovereign-interface.test.mjs', 'tests/pairwise-channel.test.mjs'
 ];
-const ALLOWED_PUBLIC_REPOSITORIES = new Set([SOURCE_REPOSITORY, 'normsexchange-dev/nx-sourcing-contracts_dev']);
+const ALLOWED_PUBLIC_REPOSITORIES = new Set([SOURCE_REPOSITORY, 'normsexchange-dev/nx-sourcing-contracts_dev', 'normsexchange-dev/nx-environment-profiles_dev']);
 const CREDENTIAL_PATTERNS = [/gh[pousr]_[A-Za-z0-9]{20,}/, /github_pat_[A-Za-z0-9_]{20,}/, /-----BEGIN [A-Z ]*PRIVATE KEY-----/];
 
 function git(args) {
@@ -73,7 +74,7 @@ async function validateSchemas() {
 
 async function validatePreviousTags() {
   const release = await readJson(path.join(root, 'release', 'previous-tags.json'));
-  assert(release.schema_version === '1.0.0' && release.tags.length === 7, 'previous_tag_catalog_invalid');
+  assert(release.schema_version === '1.0.0' && release.tags.length === 8, 'previous_tag_catalog_invalid');
   for (const entry of release.tags) {
     assert(git(['rev-parse', `refs/tags/${entry.tag}`]) === entry.object, `previous_tag_object_changed:${entry.tag}`);
     assert(git(['cat-file', '-t', `refs/tags/${entry.tag}`]) === entry.type, `previous_tag_type_changed:${entry.tag}`);
@@ -96,7 +97,14 @@ async function main() {
   assert(!/\bsecrets\./.test(workflow) && !/pull_request_target/.test(workflow), 'workflow_secret_or_untrusted_trigger');
 
   const readme = (await readFile(path.join(root, 'README.md'), 'utf8')).toLowerCase();
-  for (const phrase of ['genesis proves lineage', 'sovereignty begins', 'reserved `.nx/`', 'no global external-environment go/no-go', 'communications-v0.6.0', 'publisher-owned pairwise channels', 'sole writer', 'not admit records']) assert(readme.includes(phrase), `readme_boundary_missing:${phrase}`);
+  for (const phrase of ['genesis proves lineage', 'sovereignty begins', 'reserved `.nx/`', 'no global external-environment go/no-go', 'communications-v0.7.0', 'publisher-owned pairwise channels', 'sole writer', 'not admit records', 'environment operating-profile discovery', 'provision-once/enroll-repeatedly']) assert(readme.includes(phrase), `readme_boundary_missing:${phrase}`);
+  const environmentProfile = await readJson(path.join(root, 'release', 'environment-profile.json'));
+  assert(environmentProfile.profile_id === 'persistent-multi-agent-github' && environmentProfile.profile_version === '1.0.0', 'environment_profile_identity_invalid');
+  assert(environmentProfile.repository === 'normsexchange-dev/nx-environment-profiles_dev' && environmentProfile.annotated_tag === 'environment-profiles-v1.0.0', 'environment_profile_release_invalid');
+  assert(/^[a-f0-9]{40}$/.test(environmentProfile.tag_object) && /^[a-f0-9]{40}$/.test(environmentProfile.tag_target), 'environment_profile_exact_git_identity_required');
+  assert(environmentProfile.adoption_is_separate_authority === true, 'environment_profile_authority_boundary_missing');
+  const autostart = await readFile(path.join(root, 'AUTOSTART.md'), 'utf8');
+  for (const phrase of ['session-only', 'persistent-single-agent', 'persistent-multi-agent', 'enroll-existing', 'dry-run provisioning proposal', 'Never duplicate an existing environment', 'separately propose one or more exact agent-family adoptions']) assert(autostart.includes(phrase), `autostart_profile_boundary_missing:${phrase}`);
   const recovery = await readFile(path.join(root, 'docs/RECOVERY_PROTOCOL_dev.md'), 'utf8');
   assert(recovery.includes('Historical v0.4 recovery protocol') && recovery.includes('superseded'), 'historical_recovery_not_marked');
   for (const prompt of files.filter((item) => item.startsWith('prompts/') && item.endsWith('.txt'))) {
@@ -128,7 +136,7 @@ async function main() {
     for (const match of text.matchAll(/normsexchange-dev\/[A-Za-z0-9._-]+/gi)) assert(ALLOWED_PUBLIC_REPOSITORIES.has(match[0]), `unapproved_public_repository:${relative}`);
     if (relative.endsWith('.mjs')) for (const match of text.matchAll(/^import .* from ['"]([^'"]+)['"];$/gm)) assert(match[1].startsWith('node:') || match[1].startsWith('.'), `third_party_import:${relative}`);
   }
-  console.log(`validate-communications: PASS (${files.length} files; communications ${VERSION}; branch ${branch}; seven prior tags immutable)`);
+  console.log(`validate-communications: PASS (${files.length} files; communications ${VERSION}; branch ${branch}; eight prior tags immutable; profile release exact)`);
 }
 
 main().catch((error) => { console.error(`VALIDATION ERROR ${sanitizedError(error)}`); process.exitCode = 2; });

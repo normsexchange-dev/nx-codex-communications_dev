@@ -1,16 +1,16 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/nx-lineage.schema.json",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.7.0/schemas/nx-lineage.schema.json",
   "title": "NX truthful sovereign lineage",
   "type": "object",
   "additionalProperties": false,
   "required": ["$schema", "schema_version", "lineage_type", "current", "canonical_genesis", "parent", "divergence", "amendments", "descendants"],
   "properties": {
-    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/nx-lineage.schema.json"},
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.7.0/schemas/nx-lineage.schema.json"},
     "schema_version": {"const": "1.0.0"}, "lineage_type": {"enum": ["direct", "descendant", "hybrid"]},
     "current": {"$ref": "#/$defs/environmentReference"},
     "canonical_genesis": {"type": "object", "additionalProperties": false, "required": ["repository", "tag", "target_commit"], "properties": {
-      "repository": {"const": "normsexchange-dev/nx-codex-communications_dev"}, "tag": {"const": "communications-v0.6.0"}, "target_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"}
+      "repository": {"const": "normsexchange-dev/nx-codex-communications_dev"}, "tag": {"const": "communications-v0.7.0"}, "target_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"}
     }},
     "parent": {"oneOf": [{"type": "null"}, {"type": "object", "additionalProperties": false, "required": ["environment_id", "repository", "commit"], "properties": {
       "environment_id": {"type": "string", "minLength": 2}, "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"}, "commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"}

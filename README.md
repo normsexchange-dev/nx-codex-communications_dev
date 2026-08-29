@@ -2,7 +2,7 @@
 
 NX Communications is a public, model-neutral genesis, interoperability, and publisher-owned pairwise communications contract for sovereign agent environments. It contains no credentials, private repository topology, operational records, business data, sourcing results, or authority to contact people, change Shopify, grant repository access, or admit records into Norms Exchange.
 
-Release `0.6.0` is the annotated tag `communications-v0.6.0`. All earlier annotated tags, including `communications-v0.5.0`, remain immutable.
+Release `0.7.0` is the annotated tag `communications-v0.7.0`. All earlier annotated tags, including `communications-v0.6.0`, remain immutable.
 
 ## Genesis and sovereignty
 
@@ -27,6 +27,12 @@ There is no global external-environment GO/NO-GO. Genesis, sovereign evolution, 
 
 The v0.6 release retains the v0.5 sovereign `.nx/` field semantics and negotiation version while publishing release-bound schema identities. The v0.6 verifier also recognizes immutable v0.5 schema identities, so pairwise communications do not force an unrelated sovereign interface migration.
 
+## Environment operating-profile discovery
+
+Release v0.7 adds a concise, separately authorized compound-installation path after validated genesis. `release/environment-profile.json` pins the exact annotated `persistent-multi-agent-github` profile release. Autostart selects one of four modes, discovers an existing control plane, proposes rather than silently creates missing infrastructure, enrolls a distinct agent, and keeps agent-family adoption, mission activation, and external action as separate authority boundaries.
+
+The profile defines provision-once/enroll-repeatedly behavior, neutral repository functions, private operations, compare-and-swap leases, runtime capability evidence, lifecycle/recovery, and publisher-owned outbound separation. Communications remains genesis/interoperability authority; it does not become the operations store or runtime.
+
 ## Publisher-owned pairwise channels
 
 A private pairwise channel has exactly one publisher-owner and one recipient. The publisher is the sole writer. The recipient reads and validates exact commits, keeps cursor/cache state in its own environment, and publishes responses only from its own reciprocal outbound repository. It never pushes, branches, amends, merges, deletes, acknowledges, or stores reader state in the publisher repository.
@@ -37,7 +43,7 @@ Transport validation and immutable WTB contract references do not admit records 
 
 ## Materialization modes
 
-Run only from an exact checkout of annotated tag `communications-v0.6.0`. The CLI rejects a lightweight tag, wrong tag, mutable branch checkout, or tag-target mismatch.
+Run only from an exact checkout of annotated tag `communications-v0.7.0`. The CLI rejects a lightweight tag, wrong tag, mutable branch checkout, or tag-target mismatch.
 
 Fresh sovereign genesis writes the six `.nx/` files into an otherwise empty destination and is idempotent when the same valid surface already exists:
 

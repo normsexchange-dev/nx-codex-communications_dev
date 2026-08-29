@@ -164,11 +164,12 @@ test('WTB references bind exact contract and content digests but never admit dat
   assert.throws(() => validateWtbPayloadReference({ ...payload, sha256: '0'.repeat(64) }, payloadBytes, schemaBytes), /wtb_payload_digest_mismatch/);
 });
 
-test('public v0.6 pairwise surface is restrictive, generic, standard-library-only, and GET-only remotely', () => {
+test('public v0.7 release preserves restrictive generic pairwise 0.6 semantics and GET-only readers', () => {
   for (const name of ['pairwise-channel', 'pairwise-message', 'cross-repository-reference', 'outbound-index', 'reader-cache']) {
     const schema = JSON.parse(fs.readFileSync(path.join(root, 'schemas', `${name}.schema.json`), 'utf8'));
     assert.equal(schema.additionalProperties, false);
-    assert.match(schema.$id, /communications-v0\.6\.0/);
+    assert.match(schema.$id, /communications-v0\.7\.0/);
+    if (schema.properties.protocol_version) assert.equal(schema.properties.protocol_version.const, '0.6.0');
   }
   assert.equal(fs.readdirSync(path.join(root, 'prompts', 'pairwise')).filter((name) => name.endsWith('.txt')).length, 8);
   const publicText = fs.readFileSync(path.join(root, 'docs', 'PAIRWISE_CHANNEL_PROTOCOL_dev.md'), 'utf8') + fs.readdirSync(path.join(root, 'prompts', 'pairwise')).map((name) => fs.readFileSync(path.join(root, 'prompts', 'pairwise', name), 'utf8')).join('\n');

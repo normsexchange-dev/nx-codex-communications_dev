@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/pairwise-message.schema.json",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.7.0/schemas/pairwise-message.schema.json",
   "title": "Append-only pairwise outbound message",
   "type": "object",
   "additionalProperties": false,
   "required": ["$schema", "protocol_version", "message_id", "sequence", "channel_id", "sender_environment", "recipient_environment", "message_type", "created_at", "content", "payloads", "references", "acknowledgement_status", "lifecycle"],
   "properties": {
-    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/pairwise-message.schema.json"},
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.7.0/schemas/pairwise-message.schema.json"},
     "protocol_version": {"const": "0.6.0"},
     "message_id": {"type": "string", "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"},
     "sequence": {"type": "integer", "minimum": 1},

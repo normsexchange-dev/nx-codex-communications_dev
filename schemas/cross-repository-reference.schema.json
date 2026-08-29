@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/cross-repository-reference.schema.json",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.7.0/schemas/cross-repository-reference.schema.json",
   "title": "Immutable cross-repository message reference",
   "type": "object",
   "additionalProperties": false,
   "required": ["$schema", "protocol_version", "source_repository_owner", "source_repository", "source_commit", "source_path", "source_message_id", "source_sha256", "source_channel_id"],
   "properties": {
-    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/cross-repository-reference.schema.json"},
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.7.0/schemas/cross-repository-reference.schema.json"},
     "protocol_version": {"const": "0.6.0"},
     "source_repository_owner": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+$"},
     "source_repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},

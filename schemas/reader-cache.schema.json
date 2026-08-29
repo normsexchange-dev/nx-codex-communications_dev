@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/reader-cache.schema.json",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.7.0/schemas/reader-cache.schema.json",
   "title": "Reader-local pairwise cursor and deduplication cache",
   "type": "object",
   "additionalProperties": false,
   "required": ["$schema", "protocol_version", "channel_id", "publisher_repository", "last_commit", "last_sequence", "observed_at", "processed"],
   "properties": {
-    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/reader-cache.schema.json"},
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.7.0/schemas/reader-cache.schema.json"},
     "protocol_version": {"const": "0.6.0"},
     "channel_id": {"type": "string", "pattern": "^channel-[a-z0-9][a-z0-9-]{7,79}$"},
     "publisher_repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
