@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.0 — 2026-08-29
+
+- Added exact immutable discovery of the vendor-neutral `persistent-multi-agent-github` environment operating profile after validated genesis.
+- Added explicit environment-mode selection, existing-control-plane discovery, dry-run provisioning proposals, owner authority stops, distinct-agent enrollment, and separately selected family adoption.
+- Kept Autostart concise while preserving communications as genesis/interoperability authority and separating profile, runtime, family, mission, goal, internal operations, and external-channel concerns.
+- Preserved pairwise protocol 0.6 semantics, all prior annotated releases, foreign sovereignty, and the rule that no adoption grants credentials, repository access, mission activation, messaging, external action, sourcing, Shopify, commerce, or deployment authority.
+
 ## 0.6.0 — 2026-08-27
 
 - Added publisher-owned pairwise channel, message, immutable reference, outbound index, and reader-local cache schemas without changing the v0.5 sovereign `.nx/` interface.

@@ -1,6 +1,6 @@
 CREATE A FRESH SOVEREIGN NX GENESIS
 
-Use only the exact annotated communications-v0.6.0 tag target. Verify the empty destination's owner, repository, environment identifier, runtime, human principal, exact genesis anchor commit, and UTC time.
+Use only the exact annotated communications-v0.7.0 tag target. Verify the empty destination's owner, repository, environment identifier, runtime, human principal, exact genesis anchor commit, and UTC time.
 
 Run fresh materialization and verify the six `.nx/` files. Record the annotated tag object, target commit, source digest, initial core digest, and sovereignty transfer. Commit and publish using the destination owner's normal authentication, then verify the exact public commit.
 

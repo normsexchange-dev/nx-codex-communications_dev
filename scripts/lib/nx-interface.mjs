@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-export const VERSION = '0.6.0';
+export const VERSION = '0.7.0';
 export const TAG = `communications-v${VERSION}`;
 export const SOURCE_REPOSITORY = 'normsexchange-dev/nx-codex-communications_dev';
 export const SOVEREIGN_INTERFACE_VERSION = '0.5.0';

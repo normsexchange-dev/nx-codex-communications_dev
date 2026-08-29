@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0.0",
+  "profile_id": "persistent-multi-agent-github",
+  "profile_version": "1.0.0",
+  "repository": "normsexchange-dev/nx-environment-profiles_dev",
+  "registry_path": "registry/profiles.json",
+  "manifest_path": "profiles/persistent-multi-agent-github/profile.json",
+  "annotated_tag": "environment-profiles-v1.0.0",
+  "tag_object": "49ff755a6ef5b1e2802e87f41f1988b746d845ff",
+  "tag_target": "ae8dda95593e27a780b3f090497a41d8ec62d8ff",
+  "adoption_is_separate_authority": true
+}

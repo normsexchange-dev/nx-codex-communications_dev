@@ -7,6 +7,7 @@
     {"tag": "communications-v0.2.0", "object": "b7ae00805cd8bb7981980aa68c97f1e85419489e", "type": "tag", "target": "0f5c75c5d75341cb7a2ac972315ee5dc1c1b2653"},
     {"tag": "communications-v0.3.0", "object": "7a09834c24ff02407a13ebc035632086304d99d2", "type": "tag", "target": "011fdc5794f226dd60f2df1d9cfeb981eb117c71"},
     {"tag": "communications-v0.4.0", "object": "a01f41477b7c034f91d7aa63e436ad9db43f65d6", "type": "tag", "target": "ca0ed421b1247c71e74648ffc11fb67ea6dfb32b"},
-    {"tag": "communications-v0.5.0", "object": "abfc95d4d42fdaf74e53c01dbf790b88508389fb", "type": "tag", "target": "cc024c8c7a1d03e899cad0d3a0823a22c2550845"}
+    {"tag": "communications-v0.5.0", "object": "abfc95d4d42fdaf74e53c01dbf790b88508389fb", "type": "tag", "target": "cc024c8c7a1d03e899cad0d3a0823a22c2550845"},
+    {"tag": "communications-v0.6.0", "object": "500d084b11d5b979a05c583e5ce401683e4f0aa0", "type": "tag", "target": "9a545b4f96d6cce713e9ab1d8e46aea65b387ac7"}
   ]
 }

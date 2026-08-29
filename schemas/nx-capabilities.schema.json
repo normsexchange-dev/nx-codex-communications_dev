@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/nx-capabilities.schema.json",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.7.0/schemas/nx-capabilities.schema.json",
   "title": "NX declared capability and authority provenance",
   "type": "object",
   "additionalProperties": false,
   "required": ["$schema", "schema_version", "environment_id", "declarations"],
   "properties": {
-    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.6.0/schemas/nx-capabilities.schema.json"},
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.7.0/schemas/nx-capabilities.schema.json"},
     "schema_version": {"const": "1.0.0"}, "environment_id": {"type": "string", "minLength": 2},
     "declarations": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["capability_id", "scope", "state", "authorized_by", "valid_from", "expires_at", "evidence_refs"], "properties": {
       "capability_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]+$"}, "scope": {"enum": ["internal", "external"]},

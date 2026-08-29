@@ -251,8 +251,21 @@ test('public source preserves v0.5 sovereign semantics and adds eight generic pa
   assert.equal(fs.readdirSync(path.join(root, 'prompts', 'pairwise')).filter((name) => name.endsWith('.txt')).length, 8);
   assert.equal(fs.existsSync(path.join(root, 'prompts', 'private-intake-connection.txt')), false);
   const previous = JSON.parse(fs.readFileSync(path.join(root, 'release', 'previous-tags.json'), 'utf8'));
-  assert.equal(previous.tags.length, 7);
-  assert.equal(previous.tags.at(-1).tag, 'communications-v0.5.0');
-  assert.equal(VERSION, '0.6.0');
+  assert.equal(previous.tags.length, 8);
+  assert.equal(previous.tags.at(-1).tag, 'communications-v0.6.0');
+  assert.equal(VERSION, '0.7.0');
   assert.equal(SOVEREIGN_INTERFACE_VERSION, '0.5.0');
+});
+
+test('Autostart pins one exact operating profile while keeping adoption separately authorized', () => {
+  const reference = JSON.parse(fs.readFileSync(path.join(root, 'release', 'environment-profile.json'), 'utf8'));
+  const autostart = fs.readFileSync(path.join(root, 'AUTOSTART.md'), 'utf8');
+  assert.equal(reference.profile_id, 'persistent-multi-agent-github');
+  assert.equal(reference.profile_version, '1.0.0');
+  assert.match(reference.tag_object, /^[a-f0-9]{40}$/);
+  assert.match(reference.tag_target, /^[a-f0-9]{40}$/);
+  assert.equal(reference.adoption_is_separate_authority, true);
+  for (const mode of ['session-only', 'persistent-single-agent', 'persistent-multi-agent', 'enroll-existing']) assert.match(autostart, new RegExp(mode));
+  assert.match(autostart, /Never duplicate an existing environment/);
+  assert.match(autostart, /Stop before mission activation/);
 });
