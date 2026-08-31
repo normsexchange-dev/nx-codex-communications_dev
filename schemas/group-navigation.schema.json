@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/group-navigation.schema.json",
-  "title": "Private environment-local NX group navigation candidate",
+  "title": "Private environment-local NX group navigation",
   "description": "This object belongs only in reader-local state. It MUST NOT be published in a message-store repository or reserved public .nx surface.",
   "type": "object",
   "additionalProperties": false,

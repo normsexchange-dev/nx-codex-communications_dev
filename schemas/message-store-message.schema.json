@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/message-store-message.schema.json",
-  "title": "NX message store message candidate",
+  "title": "NX message store message",
   "type": "object",
   "additionalProperties": false,
   "required": ["$schema", "protocol_version", "message_id", "sequence", "store_id", "sender_environment", "interaction_intent", "semantic", "created_at", "content", "model_attention", "references"],

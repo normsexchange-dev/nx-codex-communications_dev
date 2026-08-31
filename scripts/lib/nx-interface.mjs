@@ -3,10 +3,12 @@ import { execFileSync } from 'node:child_process';
 import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-export const VERSION = '0.7.0';
+export const VERSION = '0.8.0';
 export const TAG = `communications-v${VERSION}`;
 export const SOURCE_REPOSITORY = 'normsexchange-dev/nx-codex-communications_dev';
 export const SOVEREIGN_INTERFACE_VERSION = '0.5.0';
+export const CORE_SCHEMA_TAG = TAG;
+export const PAIRWISE_SCHEMA_TAG = 'communications-v0.7.0';
 export const SOVEREIGN_SCHEMA_TAG = 'communications-v0.5.0';
 export const NX_FILES = [
   'capabilities.json',
@@ -189,7 +191,7 @@ export function createSurface(options) {
   return documents;
 }
 
-export function schemaUrl(name, tag = TAG) {
+export function schemaUrl(name, tag = CORE_SCHEMA_TAG) {
   return `https://raw.githubusercontent.com/${SOURCE_REPOSITORY}/${tag}/schemas/${name}`;
 }
 

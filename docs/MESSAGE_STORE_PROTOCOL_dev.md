@@ -1,6 +1,6 @@
-# NX Message Store Protocol — 0.8.0 Candidate
+# NX Message Store Protocol — 0.8.0
 
-Status: development candidate. The immutable released communications version remains `communications-v0.7.0`. No `communications-v0.8.0` tag or public reference store is claimed by this document.
+Status: released by the immutable annotated tag `communications-v0.8.0`. The public reference stores remain a separately planned post-release proof and are not claimed to exist by this document.
 
 ## Purpose
 
@@ -36,7 +36,7 @@ Private group navigation—what groups an environment has joined and which store
 
 Delivery is durable pull. The default reader interval is 900 seconds and the minimum declared interval is 60 seconds. Polling cadence and publisher cadence are advisory; neither is a delivery guarantee. Readers should use conditional repository requests or commit comparison when their adapter supports them.
 
-This candidate does not start a service, schedule a reader, invoke a model, or create credentials. An adapter must separately prove those runtime capabilities.
+This release does not start a service, schedule a reader, invoke a model, or create credentials. An adapter must separately prove those runtime capabilities.
 
 ## Message meaning
 
@@ -48,7 +48,7 @@ Every message declares an interaction intent:
 - `acknowledgement`
 - `lifecycle`
 
-It also declares a versioned semantic type. Core candidate semantics are `nx.message@1.0.0` and `nx.store.closed@1.0.0`.
+It also declares a versioned semantic type. Core 0.8 semantics are `nx.message@1.0.0` and `nx.store.closed@1.0.0`.
 
 A request is data, not authority. `model_attention.classification: candidate_action` is only a publisher hint. The reader must independently verify scope, credentials, policy, human authority, and usage before any external action or model invocation.
 
@@ -58,7 +58,7 @@ A valid message with an unsupported semantic type is retained in the reader's `p
 
 Cross-repository references identify a repository, commit, path, and SHA-256. Failure to access or verify a reference does not make its claims true or false. The reader records it as unverified and defers any action that depends on it. A missing credential is not a reason to request or expose one in a message.
 
-An exact repository commit proves content identity, not the real-world identity of whoever controlled the account. Account or host compromise can violate the writer boundary. Independent message signatures and controller-key revocation remain an unsolved future design question, not a candidate claim.
+An exact repository commit proves content identity, not the real-world identity of whoever controlled the account. Account or host compromise can violate the writer boundary. Independent message signatures and controller-key revocation remain an unsolved future design question, not a 0.8 claim.
 
 ## Cursor, replay, and idempotency
 
@@ -72,7 +72,7 @@ Closure is an append-only lifecycle event. The final message uses `interaction_i
 
 ## Usage and model gate
 
-The candidate reader validates and classifies without calling a model. `evaluateUsageGate` returns status only. Eligibility requires all of the following:
+The 0.8 reader validates and classifies without calling a model. `evaluateUsageGate` returns status only. Eligibility requires all of the following:
 
 1. automatic execution was explicitly enabled by a separate environment authority;
 2. the message is locally judged actionable;
@@ -85,7 +85,7 @@ With automatic execution disabled—the default in this repository—the result 
 
 ## Relationship to A2A
 
-NX message stores and the A2A protocol solve adjacent problems. Message stores provide repository-native durable exchange, sovereign ownership, and offline audit history. A2A provides network discovery, Agent Cards, task interaction, and standard bindings. This candidate does not implement A2A and does not advertise an Agent Card. A later adapter could reference message-store capabilities from an A2A surface without replacing either protocol.
+NX message stores and the A2A protocol solve adjacent problems. Message stores provide repository-native durable exchange, sovereign ownership, and offline audit history. A2A provides network discovery, Agent Cards, task interaction, and standard bindings. This release does not implement A2A and does not advertise an Agent Card. A later adapter could reference message-store capabilities from an A2A surface without replacing either protocol.
 
 ## Security invariants
 

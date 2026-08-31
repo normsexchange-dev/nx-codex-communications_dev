@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { SOURCE_REPOSITORY, TAG, VERSION, assert, readJson, sanitizedError } from './lib/nx-interface.mjs';
+import { CORE_SCHEMA_TAG, PAIRWISE_SCHEMA_TAG, SOURCE_REPOSITORY, TAG, VERSION, assert, readJson, sanitizedError } from './lib/nx-interface.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REQUIRED = [
@@ -27,7 +27,7 @@ const REQUIRED = [
   'schemas/message-store.schema.json', 'schemas/message-store-message.schema.json',
   'schemas/message-store-index.schema.json', 'schemas/reader-state-v0.8.schema.json',
   'schemas/group-navigation.schema.json', 'schemas/nx-capabilities-v0.8.schema.json',
-  'schemas/v0.7-v0.8-adoption.schema.json', 'release/candidates/communications-v0.8.0.json',
+  'schemas/v0.7-v0.8-adoption.schema.json', 'release/communications-v0.8.0.json',
   'scripts/lib/nx-interface.mjs', 'scripts/materialize-genesis.mjs', 'scripts/negotiate-version.mjs',
   'scripts/lib/pairwise-channel.mjs', 'scripts/initialize-pairwise-channel.mjs', 'scripts/validate-pairwise-channel.mjs',
   'scripts/propose-pairwise-message.mjs', 'scripts/create-pairwise-acknowledgement.mjs',
@@ -78,13 +78,13 @@ async function validateSchemas() {
   for (const name of ['nx-capabilities.schema.json', 'nx-environment.schema.json', 'nx-genesis.schema.json', 'nx-interoperability.schema.json', 'nx-lineage.schema.json', 'nx-provenance.schema.json']) {
     const schema = await readJson(path.join(root, 'schemas', name));
     assert(schema.$schema === 'https://json-schema.org/draft/2020-12/schema', `schema_draft_invalid:${name}`);
-    assert(schema.$id === `https://raw.githubusercontent.com/${SOURCE_REPOSITORY}/${TAG}/schemas/${name}`, `sovereign_schema_identity_invalid:${name}`);
+    assert(schema.$id === `https://raw.githubusercontent.com/${SOURCE_REPOSITORY}/${CORE_SCHEMA_TAG}/schemas/${name}`, `sovereign_schema_identity_invalid:${name}`);
     assert(schema.type === 'object' && schema.additionalProperties === false, `schema_not_restrictive:${name}`);
   }
   for (const name of ['pairwise-channel.schema.json', 'pairwise-message.schema.json', 'cross-repository-reference.schema.json', 'outbound-index.schema.json', 'reader-cache.schema.json']) {
     const schema = await readJson(path.join(root, 'schemas', name));
     assert(schema.$schema === 'https://json-schema.org/draft/2020-12/schema', `schema_draft_invalid:${name}`);
-    assert(schema.$id === `https://raw.githubusercontent.com/${SOURCE_REPOSITORY}/${TAG}/schemas/${name}`, `schema_release_identity_invalid:${name}`);
+    assert(schema.$id === `https://raw.githubusercontent.com/${SOURCE_REPOSITORY}/${PAIRWISE_SCHEMA_TAG}/schemas/${name}`, `schema_release_identity_invalid:${name}`);
     assert(schema.type === 'object' && schema.additionalProperties === false, `schema_not_restrictive:${name}`);
   }
   for (const name of [
@@ -94,28 +94,31 @@ async function validateSchemas() {
     'v0.7-v0.8-adoption.schema.json'
   ]) {
     const schema = await readJson(path.join(root, 'schemas', name));
-    assert(schema.$schema === 'https://json-schema.org/draft/2020-12/schema', `candidate_schema_draft_invalid:${name}`);
-    assert(schema.$id === `https://raw.githubusercontent.com/${SOURCE_REPOSITORY}/communications-v0.8.0/schemas/${name}`, `candidate_schema_identity_invalid:${name}`);
-    assert(schema.type === 'object' && schema.additionalProperties === false, `candidate_schema_not_restrictive:${name}`);
+    assert(schema.$schema === 'https://json-schema.org/draft/2020-12/schema', `release_schema_draft_invalid:${name}`);
+    assert(schema.$id === `https://raw.githubusercontent.com/${SOURCE_REPOSITORY}/${TAG}/schemas/${name}`, `release_schema_identity_invalid:${name}`);
+    assert(schema.type === 'object' && schema.additionalProperties === false, `release_schema_not_restrictive:${name}`);
   }
 }
 
-async function validateCandidate() {
-  const candidate = await readJson(path.join(root, 'release', 'candidates', 'communications-v0.8.0.json'));
-  assert(candidate.schema_version === '1.0.0' && candidate.candidate_version === '0.8.0', 'candidate_identity_invalid');
-  assert(candidate.proposed_tag === 'communications-v0.8.0' && candidate.release_status === 'candidate_unreleased', 'candidate_release_status_invalid');
-  assert(candidate.immutable_tag_exists === false && candidate.compatible_release === TAG, 'candidate_release_claim_invalid');
-  assert(candidate.compatibility === 'parallel_additive', 'candidate_compatibility_invalid');
-  assert(candidate.claims.public_reference_repositories_exist === false, 'candidate_reference_claim_invalid');
-  assert(candidate.claims.automatic_model_execution_enabled === false, 'candidate_automatic_execution_claim_invalid');
-  assert(candidate.claims.a2a_protocol_implemented === false, 'candidate_a2a_claim_invalid');
-  assert(candidate.schemas.includes('schemas/nx-capabilities-v0.8.schema.json'), 'candidate_capability_schema_missing');
-  assert(candidate.schemas.includes('schemas/v0.7-v0.8-adoption.schema.json'), 'candidate_migration_schema_missing');
+async function validateReleaseManifest() {
+  const release = await readJson(path.join(root, 'release', 'communications-v0.8.0.json'));
+  assert(release.schema_version === '1.0.0' && release.release_version === VERSION, 'release_identity_invalid');
+  assert(release.tag === TAG && release.release_status === 'released', 'release_status_invalid');
+  assert(release.compatible_previous_release === 'communications-v0.7.0' && release.compatibility === 'parallel_additive', 'release_compatibility_invalid');
+  assert(release.validation.deterministic_protocol_suite === 'required', 'release_validation_suite_missing');
+  assert(release.validation.independent_cold_reader_review === 'addressed', 'release_cold_reader_review_missing');
+  assert(release.validation.public_reference_exchange === 'post_release_pending', 'release_reference_status_invalid');
+  assert(release.validation.immutable_annotated_tag === 'required', 'release_tag_requirement_missing');
+  assert(release.claims.public_reference_repositories_exist === false, 'release_reference_claim_invalid');
+  assert(release.claims.automatic_model_execution_enabled === false, 'release_automatic_execution_claim_invalid');
+  assert(release.claims.a2a_protocol_implemented === false, 'release_a2a_claim_invalid');
+  assert(release.schemas.includes('schemas/nx-capabilities-v0.8.schema.json'), 'release_capability_schema_missing');
+  assert(release.schemas.includes('schemas/v0.7-v0.8-adoption.schema.json'), 'release_migration_schema_missing');
 }
 
 async function validatePreviousTags() {
   const release = await readJson(path.join(root, 'release', 'previous-tags.json'));
-  assert(release.schema_version === '1.0.0' && release.tags.length === 8, 'previous_tag_catalog_invalid');
+  assert(release.schema_version === '1.0.0' && release.tags.length === 9, 'previous_tag_catalog_invalid');
   for (const entry of release.tags) {
     assert(git(['rev-parse', `refs/tags/${entry.tag}`]) === entry.object, `previous_tag_object_changed:${entry.tag}`);
     assert(git(['cat-file', '-t', `refs/tags/${entry.tag}`]) === entry.type, `previous_tag_type_changed:${entry.tag}`);
@@ -129,8 +132,12 @@ async function main() {
   for (const required of REQUIRED) assert(files.includes(required), `required_source_file_missing:${required}`);
   assert((await readFile(path.join(root, 'COMMUNICATIONS_VERSION'), 'utf8')).trim() === VERSION, 'communications_version_mismatch');
   await validateSchemas();
-  await validateCandidate();
+  await validateReleaseManifest();
   await validatePreviousTags();
+  if (branch === TAG) {
+    assert(git(['cat-file', '-t', `refs/tags/${TAG}`]) === 'tag', 'current_release_tag_must_be_annotated');
+    assert(git(['rev-list', '-n', '1', `refs/tags/${TAG}`]) === git(['rev-parse', 'HEAD']), 'current_release_tag_target_mismatch');
+  }
 
   const workflow = await readFile(path.join(root, '.github/workflows/validate-communications.yml'), 'utf8');
   assert(/permissions:\s*\r?\n\s+contents:\s*read/.test(workflow) && !/contents:\s*write/.test(workflow), 'workflow_permissions_invalid');
@@ -139,7 +146,7 @@ async function main() {
   assert(!/\bsecrets\./.test(workflow) && !/pull_request_target/.test(workflow), 'workflow_secret_or_untrusted_trigger');
 
   const readme = (await readFile(path.join(root, 'README.md'), 'utf8')).toLowerCase();
-  for (const phrase of ['genesis proves lineage', 'sovereignty begins', 'reserved `.nx/`', 'no global external-environment go/no-go', 'communications-v0.7.0', 'publisher-owned pairwise channels', 'sole writer', 'not admit records', 'environment operating-profile discovery', 'provision-once/enroll-repeatedly']) assert(readme.includes(phrase), `readme_boundary_missing:${phrase}`);
+  for (const phrase of ['genesis proves lineage', 'sovereignty begins', 'reserved `.nx/`', 'no global external-environment go/no-go', 'communications-v0.8.0', 'publisher-owned pairwise channels', 'publisher-owned group message stores', 'sole writer', 'not admit records', 'environment operating-profile discovery', 'provision-once/enroll-repeatedly']) assert(readme.includes(phrase), `readme_boundary_missing:${phrase}`);
   const environmentProfile = await readJson(path.join(root, 'release', 'environment-profile.json'));
   assert(environmentProfile.profile_id === 'persistent-multi-agent-github' && environmentProfile.profile_version === '1.0.0', 'environment_profile_identity_invalid');
   assert(environmentProfile.repository === 'normsexchange-dev/nx-environment-profiles_dev' && environmentProfile.annotated_tag === 'environment-profiles-v1.0.0', 'environment_profile_release_invalid');
@@ -189,7 +196,7 @@ async function main() {
     }
     if (relative.endsWith('.mjs')) for (const match of text.matchAll(/^import .* from ['"]([^'"]+)['"];$/gm)) assert(match[1].startsWith('node:') || match[1].startsWith('.'), `third_party_import:${relative}`);
   }
-  console.log(`validate-communications: PASS (${files.length} files; communications ${VERSION}; branch ${branch}; eight prior tags immutable; profile release exact)`);
+  console.log(`validate-communications: PASS (${files.length} files; communications ${VERSION}; branch ${branch}; nine prior tags immutable; profile release exact)`);
 }
 
 main().catch((error) => { console.error(`VALIDATION ERROR ${sanitizedError(error)}`); process.exitCode = 2; });

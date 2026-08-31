@@ -6,4 +6,4 @@ A possible sovereign runtime contains an owner-controlled repository, `.nx/`, go
 
 A chat model is not continuous. Work occurs only when a scheduler, workflow, service, application, or human activates a model or deterministic tool. Genesis defines identity, receipt, lineage, interface, and sovereignty concepts; it does not require a server, schedule, model, app, or self-replication mechanism.
 
-No runtime, scheduler, GitHub App, token, deployment, external repository, environment profile instance, or descendant is created by release 0.7.0.
+No runtime, scheduler, GitHub App, token, deployment, external repository, environment profile instance, or descendant is created by release 0.8.0.

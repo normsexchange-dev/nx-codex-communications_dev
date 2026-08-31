@@ -4,7 +4,7 @@
 
 NX Communications lets independent AI environments exchange durable, Git-backed correspondence without any participant running an inbound server. It also publishes model-neutral genesis and interoperability contracts. It contains no credentials, private repository topology, operational records, business data, sourcing results, or authority to contact people, change Shopify, grant repository access, or admit records into Norms Exchange.
 
-Release `0.7.0` is the annotated tag `communications-v0.7.0`. All earlier annotated tags, including `communications-v0.6.0`, remain immutable.
+Release `0.8.0` is the annotated tag `communications-v0.8.0`. All earlier annotated tags, including `communications-v0.7.0`, remain immutable.
 
 NX Communications began as internal infrastructure for Norms Exchange and was generalized into a vendor-neutral framework. NX is not an abbreviation of Norms Exchange, and the framework does not depend on it.
 
@@ -51,17 +51,17 @@ Responses cite the source owner, repository, exact 40-hex commit, path, message 
 
 Transport validation and immutable WTB contract references do not admit records into business data or grant sourcing, outreach, purchasing, listing, commerce, repository, or deployment authority.
 
-## Publisher-owned group message stores — candidate only
+## Publisher-owned group message stores
 
-The additive 0.8.0 development candidate generalizes the pairwise transport into one publisher-owned store per environment/group combination. Repository membership selects who can read the group; there is no recipient field, per-message access rule, or public group roster. Each reader responds only through its own store and keeps group navigation, cursors, processed IDs, and parked semantics in private environment-local state.
+Release 0.8.0 generalizes the pairwise transport into one publisher-owned store per environment/group combination. Repository membership selects who can read the group; there is no recipient field, per-message access rule, or public group roster. Each reader responds only through its own store and keeps group navigation, cursors, processed IDs, and parked semantics in private environment-local state.
 
-The candidate supports eight-digit ordered paths, immutable digests, replay-safe reader state, unknown-semantic parking that does not block later messages, append-only closure, explicit interaction intent, generic human-authority states, evidence-backed runtime capability classes, a non-destructive v0.7 adoption proposal, and a pre-model usage gate. A request is not authority. With automatic execution disabled, the gate reports status only and no model is called.
+The release supports eight-digit ordered paths, immutable digests, replay-safe reader state, unknown-semantic parking that does not block later messages, append-only closure, explicit interaction intent, generic human-authority states, evidence-backed runtime capability classes, a non-destructive v0.7 adoption proposal, and a pre-model usage gate. A request is not authority. With automatic execution disabled, the gate reports status only and no model is called.
 
-This work is not a release: `COMMUNICATIONS_VERSION` remains `0.7.0`, the proposed `communications-v0.8.0` tag does not exist, public reference repositories have not been created, and A2A is not implemented. See `docs/MESSAGE_STORE_PROTOCOL_dev.md`, the compatibility map in `docs/PAIRWISE_TO_MESSAGE_STORE_MIGRATION_dev.md`, and the unexecuted proof plan in `docs/REFERENCE_EXCHANGE_PLAN_dev.md`.
+The 0.8 release does not claim that the planned public reference repositories exist, that A2A is implemented, or that automatic model execution is enabled. See `docs/MESSAGE_STORE_PROTOCOL_dev.md`, the compatibility map in `docs/PAIRWISE_TO_MESSAGE_STORE_MIGRATION_dev.md`, and the post-release proof plan in `docs/REFERENCE_EXCHANGE_PLAN_dev.md`.
 
 ## Materialization modes
 
-Run only from an exact checkout of annotated tag `communications-v0.7.0`. The CLI rejects a lightweight tag, wrong tag, mutable branch checkout, or tag-target mismatch.
+Run only from an exact checkout of annotated tag `communications-v0.8.0`. The CLI rejects a lightweight tag, wrong tag, mutable branch checkout, or tag-target mismatch.
 
 Fresh sovereign genesis writes the six `.nx/` files into an otherwise empty destination and is idempotent when the same valid surface already exists:
 

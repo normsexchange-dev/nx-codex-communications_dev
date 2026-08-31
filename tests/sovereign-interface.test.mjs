@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { materialize } from '../scripts/materialize-genesis.mjs';
 import { securityReview } from '../scripts/security-review.mjs';
 import {
-  NX_FILES, SOURCE_REPOSITORY, SOVEREIGN_INTERFACE_VERSION, TAG, VERSION, coreDigestPayload, createSurface,
+  CORE_SCHEMA_TAG, NX_FILES, SOURCE_REPOSITORY, SOVEREIGN_INTERFACE_VERSION, TAG, VERSION, coreDigestPayload, createSurface,
   hashJson, negotiateVersions
 } from '../scripts/lib/nx-interface.mjs';
 import { verifyInterface } from '../scripts/verify-interface.mjs';
@@ -63,12 +63,12 @@ test('fresh genesis is exact, records release identity and sovereignty transfer,
   assert.equal((await materialize({ ...base, outputRoot })).status, 'IDEMPOTENT');
 });
 
-test('v0.6 verifier remains compatible with an immutable v0.5 sovereign surface', async (t) => {
+test('v0.8 verifier remains compatible with an immutable v0.5 sovereign surface', async (t) => {
   const outputRoot = temporary(t);
   await materialize({ ...base, outputRoot });
   for (const name of NX_FILES) {
     const document = read(outputRoot, name);
-    document.$schema = document.$schema.replace('communications-v0.6.0', 'communications-v0.5.0');
+    document.$schema = document.$schema.replace(CORE_SCHEMA_TAG, 'communications-v0.5.0');
     write(outputRoot, name, document);
   }
   const genesis = read(outputRoot, 'genesis.json');
@@ -82,6 +82,26 @@ test('v0.6 verifier remains compatible with an immutable v0.5 sovereign surface'
   const result = await verifyInterface(outputRoot, { expectedRepository: base.repository });
   assert.equal(result.interface, 'INTERFACE_COMPATIBLE');
   assert.equal(result.negotiated_version, '0.5.0');
+});
+
+test('v0.8 verifier remains compatible with an immutable v0.7 genesis release', async (t) => {
+  const outputRoot = temporary(t);
+  await materialize({ ...base, outputRoot });
+  for (const name of NX_FILES) {
+    const document = read(outputRoot, name);
+    document.$schema = document.$schema.replace(CORE_SCHEMA_TAG, 'communications-v0.7.0');
+    write(outputRoot, name, document);
+  }
+  const genesis = read(outputRoot, 'genesis.json');
+  genesis.canonical_release.tag = 'communications-v0.7.0';
+  genesis.materializer.version = '0.7.0';
+  write(outputRoot, 'genesis.json', genesis);
+  const lineage = read(outputRoot, 'lineage.json');
+  lineage.canonical_genesis.tag = 'communications-v0.7.0';
+  write(outputRoot, 'lineage.json', lineage);
+  rehash(outputRoot);
+  const result = await verifyInterface(outputRoot, { expectedRepository: base.repository });
+  assert.equal(result.interface, 'INTERFACE_COMPATIBLE');
 });
 
 test('fresh genesis rejects nonempty output, false owner/repository identity, and invalid anchors', async (t) => {
@@ -251,9 +271,9 @@ test('public source preserves v0.5 sovereign semantics and adds eight generic pa
   assert.equal(fs.readdirSync(path.join(root, 'prompts', 'pairwise')).filter((name) => name.endsWith('.txt')).length, 8);
   assert.equal(fs.existsSync(path.join(root, 'prompts', 'private-intake-connection.txt')), false);
   const previous = JSON.parse(fs.readFileSync(path.join(root, 'release', 'previous-tags.json'), 'utf8'));
-  assert.equal(previous.tags.length, 8);
-  assert.equal(previous.tags.at(-1).tag, 'communications-v0.6.0');
-  assert.equal(VERSION, '0.7.0');
+  assert.equal(previous.tags.length, 9);
+  assert.equal(previous.tags.at(-1).tag, 'communications-v0.7.0');
+  assert.equal(VERSION, '0.8.0');
   assert.equal(SOVEREIGN_INTERFACE_VERSION, '0.5.0');
 });
 

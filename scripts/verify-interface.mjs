@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import {
-  CAPABILITY_STATES, INTERFACES, NX_FILES, PROVENANCE, SOURCE_REPOSITORY, SOVEREIGN_INTERFACE_VERSION, SOVEREIGN_SCHEMA_TAG, TAG, VERSION,
+  CAPABILITY_STATES, CORE_SCHEMA_TAG, INTERFACES, NX_FILES, PROVENANCE, SOURCE_REPOSITORY, SOVEREIGN_INTERFACE_VERSION, SOVEREIGN_SCHEMA_TAG, TAG, VERSION,
   assert, coreDigestPayload, exactKeys, hashJson, parseArgs, readJson, sanitizedError,
   schemaUrl, stableStringify, validateIdentity
 } from './lib/nx-interface.mjs';
@@ -12,8 +12,16 @@ const SHA_PATTERN = /^[a-f0-9]{40}$/;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
 
 function schemaIdentity(value, name) {
-  return [schemaUrl(name), schemaUrl(name, SOVEREIGN_SCHEMA_TAG)].includes(value.$schema);
+  return [CORE_SCHEMA_TAG, 'communications-v0.7.0', 'communications-v0.6.0', SOVEREIGN_SCHEMA_TAG]
+    .map((tag) => schemaUrl(name, tag)).includes(value.$schema);
 }
+
+const SUPPORTED_GENESIS_RELEASES = new Map([
+  [TAG, VERSION],
+  ['communications-v0.7.0', '0.7.0'],
+  ['communications-v0.6.0', '0.6.0'],
+  ['communications-v0.5.0', '0.5.0']
+]);
 
 function baseResult(repository = null, commit = null) {
   return {
@@ -41,10 +49,10 @@ function validateGenesis(value, environment) {
   assert(schemaIdentity(value, 'nx-genesis.schema.json') && value.schema_version === '1.0.0', 'genesis_schema_invalid');
   assert(['fresh', 'historical_adoption', 'descendant'].includes(value.genesis_type), 'genesis_type_invalid');
   exactKeys(value.canonical_release, ['repository', 'tag', 'tag_object', 'target_commit', 'source_digest'], 'genesis_release');
-  assert(value.canonical_release.repository === SOURCE_REPOSITORY && [TAG, 'communications-v0.5.0'].includes(value.canonical_release.tag), 'genesis_release_identity_invalid');
+  assert(value.canonical_release.repository === SOURCE_REPOSITORY && SUPPORTED_GENESIS_RELEASES.has(value.canonical_release.tag), 'genesis_release_identity_invalid');
   assert(SHA_PATTERN.test(value.canonical_release.tag_object) && SHA_PATTERN.test(value.canonical_release.target_commit) && SHA256_PATTERN.test(value.canonical_release.source_digest), 'genesis_release_hash_invalid');
   exactKeys(value.materializer, ['name', 'version'], 'genesis_materializer');
-  const expectedMaterializer = value.canonical_release.tag === TAG ? VERSION : '0.5.0';
+  const expectedMaterializer = SUPPORTED_GENESIS_RELEASES.get(value.canonical_release.tag);
   assert(value.materializer.name === 'nx-sovereign-genesis' && value.materializer.version === expectedMaterializer, 'genesis_materializer_invalid');
   exactKeys(value.destination, ['owner', 'repository', 'environment_id', 'runtime'], 'genesis_destination');
   assert(value.destination.owner === environment.namespace_owner && value.destination.repository === environment.repository && value.destination.environment_id === environment.environment_id && value.destination.runtime === environment.runtime, 'genesis_destination_mismatch');

@@ -1,10 +1,9 @@
 {
   "schema_version": "1.0.0",
-  "candidate_version": "0.8.0",
-  "proposed_tag": "communications-v0.8.0",
-  "release_status": "candidate_unreleased",
-  "immutable_tag_exists": false,
-  "compatible_release": "communications-v0.7.0",
+  "release_version": "0.8.0",
+  "tag": "communications-v0.8.0",
+  "release_status": "released",
+  "compatible_previous_release": "communications-v0.7.0",
   "compatibility": "parallel_additive",
   "schemas": [
     "schemas/message-store.schema.json",
@@ -23,11 +22,12 @@
     "scripts/scan-message-store.mjs",
     "scripts/lib/capabilities-v0.8.mjs"
   ],
-  "release_gates": [
-    "independent_cold_reader_review",
-    "reference_exchange_validation",
-    "immutable_tag_authorization"
-  ],
+  "validation": {
+    "deterministic_protocol_suite": "required",
+    "independent_cold_reader_review": "addressed",
+    "public_reference_exchange": "post_release_pending",
+    "immutable_annotated_tag": "required"
+  },
   "claims": {
     "public_reference_repositories_exist": false,
     "automatic_model_execution_enabled": false,

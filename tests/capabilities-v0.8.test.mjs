@@ -12,7 +12,7 @@ import {
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const runtimeCapability = {
   execution_class: 'interactive-tool',
-  evidence_profile: 'environment-profiles-v1.1.0-candidate',
+  evidence_profile: 'example-runtime-evidence-profile',
   assessment_ref: 'environment-local/runtime-capability.json',
   assessment_sha256: 'a'.repeat(64),
   assessed_at: '2030-01-01T00:00:00.000Z'
@@ -39,7 +39,7 @@ function v07Capabilities() {
   };
 }
 
-test('v0.8 candidate authority vocabulary is generic and runtime evidence is structural', async () => {
+test('v0.8 authority vocabulary is generic and runtime evidence is structural', async () => {
   assert.ok(GENERIC_AUTHORITY_STATES.includes('standing_human_authorized'));
   assert.ok(GENERIC_AUTHORITY_STATES.includes('temporarily_human_authorized'));
   assert.equal(GENERIC_AUTHORITY_STATES.some((item) => item.startsWith('ray_')), false);
@@ -63,7 +63,7 @@ test('v0.7 adoption maps old authority names without rewriting genesis or applyi
     'standing_human_authorized', 'temporarily_human_authorized'
   ]);
   assert.equal(proposal.source_release, 'communications-v0.7.0');
-  assert.equal(proposal.target_release, 'communications-v0.8.0-candidate');
+  assert.equal(proposal.target_release, 'communications-v0.8.0');
   assert.equal(validateCapabilitiesV08(proposal.proposed_capabilities), proposal.proposed_capabilities);
 });
 
@@ -86,11 +86,11 @@ test('official Ray reference principal is exactly lowercase while the public sch
   }));
 });
 
-test('immutable v0.7 capability schema and verifier recognition remain present', async () => {
-  const oldSchema = JSON.parse(await readFile(path.join(root, 'schemas/nx-capabilities.schema.json'), 'utf8'));
-  assert.match(oldSchema.$id, /communications-v0\.7\.0/);
-  assert.ok(oldSchema.properties.declarations.items.properties.state.enum.includes('ray_standing_authorized'));
+test('v0.8 core schema is release-bound and immutable v0.7 recognition remains supported', async () => {
+  const currentSchema = JSON.parse(await readFile(path.join(root, 'schemas/nx-capabilities.schema.json'), 'utf8'));
+  assert.match(currentSchema.$id, /communications-v0\.8\.0/);
+  assert.ok(currentSchema.properties.declarations.items.properties.state.enum.includes('ray_standing_authorized'));
   const verifier = await readFile(path.join(root, 'scripts/verify-interface.mjs'), 'utf8');
-  assert.ok(verifier.includes('SOVEREIGN_SCHEMA_TAG'));
-  assert.ok(verifier.includes('TAG'));
+  assert.ok(verifier.includes('SUPPORTED_GENESIS_RELEASES'));
+  assert.ok(verifier.includes("'communications-v0.7.0'"));
 });
