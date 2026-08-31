@@ -3,6 +3,12 @@ name: Validate communications
 on:
   push:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Optional immutable communications tag to verify
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -15,6 +21,14 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ inputs.release_tag || github.ref }}
+      - name: Restore annotated release tag object
+        if: ${{ github.ref_type == 'tag' || inputs.release_tag != '' }}
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+        run: git fetch --force origin "refs/tags/${RELEASE_TAG}:refs/tags/${RELEASE_TAG}"
       - name: Set up Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
@@ -22,5 +36,5 @@ jobs:
       - name: Run deterministic communications validation
         shell: bash
         run: |
-          node scripts/validate-communications.mjs --branch "${{ github.head_ref || github.ref_name }}"
+          node scripts/validate-communications.mjs --branch "${{ inputs.release_tag || github.head_ref || github.ref_name }}"
           node --test tests/*.test.mjs
