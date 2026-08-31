@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/reader-state-v0.8.schema.json",
+  "title": "Environment-local NX message store reader state candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "protocol_version", "store_id", "publisher_repository", "last_sequence", "observed_at", "processed", "parked"],
+  "properties": {
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/reader-state-v0.8.schema.json"},
+    "protocol_version": {"const": "0.8.0"},
+    "store_id": {"type": "string", "pattern": "^store-[a-z0-9][a-z0-9-]{7,119}$"},
+    "publisher_repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+    "last_sequence": {"type": "integer", "minimum": 0},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "processed": {"type": "array", "items": {"$ref": "#/$defs/observed"}},
+    "parked": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sequence", "message_id", "sha256", "semantic_type", "semantic_version", "reason", "observed_at"],
+        "properties": {
+          "sequence": {"type": "integer", "minimum": 1},
+          "message_id": {"type": "string", "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "semantic_type": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z0-9][a-z0-9-]*)+$"},
+          "semantic_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+          "reason": {"type": "string", "minLength": 1, "maxLength": 500},
+          "observed_at": {"type": "string", "format": "date-time"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "observed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sequence", "message_id", "sha256", "observed_at"],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1},
+        "message_id": {"type": "string", "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "observed_at": {"type": "string", "format": "date-time"}
+      }
+    }
+  }
+}

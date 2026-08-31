@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/message-store-index.schema.json",
+  "title": "NX message store append index candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "protocol_version", "store_id", "publisher_repository", "next_sequence", "status", "closed_at", "closure_message_id", "messages"],
+  "properties": {
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/message-store-index.schema.json"},
+    "protocol_version": {"const": "0.8.0"},
+    "store_id": {"type": "string", "pattern": "^store-[a-z0-9][a-z0-9-]{7,119}$"},
+    "publisher_repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/nx-msg-[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "next_sequence": {"type": "integer", "minimum": 1},
+    "status": {"enum": ["open", "closed"]},
+    "closed_at": {"type": ["string", "null"], "format": "date-time"},
+    "closure_message_id": {"type": ["string", "null"], "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"},
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sequence", "message_id", "path", "sha256", "interaction_intent", "semantic_type", "semantic_version", "created_at"],
+        "properties": {
+          "sequence": {"type": "integer", "minimum": 1},
+          "message_id": {"type": "string", "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"},
+          "path": {"type": "string", "pattern": "^messages/[0-9]{8}-msg-[a-z0-9][a-z0-9-]{15,79}\\.json$"},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "interaction_intent": {"enum": ["information", "request", "response", "acknowledgement", "lifecycle"]},
+          "semantic_type": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z0-9][a-z0-9-]*)+$"},
+          "semantic_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+          "created_at": {"type": "string", "format": "date-time"}
+        }
+      }
+    }
+  }
+}

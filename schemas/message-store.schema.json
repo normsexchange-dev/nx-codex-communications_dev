@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/message-store.schema.json",
+  "title": "Publisher-owned NX message store candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_version", "protocol_version", "store_id", "group_id", "publisher", "authority", "delivery", "message_path_pattern", "index_path", "index_role", "reader_state_location", "created_at"],
+  "properties": {
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/message-store.schema.json"},
+    "schema_version": {"const": "1.0.0"},
+    "protocol_version": {"const": "0.8.0"},
+    "store_id": {"type": "string", "pattern": "^store-[a-z0-9][a-z0-9-]{7,119}$"},
+    "group_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+){0,7}$"},
+    "publisher": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environment_id", "repository"],
+      "properties": {
+        "environment_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/nx-msg-[a-z0-9]+(?:-[a-z0-9]+)*$"}
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["publisher_write", "reader_access", "reader_mutations", "response_location", "requests_confer_authority"],
+      "properties": {
+        "publisher_write": {"const": "exclusive"},
+        "reader_access": {"const": "repository_membership"},
+        "reader_mutations": {"type": "array", "maxItems": 0},
+        "response_location": {"const": "reader_owned_publisher_store"},
+        "requests_confer_authority": {"const": false}
+      }
+    },
+    "delivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "default_poll_seconds", "minimum_poll_seconds", "publisher_cadence"],
+      "properties": {
+        "mode": {"const": "durable_pull"},
+        "default_poll_seconds": {"type": "integer", "minimum": 60},
+        "minimum_poll_seconds": {"type": "integer", "minimum": 60},
+        "publisher_cadence": {"const": "advisory"}
+      }
+    },
+    "message_path_pattern": {"const": "messages/{sequence:8}-{message_id}.json"},
+    "index_path": {"const": "outbound/index.json"},
+    "index_role": {"const": "derived_non_authoritative"},
+    "reader_state_location": {"const": "reader_environment_only"},
+    "created_at": {"type": "string", "format": "date-time"}
+  }
+}
