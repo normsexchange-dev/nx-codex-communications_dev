@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/group-navigation.schema.json",
+  "title": "Private environment-local NX group navigation candidate",
+  "description": "This object belongs only in reader-local state. It MUST NOT be published in a message-store repository or reserved public .nx surface.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "environment_id", "groups"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "environment_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["group_id", "stores"],
+        "properties": {
+          "group_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+){0,7}$"},
+          "stores": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["publisher_environment", "repository"],
+              "properties": {
+                "publisher_environment": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+                "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/nx-msg-[a-z0-9]+(?:-[a-z0-9]+)*$"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

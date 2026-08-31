@@ -1,0 +1,18 @@
+{
+  "description": "Managed usage lifecycle capture; standard 2026.08.30.1 from normsexchange-dev/ai-agent-control@bcb026242672a709d5c1397b8f6583d5bd845f34 (38de5c4ad3e2f073ad6a04abbe03ab2bb559014917e59009a89093e417fdb195).",
+  "hooks": {
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -NoProfile -File \"$(git rev-parse --show-toplevel)/.agent-control/hooks/codex-usage-capture.ps1\"",
+            "commandWindows": "pwsh.exe -NoProfile -Command \"$root = git rev-parse --show-toplevel; & (Join-Path $root '.agent-control/hooks/codex-usage-capture.ps1')\"",
+            "timeout": 3,
+            "statusMessage": "Capturing normalized usage lifecycle metadata"
+          }
+        ]
+      }
+    ]
+  }
+}

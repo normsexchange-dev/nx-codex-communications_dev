@@ -10,7 +10,8 @@ const REQUIRED = [
   '.github/workflows/validate-communications.yml', 'AUTOSTART.md', 'BOOTSTRAP_STATUS_dev.md', 'CHANGELOG.md', 'COMMUNICATIONS_VERSION', 'README.md',
   'docs/AUTONOMOUS_RUNTIME_REFERENCE_dev.md', 'docs/CREDENTIAL_ACCESS_BOUNDARY_dev.md', 'docs/INTEROPERABILITY_PROTOCOL_dev.md',
   'docs/RECOVERY_PROTOCOL_dev.md', 'docs/SECURITY_BOUNDARY_dev.md', 'docs/SOVEREIGNTY_AND_LINEAGE_dev.md',
-  'docs/PAIRWISE_CHANNEL_PROTOCOL_dev.md',
+  'docs/PAIRWISE_CHANNEL_PROTOCOL_dev.md', 'docs/MESSAGE_STORE_PROTOCOL_dev.md',
+  'docs/PAIRWISE_TO_MESSAGE_STORE_MIGRATION_dev.md', 'docs/REFERENCE_EXCHANGE_PLAN_dev.md',
   'release/environment-profile.json',
   'prompts/boundary-emergency-stop-revoke.txt', 'prompts/descendant-sovereign-genesis.txt', 'prompts/existing-environment-adoption.txt',
   'prompts/existing-environment-preservation.txt', 'prompts/fresh-sovereign-genesis.txt', 'prompts/receiver-compatibility-check.txt',
@@ -23,14 +24,30 @@ const REQUIRED = [
   'schemas/nx-interoperability.schema.json', 'schemas/nx-lineage.schema.json', 'schemas/nx-provenance.schema.json',
   'schemas/pairwise-channel.schema.json', 'schemas/pairwise-message.schema.json', 'schemas/cross-repository-reference.schema.json',
   'schemas/outbound-index.schema.json', 'schemas/reader-cache.schema.json',
+  'schemas/message-store.schema.json', 'schemas/message-store-message.schema.json',
+  'schemas/message-store-index.schema.json', 'schemas/reader-state-v0.8.schema.json',
+  'schemas/group-navigation.schema.json', 'schemas/nx-capabilities-v0.8.schema.json',
+  'schemas/v0.7-v0.8-adoption.schema.json', 'release/candidates/communications-v0.8.0.json',
   'scripts/lib/nx-interface.mjs', 'scripts/materialize-genesis.mjs', 'scripts/negotiate-version.mjs',
   'scripts/lib/pairwise-channel.mjs', 'scripts/initialize-pairwise-channel.mjs', 'scripts/validate-pairwise-channel.mjs',
   'scripts/propose-pairwise-message.mjs', 'scripts/create-pairwise-acknowledgement.mjs',
   'scripts/validate-wtb-payload-reference.mjs', 'scripts/verify-reader-permission.mjs', 'scripts/consume-pairwise-channel.mjs',
+  'scripts/lib/message-store.mjs', 'scripts/initialize-message-store.mjs',
+  'scripts/lib/capabilities-v0.8.mjs',
+  'scripts/validate-message-store.mjs', 'scripts/propose-message-store-message.mjs',
+  'scripts/apply-message-store-proposal.mjs', 'scripts/scan-message-store.mjs',
   'scripts/security-review.mjs', 'scripts/test-communications.mjs', 'scripts/validate-communications.mjs',
-  'scripts/verify-interface.mjs', 'scripts/verify-public-interface.mjs', 'tests/sovereign-interface.test.mjs', 'tests/pairwise-channel.test.mjs'
+  'scripts/verify-interface.mjs', 'scripts/verify-public-interface.mjs', 'tests/sovereign-interface.test.mjs',
+  'tests/pairwise-channel.test.mjs', 'tests/message-store.test.mjs',
+  'tests/capabilities-v0.8.test.mjs', 'tests/fixtures/official-ray-reference-principal.json'
 ];
-const ALLOWED_PUBLIC_REPOSITORIES = new Set([SOURCE_REPOSITORY, 'normsexchange-dev/nx-sourcing-contracts_dev', 'normsexchange-dev/nx-environment-profiles_dev']);
+const ALLOWED_PUBLIC_REPOSITORIES = new Set([
+  SOURCE_REPOSITORY, 'normsexchange-dev/nx-sourcing-contracts_dev',
+  'normsexchange-dev/nx-environment-profiles_dev', 'normsexchange-dev/nx-agent-blueprints_dev',
+  'normsexchange-dev/nx-msg-reference-a-reference', 'normsexchange-dev/nx-msg-reference-b-reference',
+  'normsexchange-dev/ai-agent-control',
+  'normsexchange-dev/ai-agent-ops'
+]);
 const CREDENTIAL_PATTERNS = [/gh[pousr]_[A-Za-z0-9]{20,}/, /github_pat_[A-Za-z0-9_]{20,}/, /-----BEGIN [A-Z ]*PRIVATE KEY-----/];
 
 function git(args) {
@@ -70,6 +87,30 @@ async function validateSchemas() {
     assert(schema.$id === `https://raw.githubusercontent.com/${SOURCE_REPOSITORY}/${TAG}/schemas/${name}`, `schema_release_identity_invalid:${name}`);
     assert(schema.type === 'object' && schema.additionalProperties === false, `schema_not_restrictive:${name}`);
   }
+  for (const name of [
+    'message-store.schema.json', 'message-store-message.schema.json',
+    'message-store-index.schema.json', 'reader-state-v0.8.schema.json',
+    'group-navigation.schema.json', 'nx-capabilities-v0.8.schema.json',
+    'v0.7-v0.8-adoption.schema.json'
+  ]) {
+    const schema = await readJson(path.join(root, 'schemas', name));
+    assert(schema.$schema === 'https://json-schema.org/draft/2020-12/schema', `candidate_schema_draft_invalid:${name}`);
+    assert(schema.$id === `https://raw.githubusercontent.com/${SOURCE_REPOSITORY}/communications-v0.8.0/schemas/${name}`, `candidate_schema_identity_invalid:${name}`);
+    assert(schema.type === 'object' && schema.additionalProperties === false, `candidate_schema_not_restrictive:${name}`);
+  }
+}
+
+async function validateCandidate() {
+  const candidate = await readJson(path.join(root, 'release', 'candidates', 'communications-v0.8.0.json'));
+  assert(candidate.schema_version === '1.0.0' && candidate.candidate_version === '0.8.0', 'candidate_identity_invalid');
+  assert(candidate.proposed_tag === 'communications-v0.8.0' && candidate.release_status === 'candidate_unreleased', 'candidate_release_status_invalid');
+  assert(candidate.immutable_tag_exists === false && candidate.compatible_release === TAG, 'candidate_release_claim_invalid');
+  assert(candidate.compatibility === 'parallel_additive', 'candidate_compatibility_invalid');
+  assert(candidate.claims.public_reference_repositories_exist === false, 'candidate_reference_claim_invalid');
+  assert(candidate.claims.automatic_model_execution_enabled === false, 'candidate_automatic_execution_claim_invalid');
+  assert(candidate.claims.a2a_protocol_implemented === false, 'candidate_a2a_claim_invalid');
+  assert(candidate.schemas.includes('schemas/nx-capabilities-v0.8.schema.json'), 'candidate_capability_schema_missing');
+  assert(candidate.schemas.includes('schemas/v0.7-v0.8-adoption.schema.json'), 'candidate_migration_schema_missing');
 }
 
 async function validatePreviousTags() {
@@ -88,6 +129,7 @@ async function main() {
   for (const required of REQUIRED) assert(files.includes(required), `required_source_file_missing:${required}`);
   assert((await readFile(path.join(root, 'COMMUNICATIONS_VERSION'), 'utf8')).trim() === VERSION, 'communications_version_mismatch');
   await validateSchemas();
+  await validateCandidate();
   await validatePreviousTags();
 
   const workflow = await readFile(path.join(root, '.github/workflows/validate-communications.yml'), 'utf8');
@@ -121,6 +163,13 @@ async function main() {
     'scripts/propose-pairwise-message.mjs', 'scripts/create-pairwise-acknowledgement.mjs', 'scripts/validate-wtb-payload-reference.mjs'
   ].map((relative) => readFile(path.join(root, relative), 'utf8')));
   assert(!pairwiseOffline.some((text) => /node:https|\bfetch\s*\(|OpenAI|generateContent|model\.generate/i.test(text)), 'pairwise_offline_tool_network_or_model');
+  const messageStoreOffline = await Promise.all([
+    'scripts/lib/message-store.mjs', 'scripts/initialize-message-store.mjs',
+    'scripts/lib/capabilities-v0.8.mjs',
+    'scripts/validate-message-store.mjs', 'scripts/propose-message-store-message.mjs',
+    'scripts/apply-message-store-proposal.mjs', 'scripts/scan-message-store.mjs'
+  ].map((relative) => readFile(path.join(root, relative), 'utf8')));
+  assert(!messageStoreOffline.some((text) => /node:https|\bfetch\s*\(|OpenAI|generateContent|model\.generate/i.test(text)), 'message_store_offline_tool_network_or_model');
   for (const relative of ['scripts/verify-reader-permission.mjs', 'scripts/consume-pairwise-channel.mjs']) {
     const text = await readFile(path.join(root, relative), 'utf8');
     assert(/method:\s*'GET'/.test(text), `reader_tool_get_missing:${relative}`);
@@ -133,7 +182,11 @@ async function main() {
     const text = buffer.toString('utf8');
     assert(!CREDENTIAL_PATTERNS.some((pattern) => pattern.test(text)), `credential_signature_found:${relative}`);
     assert(!/[A-Za-z]:[\\/]Users[\\/]/.test(text) && !/(?:^|\s)\/(?:home|Users)\/[A-Za-z0-9._-]+\//m.test(text), `private_local_path_found:${relative}`);
-    for (const match of text.matchAll(/normsexchange-dev\/[A-Za-z0-9._-]+/gi)) assert(ALLOWED_PUBLIC_REPOSITORIES.has(match[0]), `unapproved_public_repository:${relative}`);
+    const normalizedReferences = text.replaceAll('\\_', '_');
+    for (const match of normalizedReferences.matchAll(/normsexchange-dev\/[A-Za-z0-9._-]+/gi)) {
+      const repository = match[0].endsWith('.git') ? match[0].slice(0, -4) : match[0];
+      assert(ALLOWED_PUBLIC_REPOSITORIES.has(repository), `unapproved_public_repository:${relative}`);
+    }
     if (relative.endsWith('.mjs')) for (const match of text.matchAll(/^import .* from ['"]([^'"]+)['"];$/gm)) assert(match[1].startsWith('node:') || match[1].startsWith('.'), `third_party_import:${relative}`);
   }
   console.log(`validate-communications: PASS (${files.length} files; communications ${VERSION}; branch ${branch}; eight prior tags immutable; profile release exact)`);

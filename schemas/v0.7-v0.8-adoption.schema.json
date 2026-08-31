@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/v0.7-v0.8-adoption.schema.json",
+  "title": "Non-destructive NX Communications v0.7 to v0.8 adoption proposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_version", "proposal_id", "environment_id", "source_release", "target_release", "source_core_digest", "authority_mapping", "proposed_capabilities", "preserves_genesis_and_lineage", "adoption_authority_ref", "apply", "proposed_at"],
+  "properties": {
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/v0.7-v0.8-adoption.schema.json"},
+    "schema_version": {"const": "1.0.0"},
+    "proposal_id": {"type": "string", "minLength": 1},
+    "environment_id": {"type": "string", "minLength": 2},
+    "source_release": {"const": "communications-v0.7.0"},
+    "target_release": {"const": "communications-v0.8.0-candidate"},
+    "source_core_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "authority_mapping": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_state", "target_state"],
+        "properties": {
+          "source_state": {"type": "string", "minLength": 1},
+          "target_state": {"enum": ["standing_human_authorized", "temporarily_human_authorized"]}
+        }
+      }
+    },
+    "proposed_capabilities": {"$ref": "nx-capabilities-v0.8.schema.json"},
+    "preserves_genesis_and_lineage": {"const": true},
+    "adoption_authority_ref": {"type": "string", "minLength": 1},
+    "apply": {"const": false},
+    "proposed_at": {"type": "string", "format": "date-time"}
+  }
+}

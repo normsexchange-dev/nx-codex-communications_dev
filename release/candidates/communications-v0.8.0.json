@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "candidate_version": "0.8.0",
+  "proposed_tag": "communications-v0.8.0",
+  "release_status": "candidate_unreleased",
+  "immutable_tag_exists": false,
+  "compatible_release": "communications-v0.7.0",
+  "compatibility": "parallel_additive",
+  "schemas": [
+    "schemas/message-store.schema.json",
+    "schemas/message-store-message.schema.json",
+    "schemas/message-store-index.schema.json",
+    "schemas/reader-state-v0.8.schema.json",
+    "schemas/group-navigation.schema.json",
+    "schemas/nx-capabilities-v0.8.schema.json",
+    "schemas/v0.7-v0.8-adoption.schema.json"
+  ],
+  "tools": [
+    "scripts/initialize-message-store.mjs",
+    "scripts/validate-message-store.mjs",
+    "scripts/propose-message-store-message.mjs",
+    "scripts/apply-message-store-proposal.mjs",
+    "scripts/scan-message-store.mjs",
+    "scripts/lib/capabilities-v0.8.mjs"
+  ],
+  "release_gates": [
+    "independent_cold_reader_review",
+    "reference_exchange_validation",
+    "immutable_tag_authorization"
+  ],
+  "claims": {
+    "public_reference_repositories_exist": false,
+    "automatic_model_execution_enabled": false,
+    "a2a_protocol_implemented": false
+  }
+}

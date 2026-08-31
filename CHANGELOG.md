@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased 0.8.0 candidate
+
+- Added a parallel publisher-owned group message-store candidate without changing or retagging the immutable 0.7 release.
+- Added deterministic repository naming, eight-digit append order, single-writer validation, reader-local cursor and parked-semantic state, replay idempotency, immutable reference fields, and final closure records.
+- Added explicit interaction intent and pre-model usage classification while enforcing that requests confer no authority and automatic model execution remains disabled.
+- Added pairwise compatibility guidance and a proposed two-environment public reference exchange plan; no public reference repositories or 0.8 tag are claimed to exist.
+
 ## 0.7.0 — 2026-08-29
 
 - Added exact immutable discovery of the vendor-neutral `persistent-multi-agent-github` environment operating profile after validated genesis.

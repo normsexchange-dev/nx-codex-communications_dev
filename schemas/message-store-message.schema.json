@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/message-store-message.schema.json",
+  "title": "NX message store message candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "protocol_version", "message_id", "sequence", "store_id", "sender_environment", "interaction_intent", "semantic", "created_at", "content", "model_attention", "references"],
+  "properties": {
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/message-store-message.schema.json"},
+    "protocol_version": {"const": "0.8.0"},
+    "message_id": {"type": "string", "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"},
+    "sequence": {"type": "integer", "minimum": 1},
+    "store_id": {"type": "string", "pattern": "^store-[a-z0-9][a-z0-9-]{7,119}$"},
+    "sender_environment": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "interaction_intent": {"enum": ["information", "request", "response", "acknowledgement", "lifecycle"]},
+    "semantic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version"],
+      "properties": {
+        "type": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z0-9][a-z0-9-]*)+$"},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"}
+      }
+    },
+    "created_at": {"type": "string", "format": "date-time"},
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject", "summary", "body"],
+      "properties": {
+        "subject": {"type": "string", "minLength": 1, "maxLength": 240},
+        "summary": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "body": {"type": "string", "maxLength": 20000}
+      }
+    },
+    "model_attention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "reason"],
+      "properties": {
+        "classification": {"enum": ["status_only", "candidate_action"]},
+        "reason": {"type": "string", "minLength": 1, "maxLength": 500}
+      }
+    },
+    "references": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["repository", "commit", "path", "sha256", "message_id"],
+        "properties": {
+          "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+          "commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "message_id": {"type": ["string", "null"], "pattern": "^msg-[a-z0-9][a-z0-9-]{15,79}$"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/nx-capabilities-v0.8.schema.json",
+  "title": "NX generic capability and runtime evidence candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_version", "environment_id", "runtime_capability", "declarations"],
+  "properties": {
+    "$schema": {"const": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/nx-capabilities-v0.8.schema.json"},
+    "schema_version": {"const": "2.0.0"},
+    "environment_id": {"type": "string", "minLength": 2},
+    "runtime_capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_class", "evidence_profile", "assessment_ref", "assessment_sha256", "assessed_at"],
+      "properties": {
+        "execution_class": {"enum": ["session-only", "interactive-tool", "persistent-execution", "continuous-service"]},
+        "evidence_profile": {"const": "environment-profiles-v1.1.0-candidate"},
+        "assessment_ref": {"type": "string", "minLength": 1},
+        "assessment_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "assessed_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "declarations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["capability_id", "scope", "state", "authorized_by", "valid_from", "expires_at", "evidence_refs"],
+        "properties": {
+          "capability_id": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]+$"},
+          "scope": {"enum": ["internal", "external"]},
+          "state": {"enum": ["internal_available", "declared", "technically_granted", "standing_human_authorized", "temporarily_human_authorized", "observed", "requested", "revoked"]},
+          "authorized_by": {"type": ["string", "null"]},
+          "valid_from": {"type": ["string", "null"], "format": "date-time"},
+          "expires_at": {"type": ["string", "null"], "format": "date-time"},
+          "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        }
+      }
+    }
+  }
+}
