@@ -2,7 +2,7 @@
 
 Generated file — do not edit manually.
 Standard: `2026.08.31.2`
-Source: `normsexchange-dev/ai-agent-control@ef174a2eb1daa3441ad80b4d3985fd29a0c55664`
+Source: `normsexchange-dev/ai-agent-control@85f9c629da75ee88c75c57b284b8beb7cb729276`
 Configuration hash: `57f4dc8a8fdc0920e37ac6d1014dc15cebe05f66067fe9eb83a6109a772d9ad4`
 
 ## Project identity
