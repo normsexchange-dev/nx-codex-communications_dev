@@ -1,9 +1,9 @@
 # Managed NX Codex Communications Role — Coordinator
 
 Generated file — do not edit manually.
-Standard: `2026.08.31.1`
-Source: `normsexchange-dev/ai-agent-control@99d5893a6a2afcd5611cd1609f1fda1539e509e2`
-Configuration hash: `a7151ac300ef037c9e6ed55ba10a459d657d5862512fd16540d91e966fb92ce0`
+Standard: `2026.08.31.2`
+Source: `normsexchange-dev/ai-agent-control@ef174a2eb1daa3441ad80b4d3985fd29a0c55664`
+Configuration hash: `57f4dc8a8fdc0920e37ac6d1014dc15cebe05f66067fe9eb83a6109a772d9ad4`
 
 Coordinates environment, source control, protected platform configuration, state, and cross-role integration.
 
