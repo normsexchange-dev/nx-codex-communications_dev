@@ -6,7 +6,7 @@ import test from 'node:test';
 
 import { prettyJson } from '../scripts/lib/nx-interface.mjs';
 import {
-  applyStoreProposal, candidateSchemaUrl, createReaderState, evaluateUsageGate, initializeStoreRoot,
+  applyStoreProposal, createReaderState, evaluateUsageGate, initializeStoreRoot, messageStoreSchemaUrl,
   proposeStoreMessage, replayParked, scanStore, validateStoreManifest, validateStoreMessage,
   validateStoreRoot
 } from '../scripts/lib/message-store.mjs';
@@ -19,7 +19,7 @@ function draft(sequence, options = {}) {
   const semanticType = options.semanticType || 'nx.message';
   const intent = options.intent || 'information';
   return {
-    $schema: candidateSchemaUrl('message-store-message.schema.json'),
+    $schema: messageStoreSchemaUrl('message-store-message.schema.json'),
     protocol_version: '0.8.0',
     message_id: options.messageId || `msg-reference-a-${String(sequence).padStart(8, '0')}`,
     sequence, store_id: STORE_ID, sender_environment: 'reference-a',
@@ -28,7 +28,7 @@ function draft(sequence, options = {}) {
     created_at: options.createdAt || `2026-08-30T20:0${sequence}:00.000Z`,
     content: {
       subject: options.subject || `Reference message ${sequence}`,
-      summary: options.summary || 'Deterministic candidate fixture.',
+      summary: options.summary || 'Deterministic reference fixture.',
       body: options.body || ''
     },
     model_attention: {
@@ -57,9 +57,9 @@ async function publish(root, temp, message) {
   return result;
 }
 
-test('candidate store derives one publisher-owned repository and exposes no recipient field', async () => {
+test('message store derives one publisher-owned repository and exposes no recipient field', async () => {
   const manifest = validateStoreManifest({
-    $schema: candidateSchemaUrl('message-store.schema.json'),
+    $schema: messageStoreSchemaUrl('message-store.schema.json'),
     schema_version: '1.0.0', protocol_version: '0.8.0', store_id: STORE_ID,
     group_id: 'reference',
     publisher: { environment_id: 'reference-a', repository: OWNER_REPOSITORY },
@@ -266,7 +266,7 @@ test('digest mutation and publisher-side reader state fail closed', async (t) =>
   await assert.rejects(validateStoreRoot(root), /publisher_repository_contains_private_reader_state/);
 });
 
-test('candidate implementation has no network or model invocation surface', async () => {
+test('released implementation has no network or model invocation surface', async () => {
   const source = await readFile(new URL('../scripts/lib/message-store.mjs', import.meta.url), 'utf8');
   assert.equal(/node:https|\bfetch\s*\(|OpenAI|generateContent|model\.generate/i.test(source), false);
 });

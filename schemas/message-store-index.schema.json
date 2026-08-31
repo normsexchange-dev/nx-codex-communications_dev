@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/schemas/message-store-index.schema.json",
-  "title": "NX message store append index candidate",
+  "title": "NX message store append index",
   "type": "object",
   "additionalProperties": false,
   "required": ["$schema", "protocol_version", "store_id", "publisher_repository", "next_sequence", "status", "closed_at", "closure_message_id", "messages"],

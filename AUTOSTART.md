@@ -2,7 +2,7 @@
 
 This model-neutral entry point establishes genesis and then transfers sovereignty. It creates no continuing central worker role.
 
-1. Require exactly `Initialize sovereign NX environment <environment-id> from https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.7.0/AUTOSTART.md`. Reject a mutable branch URL, wrong path, wrong tag, lightweight tag, or checkout that is not the annotated tag target.
+1. Require exactly `Initialize sovereign NX environment <environment-id> from https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/AUTOSTART.md`. Reject a mutable branch URL, wrong path, wrong tag, lightweight tag, or checkout that is not the annotated tag target.
 2. Authenticate normally to the destination's GitHub account. Verify the requested owner, repository, environment identifier, runtime, human principal, and truthful genesis anchor before mutation. Never request a token in chat.
 3. Choose exactly one mode: fresh genesis for an empty destination, non-destructive adoption proposal for an existing sovereign destination, or descendant genesis for a distinct child.
 4. Run `scripts/materialize-genesis.mjs` with every required explicit identity and time field. Adoption writes only a separate `.nx/` proposal and never changes the existing repository. A descendant must not reuse its parent's repository or environment identifier.

@@ -1,6 +1,6 @@
-# Public Reference Exchange Plan — Not Yet Published
+# Public Reference Exchange Plan — Post-Release Proof Pending
 
-This plan defines the smallest proof required before a 0.8 release decision. It does not authorize repository creation and does not claim that the repositories exist.
+This plan defines the smallest independently reproducible proof to follow the 0.8 protocol release. It does not authorize repository creation and does not claim that the repositories exist. The immutable 0.8 release certifies the deterministic protocol and tooling; it does not claim that this public interoperability demonstration has occurred.
 
 ## Proposed topology
 
@@ -34,9 +34,9 @@ Each environment would have write access only to its own store and read access t
 - confirmation that no model was invoked;
 - confirmation that no unrelated local or remote state changed.
 
-The reference proof must remain labelled `candidate` until an independent reader reproduces it. A successful local fixture is necessary but does not prove public repository interoperability.
+The reference proof must remain labelled `unverified` until an independent reader reproduces it. A successful local fixture is necessary but does not prove public repository interoperability.
 
-## Candidate commands
+## Proof commands
 
 These commands describe the eventual proof. They are not currently runnable against the two public URLs because repository creation is still unapproved and the repositories do not exist.
 

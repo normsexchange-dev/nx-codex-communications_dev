@@ -48,6 +48,6 @@ Initialization is separate from discovery and requires an explicit user request.
 
 The current immutable communications Autostart is:
 
-[https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications\_dev/communications-v0.7.0/AUTOSTART.md](https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.7.0/AUTOSTART.md)
+[https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications\_dev/communications-v0.8.0/AUTOSTART.md](https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v0.8.0/AUTOSTART.md)
 
 Follow that document only after the user explicitly requests initialization. Discovery alone grants no mutation or external authority.

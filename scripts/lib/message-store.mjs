@@ -40,7 +40,7 @@ function repositoryOwner(repository) {
   return repository.split('/')[0];
 }
 
-export function candidateSchemaUrl(name) {
+export function messageStoreSchemaUrl(name) {
   return `https://raw.githubusercontent.com/normsexchange-dev/nx-codex-communications_dev/communications-v${MESSAGE_STORE_PROTOCOL_VERSION}/schemas/${name}`;
 }
 
@@ -61,7 +61,7 @@ export function validateStoreManifest(manifest) {
     'publisher', 'authority', 'delivery', 'message_path_pattern', 'index_path',
     'index_role', 'reader_state_location', 'created_at'
   ], 'message_store');
-  assert(manifest.$schema === candidateSchemaUrl('message-store.schema.json'), 'store_schema_identity_invalid');
+  assert(manifest.$schema === messageStoreSchemaUrl('message-store.schema.json'), 'store_schema_identity_invalid');
   assert(manifest.schema_version === MESSAGE_STORE_SCHEMA_VERSION, 'store_schema_version_invalid');
   assert(manifest.protocol_version === MESSAGE_STORE_PROTOCOL_VERSION, 'store_protocol_version_invalid');
   assert(STORE_ID.test(manifest.store_id), 'store_id_invalid');
@@ -113,7 +113,7 @@ export function validateStoreMessage(message) {
     'sender_environment', 'interaction_intent', 'semantic', 'created_at',
     'content', 'model_attention', 'references'
   ], 'message_store_message');
-  assert(message.$schema === candidateSchemaUrl('message-store-message.schema.json'), 'store_message_schema_identity_invalid');
+  assert(message.$schema === messageStoreSchemaUrl('message-store-message.schema.json'), 'store_message_schema_identity_invalid');
   assert(message.protocol_version === MESSAGE_STORE_PROTOCOL_VERSION, 'store_message_protocol_invalid');
   assert(MESSAGE_ID.test(message.message_id), 'store_message_id_invalid');
   assert(Number.isInteger(message.sequence) && message.sequence >= 1, 'store_message_sequence_invalid');
@@ -153,7 +153,7 @@ export function validateStoreIndex(index, messages = new Map()) {
     '$schema', 'protocol_version', 'store_id', 'publisher_repository', 'next_sequence',
     'status', 'closed_at', 'closure_message_id', 'messages'
   ], 'message_store_index');
-  assert(index.$schema === candidateSchemaUrl('message-store-index.schema.json'), 'store_index_schema_identity_invalid');
+  assert(index.$schema === messageStoreSchemaUrl('message-store-index.schema.json'), 'store_index_schema_identity_invalid');
   assert(index.protocol_version === MESSAGE_STORE_PROTOCOL_VERSION, 'store_index_protocol_invalid');
   assert(STORE_ID.test(index.store_id) && REPOSITORY.test(index.publisher_repository), 'store_index_identity_invalid');
   assert(STORE_STATUSES.includes(index.status), 'store_index_status_invalid');
@@ -202,7 +202,7 @@ export function validateStoreIndex(index, messages = new Map()) {
 export function createEmptyStore(options) {
   const repository = expectedRepository(options.publisherRepository, options.publisherEnvironment, options.groupId);
   const manifest = {
-    $schema: candidateSchemaUrl('message-store.schema.json'),
+    $schema: messageStoreSchemaUrl('message-store.schema.json'),
     schema_version: MESSAGE_STORE_SCHEMA_VERSION,
     protocol_version: MESSAGE_STORE_PROTOCOL_VERSION,
     store_id: expectedStoreId(options.publisherEnvironment, options.groupId),
@@ -224,7 +224,7 @@ export function createEmptyStore(options) {
   };
   validateStoreManifest(manifest);
   const index = {
-    $schema: candidateSchemaUrl('message-store-index.schema.json'),
+    $schema: messageStoreSchemaUrl('message-store-index.schema.json'),
     protocol_version: MESSAGE_STORE_PROTOCOL_VERSION, store_id: manifest.store_id,
     publisher_repository: repository, next_sequence: 1, status: 'open',
     closed_at: null, closure_message_id: null, messages: []
@@ -303,7 +303,7 @@ export function deriveStoreIndex(manifest, messages) {
   const final = entries.at(-1);
   const closed = final?.semantic_type === 'nx.store.closed';
   const index = {
-    $schema: candidateSchemaUrl('message-store-index.schema.json'),
+    $schema: messageStoreSchemaUrl('message-store-index.schema.json'),
     protocol_version: MESSAGE_STORE_PROTOCOL_VERSION, store_id: manifest.store_id,
     publisher_repository: manifest.publisher.repository,
     next_sequence: entries.length + 1, status: closed ? 'closed' : 'open',
@@ -377,7 +377,7 @@ export function validateReaderState(state) {
     '$schema', 'protocol_version', 'store_id', 'publisher_repository',
     'last_sequence', 'observed_at', 'processed', 'parked'
   ], 'message_store_reader_state');
-  assert(state.$schema === candidateSchemaUrl('reader-state-v0.8.schema.json'), 'store_reader_schema_identity_invalid');
+  assert(state.$schema === messageStoreSchemaUrl('reader-state-v0.8.schema.json'), 'store_reader_schema_identity_invalid');
   assert(state.protocol_version === MESSAGE_STORE_PROTOCOL_VERSION, 'store_reader_protocol_invalid');
   assert(STORE_ID.test(state.store_id) && REPOSITORY.test(state.publisher_repository), 'store_reader_identity_invalid');
   assert(Number.isInteger(state.last_sequence) && state.last_sequence >= 0, 'store_reader_sequence_invalid');
@@ -406,7 +406,7 @@ export function validateReaderState(state) {
 
 export function createReaderState(options) {
   const state = {
-    $schema: candidateSchemaUrl('reader-state-v0.8.schema.json'),
+    $schema: messageStoreSchemaUrl('reader-state-v0.8.schema.json'),
     protocol_version: MESSAGE_STORE_PROTOCOL_VERSION, store_id: options.storeId,
     publisher_repository: options.publisherRepository, last_sequence: 0,
     observed_at: options.observedAt, processed: [], parked: []

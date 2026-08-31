@@ -1,6 +1,6 @@
 import { assert, exactKeys } from './nx-interface.mjs';
 
-export const CAPABILITIES_CANDIDATE_VERSION = '0.8.0';
+export const CAPABILITIES_VERSION = '0.8.0';
 export const GENERIC_AUTHORITY_STATES = [
   'internal_available', 'declared', 'technically_granted',
   'standing_human_authorized', 'temporarily_human_authorized',
@@ -61,7 +61,7 @@ export function validateCapabilitiesV08(value) {
     'assessment_sha256', 'assessed_at'
   ], 'capabilities_v08_runtime');
   assert(EXECUTION_CLASSES.includes(value.runtime_capability.execution_class), 'capabilities_v08_execution_class_invalid');
-  assert(value.runtime_capability.evidence_profile === 'environment-profiles-v1.1.0-candidate', 'capabilities_v08_evidence_profile_invalid');
+  assert(typeof value.runtime_capability.evidence_profile === 'string' && value.runtime_capability.evidence_profile.trim(), 'capabilities_v08_evidence_profile_invalid');
   assert(typeof value.runtime_capability.assessment_ref === 'string' && value.runtime_capability.assessment_ref.trim(), 'capabilities_v08_assessment_ref_invalid');
   assert(SHA256.test(value.runtime_capability.assessment_sha256), 'capabilities_v08_assessment_digest_invalid');
   dateTime(value.runtime_capability.assessed_at, 'capabilities_v08_assessed_at_invalid');
@@ -88,7 +88,7 @@ export function migrateCapabilitiesV07(source, runtimeCapability, options) {
     $schema: capabilitiesCandidateSchemaUrl('v0.7-v0.8-adoption.schema.json'),
     schema_version: '1.0.0', proposal_id: options.proposalId,
     environment_id: source.environment_id,
-    source_release: 'communications-v0.7.0', target_release: 'communications-v0.8.0-candidate',
+    source_release: 'communications-v0.7.0', target_release: 'communications-v0.8.0',
     source_core_digest: options.sourceCoreDigest,
     authority_mapping: [
       { source_state: 'ray_standing_authorized', target_state: 'standing_human_authorized' },
@@ -114,7 +114,7 @@ export function validateMigrationProposal(proposal) {
   assert(proposal.$schema === capabilitiesCandidateSchemaUrl('v0.7-v0.8-adoption.schema.json'), 'capabilities_v08_migration_schema_invalid');
   assert(proposal.schema_version === '1.0.0', 'capabilities_v08_migration_version_invalid');
   assert(typeof proposal.proposal_id === 'string' && proposal.proposal_id.trim(), 'capabilities_v08_migration_id_invalid');
-  assert(proposal.source_release === 'communications-v0.7.0' && proposal.target_release === 'communications-v0.8.0-candidate', 'capabilities_v08_migration_release_invalid');
+  assert(proposal.source_release === 'communications-v0.7.0' && proposal.target_release === 'communications-v0.8.0', 'capabilities_v08_migration_release_invalid');
   assert(SHA256.test(proposal.source_core_digest), 'capabilities_v08_migration_digest_invalid');
   assert(Array.isArray(proposal.authority_mapping) && proposal.authority_mapping.length === 2, 'capabilities_v08_authority_mapping_invalid');
   const authorityMapping = new Map();
