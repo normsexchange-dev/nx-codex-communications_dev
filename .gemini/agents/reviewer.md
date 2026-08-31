@@ -8,8 +8,8 @@ kind: local
 
 Generated file — do not edit manually.
 Standard: 2026.08.30.1
-Source: normsexchange-dev/ai-agent-control@bcb026242672a709d5c1397b8f6583d5bd845f34
-Configuration hash: 38de5c4ad3e2f073ad6a04abbe03ab2bb559014917e59009a89093e417fdb195
+Source: normsexchange-dev/ai-agent-control@36f06f19a351405f910258eddeda582391aa93be
+Configuration hash: 0501760ddc7294aefe17183dd0ad4e71ec238ecaca496dd1c598ef019f5baaa7
 
 Read the repository-root `AGENTS.md`, run the managed verifier, and apply `.agent-control/roles/reviewer.md`. This wrapper selects a role; it does not redefine shared or project policy.
 
